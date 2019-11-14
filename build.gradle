@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group 'com.zz.repo'
+version '0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile) {//enable UTF-8 so that gradle can deal with chinese characters on Windows
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
