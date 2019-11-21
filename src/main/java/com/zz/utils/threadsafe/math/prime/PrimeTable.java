@@ -3,6 +3,8 @@ package com.zz.utils.threadsafe.math.prime;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 class PrimeTable {
+
+
     int basicPrimeNumbers[] = {//预先储存一万以内的质数
             2,3,5,7,11,13,17,19,23,29,
             31,37,41,43,47,53,59,61,67,71,
@@ -128,6 +130,9 @@ class PrimeTable {
             9817,9829,9833,9839,9851,9857,9859,9871,9883,9887,
             9901,9907,9923,9929,9931,9941,9949,9967,9973,};
 
+    /**
+     * 仅仅用来计算代码内预制的质数表，没有其他意义.
+     */
     static void calculateBasicPrimeNumbers(){
         int count=0;
         prime:for(int i=2;i<10000;i++){
