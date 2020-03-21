@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.basicwork;
+package com.zz.utils.threadsafe.basicwork;
 
 public final class ShellColor{
     public final static String clear="\033[0m";

@@ -1,10 +1,10 @@
 package com.zz.utils.threadunsafe.cryptography;
 
-import com.zz.utils.threadunsafe.basicwork.ByteArrayUtils;
+import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
 
-import static com.zz.utils.threadunsafe.basicwork.ByteArrayUtils.byte2int;
-import static com.zz.utils.threadunsafe.basicwork.ByteArrayUtils.concat;
-import static com.zz.utils.threadunsafe.basicwork.ByteArrayUtils.int2byte;
+import static com.zz.utils.threadsafe.basicwork.ByteArrayUtils.byte2int;
+import static com.zz.utils.threadsafe.basicwork.ByteArrayUtils.concat;
+import static com.zz.utils.threadsafe.basicwork.ByteArrayUtils.int2byte;
 
 public final class RandomGenerator{
 

@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.basicwork;
+package com.zz.utils.threadsafe.basicwork;
 
 import java.io.IOException;
 import java.io.OutputStream;

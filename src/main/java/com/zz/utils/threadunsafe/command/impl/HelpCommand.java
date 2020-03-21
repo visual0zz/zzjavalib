@@ -1,6 +1,6 @@
 package com.zz.utils.threadunsafe.command.impl;
 
-import com.zz.utils.threadunsafe.basicwork.ShellColor;
+import com.zz.utils.threadsafe.basicwork.ShellColor;
 import com.zz.utils.threadunsafe.command.ArgumentMark;
 import com.zz.utils.threadunsafe.command.Command;
 
