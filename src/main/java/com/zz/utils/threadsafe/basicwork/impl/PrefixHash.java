@@ -23,7 +23,7 @@ final class PrefixHash {
 
     /**
      * 根据种子生成随机哈希
-     * @param seed 种子会参与到哈希过程中，不同的种子会生成两套不同的前缀哈希
+     * @param seed 种子会参与到哈希过程中，相同的data不同的种子会生成不同的前缀哈希
      *
      */
     public PrefixHash(long seed){
