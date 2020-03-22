@@ -1,4 +1,4 @@
-package com.zz.utils.threadsafe.basicwork.impl;
+package com.zz.utils.threadsafe.basicwork;
 
 import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
 

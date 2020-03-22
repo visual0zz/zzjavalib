@@ -1,6 +1,7 @@
 package com.zz.utils.threadunsafe.cryptography;
 
 import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
+import com.zz.utils.threadsafe.basicwork.HashService;
 
 import static com.zz.utils.threadsafe.basicwork.ByteArrayUtils.byte2int;
 import static com.zz.utils.threadsafe.basicwork.ByteArrayUtils.concat;

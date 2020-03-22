@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.cryptography;
+package com.zz.utils.threadsafe.basicwork;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,6 +10,7 @@ public enum HashService {
     md5,
     sha1,
     sha256,
+    prefix
     ;
 
     public static String byteArrayToString(byte[] in){
@@ -34,6 +35,9 @@ public enum HashService {
         return getHash(btInput);
     }
     public HashResult getHash(byte[] in){//得到字节数组格式的哈希值
+        if(this==prefix){
+            return new HashResult(new PrefixHash().hash(in));
+        }
         // 获得MD5摘要算法的 MessageDigest 对象
         MessageDigest mdInst = null;
         try {
@@ -107,6 +111,7 @@ public enum HashService {
         public String getLower(){
             return byteArrayToString(value).toLowerCase();
         }
+        public String getBinary(){ return ByteArrayUtils.bytes2binaryString(value);}
         public byte[] getByteArray(){
             return value;
         }
