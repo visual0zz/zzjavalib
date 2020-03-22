@@ -1,14 +1,42 @@
 plugins {
     id 'java'
 }
+apply plugin :'maven-publish'
 
-group 'com.zz.repo'
+group 'com.zz.utils'
 version '0.1'
 
 sourceCompatibility = 1.8
-
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+publishing {
+    publications {
+        // publishProject 为自定义名称,可写多个发布任务
+        publishProject(MavenPublication){
+            from components.java  // 发布 jar 包
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+    // 配置发布到哪里
+//    repositories {
+//        maven {
+//            //指定要上传的 maven 私服仓库
+//            url = ""
+//            //认证用户和密码
+//            credentials {
+//                username 'root'
+//                password 'admin'
+//            }
+//        }
+//    }
+}
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    //mavenCentral()
 }
 
 tasks.withType(JavaCompile) {//enable UTF-8 so that gradle can deal with chinese characters on Windows
@@ -16,5 +44,7 @@ tasks.withType(JavaCompile) {//enable UTF-8 so that gradle can deal with chinese
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
+    compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.7.0.202003110725-r'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
