@@ -74,7 +74,21 @@ public class ByteArrayUtils {
         }
         return result;
     }
-
+    public static String bytes2binaryString(byte[]bytes){
+        StringBuilder builder=new StringBuilder();
+        for(byte b:bytes){
+            builder.append((b>>7 )&0x01);
+            builder.append((b>>6 )&0x01);
+            builder.append((b>>5 )&0x01);
+            builder.append((b>>4 )&0x01);
+            builder.append((b>>3 )&0x01);
+            builder.append((b>>2 )&0x01);
+            builder.append((b>>1 )&0x01);
+            builder.append(b &0x01);
+            builder.append(' ');
+        }
+        return builder.toString();
+    }
     /**
      *
      * @param out 要输出到的流
