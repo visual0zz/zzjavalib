@@ -1,5 +1,10 @@
 package com.zz.utils.threadsafe.basicwork.impl;
 
+import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * 前缀哈希，保持原数据一定前缀特性的哈希，如果两个串长度接近 并且拥有公共前缀，
  * 则哈希结果也拥有公共前缀，且前缀长度与原串前缀长度正相关
@@ -15,34 +20,54 @@ final class PrefixHash {
     public PrefixHash(){
         this(0);
     }
+
+    /**
+     * 根据种子生成随机哈希
+     * @param seed 种子会参与到哈希过程中，不同的种子会生成两套不同的前缀哈希
+     *
+     */
     public PrefixHash(long seed){
         this.seed=seed;
     }
     public byte[] hash(byte [] data){
-        data=preprocess(data);
-
+        byte []processedData=preprocess(data);
+        byte[]prefix=getPrefixPart(processedData);
+        byte[]random= new byte[0];
+        try {
+            random = getRandomPart(data,processedData);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);//这个是不可能发生的
+        }
+        return ByteArrayUtils.concat(prefix,random);
+    }
+    private byte[] getPrefixPart(byte[] processedData){
         byte[] prefix=new byte[PREFIX_LENGTH];
-        for (int i=0;i<PREFIX_LENGTH;i++)prefix[i]=data[i];
+        for (int i=0;i<PREFIX_LENGTH;i++)prefix[i]= processedData[i];
 
         int index=0;
         byte[]pick=new byte[PREFIX_LENGTH*8];
-        for(int i=1;i<data.length;i*=2){//取出预处理之后的数组的1 2 4 8 16 这些位置的字节
-            pick[index]=data[i];
+        for(int i = 1; PREFIX_LENGTH+i< processedData.length; i+=processedData.length/pick.length+1){//取出预处理之后的数组的1 2 4 8 16 这些位置的字节
+            pick[index]= processedData[i];
             index++;
             if(index>=PREFIX_LENGTH*8)break;//储存满了就退出，不管后面更长的数组
         }
-        index-=8;
-        for(int i=1;index>=0 && PREFIX_LENGTH-i>=0;index-=8,i++){
-            prefix[PREFIX_LENGTH-i]= (byte) (pick[index] & 0x80
-                                |pick[index+1] &0x40
-                                |pick[index+2] &0x20
-                                |pick[index+3] &0x10
-                                |pick[index+4] &0x08
-                                |pick[index+5] &0x04
-                                |pick[index+6] &0x02
-                                |pick[index+7] &0x01);//每八个字节 每个字节取一位组装成一个字节
+        index-=1;
+        for(int i=0;index-i>=0;i++){//将pick里面的每一个字节映射到输出的每一位
+            prefix[PREFIX_LENGTH-i/8-1]^=(0x01 & (pick[index-i]*FACTOR+ADDER))<<i%8;
         }
         return prefix;
+    }
+    private byte[] getRandomPart(byte[] data,byte []processedData) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest=MessageDigest.getInstance("md5");
+        messageDigest.update(ByteArrayUtils.concat(data,processedData));
+        byte[]result=messageDigest.digest();
+        while (result.length<RANDOM_LENGTH) {//如果数据量不够
+            messageDigest.update(ByteArrayUtils.concat(processedData,result));
+            result=ByteArrayUtils.concat(result,messageDigest.digest());
+        }
+        byte[]pick=new byte[RANDOM_LENGTH];
+        System.arraycopy(result, 0, pick, 0, RANDOM_LENGTH);
+        return pick;
     }
     private byte[] preprocess(byte []data){//预处理原数组,产生一个尺寸不小于PREFIX_LENGTH的数组
         byte[]result=new byte[data.length+PREFIX_LENGTH];
@@ -55,6 +80,7 @@ final class PrefixHash {
             result[i]=value;
         }
         while (i<data.length+PREFIX_LENGTH){//后面填充一些字节，保证输出数组长度永远大于需要的前缀长度
+            value^= seed*i;
             value*= FACTOR;
             value+= ADDER;
             result[i]=value;
