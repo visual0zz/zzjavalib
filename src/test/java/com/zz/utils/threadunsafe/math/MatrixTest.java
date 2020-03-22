@@ -21,10 +21,10 @@ public class MatrixTest {
   @Test
   public void testInverse(){
     Matrix matrix=new Matrix(new int[][]{{1,2,3},{4,5,6},{7,8,0}});
-    System.out.println("matrix="+matrix);
-    System.out.println("matrix.adjoint="+matrix.adjointMatrix());
-    System.out.println("matrix.inverse="+matrix.inverse());
-    System.out.println("matrix*matrix.inverse="+matrix.multi(matrix.inverse()).setScale(0));
+    //System.out.println("matrix="+matrix);
+    //System.out.println("matrix.adjoint="+matrix.adjointMatrix());
+//    System.out.println("matrix.inverse="+matrix.inverse());
+//    System.out.println("matrix*matrix.inverse="+matrix.multi(matrix.inverse()).setScale(0));
     assertTrue(matrix.multi(matrix.inverse()).equals(Matrix.E));
   }
 
