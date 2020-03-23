@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.storage;
+package com.zz.utils.threadsafe.storage;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -1,9 +1,7 @@
-package com.zz.utils.threadunsafe.storage.impl;
+package com.zz.utils.threadsafe.storage.impl;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class DatabaseKeyToolTest {
 

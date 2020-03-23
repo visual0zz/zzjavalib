@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.storage.impl;
+package com.zz.utils.threadsafe.storage.impl;
 
 import org.eclipse.jgit.api.Git;
 

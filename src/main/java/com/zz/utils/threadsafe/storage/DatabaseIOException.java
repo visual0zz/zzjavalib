@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.storage;
+package com.zz.utils.threadsafe.storage;
 
 public class DatabaseIOException extends RuntimeException {
     public DatabaseIOException() {

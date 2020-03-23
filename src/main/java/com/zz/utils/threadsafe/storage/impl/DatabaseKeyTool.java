@@ -1,9 +1,8 @@
-package com.zz.utils.threadunsafe.storage.impl;
+package com.zz.utils.threadsafe.storage.impl;
 
-import com.zz.utils.threadunsafe.storage.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.InvalidDatabaseKeyException;
 
 import java.io.File;
-import java.security.InvalidParameterException;
 import java.util.regex.Pattern;
 
 class DatabaseKeyTool {

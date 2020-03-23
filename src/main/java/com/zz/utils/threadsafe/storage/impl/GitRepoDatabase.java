@@ -1,8 +1,8 @@
-package com.zz.utils.threadunsafe.storage.impl;
+package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.filesystem.Bash;
-import com.zz.utils.threadunsafe.storage.DatabaseIOException;
-import com.zz.utils.threadunsafe.storage.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.DatabaseIOException;
+import com.zz.utils.threadsafe.storage.InvalidDatabaseKeyException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
