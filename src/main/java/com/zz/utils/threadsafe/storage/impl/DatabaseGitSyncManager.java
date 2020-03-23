@@ -22,6 +22,8 @@ public final class DatabaseGitSyncManager  implements Closeable {
         lock.lock();
         if(database.isClosed())throw new ClosedDatabaseException("database is already closed.");
     }
+
+
     @Override
     public void close() throws IOException {
     }

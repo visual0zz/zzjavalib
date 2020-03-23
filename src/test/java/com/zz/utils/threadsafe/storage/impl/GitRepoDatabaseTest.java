@@ -54,7 +54,10 @@ public class GitRepoDatabaseTest {
     @Test
     public void sameName(){//允许包和节点同名
         database.set("com.zz","菲尼克斯");
-        database.set("com","123456",DatabaseRegion.Temp);
+        database.set("com","123456");
+        Assert.assertEquals("123456",database.get("com"));
+        Assert.assertEquals("菲尼克斯",database.get("com.zz"));
+
     }
     @Test(expected = InvalidDatabaseKeyException.class)
     public void testException1(){ database.set("#.&.^","fdas"); }
@@ -62,4 +65,9 @@ public class GitRepoDatabaseTest {
     public void testException2(){ database.get("#.&.^"); }
     @Test(expected = InvalidDatabaseKeyException.class)
     public void testException3(){database.get("()"); }
+
+    @Test
+    public void concurrentTest(){
+        //todo 测试多线程功能
+    }
 }
