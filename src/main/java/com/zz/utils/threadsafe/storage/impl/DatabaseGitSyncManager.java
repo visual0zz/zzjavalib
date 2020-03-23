@@ -1,10 +1,19 @@
 package com.zz.utils.threadsafe.storage.impl;
 
+import com.zz.utils.threadsafe.storage.Database;
 import org.eclipse.jgit.api.Git;
 
-class DatabaseGitSyncManager {
+import java.io.Closeable;
+import java.io.IOException;
+
+public class DatabaseGitSyncManager  implements Closeable {
     private final Git repo;
-    public DatabaseGitSyncManager(Git repo){
-        this.repo=repo;
+    private final Database database;
+    public DatabaseGitSyncManager(Git repo,Database database){
+        this.repo=repo;this.database=database;
+    }
+
+    @Override
+    public void close() throws IOException {
     }
 }
