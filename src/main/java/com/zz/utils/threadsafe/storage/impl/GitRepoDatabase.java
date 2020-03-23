@@ -24,7 +24,7 @@ class GitRepoDatabase implements Database {
     private final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
     private final DatabaseGitSyncManager manager;//git 同步管理器
-    private volatile boolean closed=false;//是否已经关闭
+    private boolean closed=false;//是否已经关闭
     private ReadWriteLock lock=new ReentrantReadWriteLock();//用于同步关闭状态的读写锁
     /**
      * 不参与同步的key，这个目录下的数据只限于本地
@@ -61,7 +61,7 @@ class GitRepoDatabase implements Database {
                 ignore.close();
         }
         this.baseFolder=baseFolder;//保存仓库根目录地址
-        manager=new DatabaseGitSyncManager(repo,this);//用于处理数据库同步操作的对象
+        manager=new DatabaseGitSyncManager(repo,this,lock.readLock());//用于处理数据库同步操作的对象
     }
     @Override
     public String get(String key){return get(key, DatabaseRegion.Auto);}
@@ -182,6 +182,16 @@ class GitRepoDatabase implements Database {
             temp.clear();
         }finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean isClosed() {
+        try {
+            lock.readLock().lock();
+            return closed;
+        }finally {
+            lock.readLock().unlock();
         }
     }
     //region #private#

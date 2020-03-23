@@ -18,4 +18,6 @@ public interface Database extends Closeable {
 
     @Override
     void close() throws IOException;
+
+    boolean isClosed();
 }
