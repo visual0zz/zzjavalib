@@ -1,4 +1,4 @@
-package com.zz.utils.threadunsafe.filesystem;
+package com.zz.utils.threadsafe.filesystem;
 
 
 
@@ -24,10 +24,10 @@ public final class Bash {
         {
             File parent=file.getParentFile();
             if(parent==null||parent.isDirectory()){
-                if(!file.createNewFile())throw new FileAlreadyExistsException("文件已经存在"+file.getPath());
+                file.createNewFile();
             }else{
                 mkdir(parent);
-                if(!file.createNewFile())throw new FileAlreadyExistsException("文件已经存在"+file.getPath());
+                file.createNewFile();
             }
         }
     }
