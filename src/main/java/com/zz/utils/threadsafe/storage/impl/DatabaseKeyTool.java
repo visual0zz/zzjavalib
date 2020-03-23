@@ -14,9 +14,15 @@ class DatabaseKeyTool {
      * @param key key字符串
      * @return true表示key符合格式 false表示不符合格式
      */
+    private static final Pattern positive=Pattern.compile(
+            "([\\u4e00-\\u9fa5a-zA-z0-9_]+\\.)*[\\u4e00-\\u9fa5a-zA-z0-9_]+");//需要匹配的模式
+    private static final Pattern negative=Pattern.compile(
+            "[\\[\\]^$%#@!~`&*()\\-=+\\\\|/\";:'{}]");//需要排除的奇怪字符
     public static boolean isKeyValid(String key){
-        Pattern p=Pattern.compile("([\\u4e00-\\u9fa5a-zA-z0-9_]+\\.)*[\\u4e00-\\u9fa5a-zA-z0-9_]+");
-        return p.matcher(key.trim()).matches();
+        key=key.trim();
+        if(!positive.matcher(key).matches())return false;
+        if(negative.matcher(key).find())return false;
+        return true;
     }
 
     /**

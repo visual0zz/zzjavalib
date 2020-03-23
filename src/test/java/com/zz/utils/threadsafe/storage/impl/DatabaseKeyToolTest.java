@@ -18,5 +18,8 @@ public class DatabaseKeyToolTest {
         Assert.assertFalse(DatabaseKeyTool.isKeyValid("/@13"));
         Assert.assertFalse(DatabaseKeyTool.isKeyValid(" "));
         Assert.assertFalse(DatabaseKeyTool.isKeyValid(" a.  s "));
+
+        Assert.assertFalse(DatabaseKeyTool.isKeyValid("}"));
+        Assert.assertFalse(DatabaseKeyTool.isKeyValid("["));
     }
 }
