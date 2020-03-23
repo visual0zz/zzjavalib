@@ -1,13 +1,12 @@
 package com.zz.utils.threadsafe.storage.impl;
 
-import com.zz.utils.threadsafe.storage.ClosedDatabaseException;
+import com.zz.utils.threadsafe.storage.exceptions.ClosedDatabaseException;
 import com.zz.utils.threadsafe.storage.Database;
 import org.eclipse.jgit.api.Git;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public final class DatabaseGitSyncManager  implements Closeable {
     private final Git repo;

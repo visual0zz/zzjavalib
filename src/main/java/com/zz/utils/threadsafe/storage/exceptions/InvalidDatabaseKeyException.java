@@ -1,4 +1,4 @@
-package com.zz.utils.threadsafe.storage;
+package com.zz.utils.threadsafe.storage.exceptions;
 
 public class InvalidDatabaseKeyException extends RuntimeException {
     public InvalidDatabaseKeyException() {

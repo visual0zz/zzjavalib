@@ -1,10 +1,10 @@
 package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.filesystem.Bash;
-import com.zz.utils.threadsafe.storage.ClosedDatabaseException;
+import com.zz.utils.threadsafe.storage.exceptions.ClosedDatabaseException;
 import com.zz.utils.threadsafe.storage.Database;
-import com.zz.utils.threadsafe.storage.DatabaseIOException;
-import com.zz.utils.threadsafe.storage.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
+import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 

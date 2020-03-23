@@ -1,6 +1,6 @@
 package com.zz.utils.threadsafe.storage.impl;
 
-import com.zz.utils.threadsafe.storage.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 
 import java.io.File;
 import java.util.regex.Pattern;

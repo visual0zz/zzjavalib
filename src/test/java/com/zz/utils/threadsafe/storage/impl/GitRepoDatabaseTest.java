@@ -1,8 +1,7 @@
 package com.zz.utils.threadsafe.storage.impl;
 
-import com.zz.utils.threadsafe.storage.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 public class GitRepoDatabaseTest {
