@@ -1,6 +1,7 @@
 package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.impl.util.DatabaseRegion;
 import org.junit.Assert;
 import org.junit.Test;
 

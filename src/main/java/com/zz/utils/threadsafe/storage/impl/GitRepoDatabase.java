@@ -5,6 +5,8 @@ import com.zz.utils.threadsafe.storage.exceptions.ClosedDatabaseException;
 import com.zz.utils.threadsafe.storage.KeyValueDatabase;
 import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.impl.util.DatabaseKeyTool;
+import com.zz.utils.threadsafe.storage.impl.util.DatabaseRegion;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -22,31 +24,23 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoDatabase#LIMITATION}个字符 以
  */
 class GitRepoDatabase implements KeyValueDatabase {
-    private final int LIMITATION = 500;//限制一个key可以储存多少个字符
-    private final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
+    private static final int LIMITATION = 500;//限制一个key可以储存多少个字符
+    private static final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
+
+    private static final String GLOBAL_PREFIX="global.";//global域的键需要添加的前缀
+    private static final String LOCAL_PREFIX="local.";//local域的键需要添加的前缀
+    private static final String GITIGNORE="/local@/*";//git需要忽略local文件夹下面的文件
+
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
-    private final DatabaseGitSyncManager manager;//git 同步管理器
-    private boolean closed=false;//是否已经关闭
-    private ReadWriteLock lock=new ReentrantReadWriteLock();//用于同步关闭状态的读写锁
-
-    private final String GLOBAL_PREFIX="global.";//global域的键需要添加的前缀
-    private final String LOCAL_PREFIX="local.";//local域的键需要添加的前缀
-    private final String GITIGNORE="/local@/*";//git需要忽略local文件夹下面的文件
-
-
-    Git repo;
-    File baseFolder;
-    public GitRepoDatabase(String baseFolder){this(new File(baseFolder));}
-
+    private final File baseFolder;
     /**
      *
      * @param baseFolder 数据库使用的根目录
      */
-    public GitRepoDatabase(File baseFolder){
+    private GitRepoDatabase(File baseFolder){
         PrintStream ignore=null;
         try {
             Bash.mkdir(baseFolder);
-            repo=Git.init().setDirectory(baseFolder).setBare(false).call();
             File gitignoreFile=new File(baseFolder.getAbsolutePath()+File.separator+".gitignore");
             if(!gitignoreFile.exists()){//如果没有 .gitignore 文件就新建一个默认的， 内容由GITIGNORE常量指定
                 gitignoreFile.createNewFile();
@@ -54,14 +48,13 @@ class GitRepoDatabase implements KeyValueDatabase {
                 ignore.println(GITIGNORE);
                 ignore.flush();
             }
-        } catch (GitAPIException|IOException e) {
+        } catch (IOException e) {
             throw new DatabaseIOException("GitRepoDatabase open repo failed.",e);
         }finally {
             if(ignore!=null)
                 ignore.close();
         }
         this.baseFolder=baseFolder;//保存仓库根目录地址
-        manager=new DatabaseGitSyncManager(repo,this,lock);//用于处理数据库同步操作的对象
     }
     @Override
     public String get(String key){return get(key, DatabaseRegion.Auto);}
@@ -75,32 +68,25 @@ class GitRepoDatabase implements KeyValueDatabase {
      * @param region 域 用于表示这条数据的管理方法
      * @see  DatabaseRegion
      */
-    @Override
     public String get(String key, DatabaseRegion region){
         key=Optional.of(key).get();//过滤null值
         region= Optional.of(region).get();
         if(!DatabaseKeyTool.isKeyValid(key))throw new InvalidDatabaseKeyException();//验证key格式
-        try {
-            lock.readLock().lock();
-            if(closed)throw new ClosedDatabaseException("database is already closed.");
-            switch (region){
-                case Auto:
-                    String tmp;
-                    tmp=temp.get(key);//按照顺序依次取
-                    if(tmp==null){tmp=_get_(LOCAL_PREFIX+key);}
-                    if(tmp==null){tmp=_get_(GLOBAL_PREFIX+key);}
-                    return tmp;
-                case Global:
-                    return _get_(GLOBAL_PREFIX+key);
-                case Local:
-                    return _get_(LOCAL_PREFIX+key);
-                case Temp:
-                    return temp.get(key);
-                default:
-                    return null;
-            }
-        }finally {
-            lock.readLock().unlock();
+        switch (region){
+            case Auto:
+                String tmp;
+                tmp=temp.get(key);//按照顺序依次取
+                if(tmp==null){tmp=_get_(LOCAL_PREFIX+key);}
+                if(tmp==null){tmp=_get_(GLOBAL_PREFIX+key);}
+                return tmp;
+            case Global:
+                return _get_(GLOBAL_PREFIX+key);
+            case Local:
+                return _get_(LOCAL_PREFIX+key);
+            case Temp:
+                return temp.get(key);
+            default:
+                return null;
         }
     }
 
@@ -112,59 +98,37 @@ class GitRepoDatabase implements KeyValueDatabase {
      * @param region 域 用于表示这条数据的管理方法
      * @see  DatabaseRegion
      */
-    @Override
     public void set(String key, String value, DatabaseRegion region){
         key=Optional.of(key).get();//过滤null值
         region= Optional.of(region).get();
         if(!DatabaseKeyTool.isKeyValid(key))throw new InvalidDatabaseKeyException();//验证key格式
-        try {
-            lock.readLock().lock();
-            if(closed)throw new ClosedDatabaseException("database is already closed.");
-            switch (region){
-                case Auto:
-                    if(temp.get(key)!=null){
-                        if(value==null){//value为空表示删除对应键
-                            temp.remove(key);
-                        }else {
-                            temp.put(key,value);
-                        }
-                    }else if(_get_(LOCAL_PREFIX+key)!=null){
-                        _set_(LOCAL_PREFIX+key,value);
-                    }else {
-                        _set_(GLOBAL_PREFIX+key,value);
-                    }
-                    break;
-                case Global:
-                    _set_(GLOBAL_PREFIX+key,value);
-                    break;
-                case Local:
-                    _set_(LOCAL_PREFIX+key,value);
-                    break;
-                case Temp:
+        switch (region){
+            case Auto:
+                if(temp.get(key)!=null){
                     if(value==null){//value为空表示删除对应键
                         temp.remove(key);
                     }else {
                         temp.put(key,value);
                     }
-                    break;
-            }
-        }finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    /**
-     * 返回管理器 管理器专门管理和Git同步有关的事情
-     * @return 本仓库对应的管理器
-     */
-    @Override
-    public DatabaseGitSyncManager manager(){
-        try {
-            lock.readLock().lock();
-            if(closed)throw new ClosedDatabaseException("database is already closed.");
-            return manager;
-        }finally {
-            lock.readLock().unlock();
+                }else if(_get_(LOCAL_PREFIX+key)!=null){
+                    _set_(LOCAL_PREFIX+key,value);
+                }else {
+                    _set_(GLOBAL_PREFIX+key,value);
+                }
+                break;
+            case Global:
+                _set_(GLOBAL_PREFIX+key,value);
+                break;
+            case Local:
+                _set_(LOCAL_PREFIX+key,value);
+                break;
+            case Temp:
+                if(value==null){//value为空表示删除对应键
+                    temp.remove(key);
+                }else {
+                    temp.put(key,value);
+                }
+                break;
         }
     }
 
@@ -174,25 +138,11 @@ class GitRepoDatabase implements KeyValueDatabase {
      */
     @Override
     public void close() throws IOException {
-        try {
-            lock.writeLock().lock();
-            closed=true;
-            repo.close();
-            manager.close();
-            temp.clear();
-        }finally {
-            lock.writeLock().unlock();
-        }
     }
 
     @Override
     public boolean isClosed() {
-        try {
-            lock.readLock().lock();
-            return closed;
-        }finally {
-            lock.readLock().unlock();
-        }
+        return false;
     }
     //region #private#
 
@@ -274,4 +224,7 @@ class GitRepoDatabase implements KeyValueDatabase {
     }
     //endregion
 
+    //region 文件锁管理
+
+    //endregion
 }

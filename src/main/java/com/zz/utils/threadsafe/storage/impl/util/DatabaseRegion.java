@@ -1,4 +1,4 @@
-package com.zz.utils.threadsafe.storage.impl;
+package com.zz.utils.threadsafe.storage.impl.util;
 
 /**
  * 用于标记数据的管理方式，
