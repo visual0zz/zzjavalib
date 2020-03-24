@@ -6,7 +6,7 @@ import com.zz.utils.threadsafe.storage.impl.DatabaseRegion;
 import java.io.Closeable;
 import java.io.IOException;
 
-public interface Database extends Closeable {
+public interface KeyValueDatabase extends Closeable {
     String get(String key);
     void set(String key,String value);
 

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * 数据库key到路径的翻译工具类
  */
-class DatabaseKeyTool {
+final class DatabaseKeyTool {
     /**
      * 数据库的key 应该是 a.b.c的形式，汉字大小写字母数字和下划线是允许的，其他的不允许
      * @param key key字符串

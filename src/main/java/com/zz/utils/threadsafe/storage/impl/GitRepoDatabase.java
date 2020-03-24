@@ -2,7 +2,7 @@ package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.filesystem.Bash;
 import com.zz.utils.threadsafe.storage.exceptions.ClosedDatabaseException;
-import com.zz.utils.threadsafe.storage.Database;
+import com.zz.utils.threadsafe.storage.KeyValueDatabase;
 import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 import org.eclipse.jgit.api.Git;
@@ -21,14 +21,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * 写一个null表示删除对应键 ，每个键存在于三个域，Global Local Temp
  * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoDatabase#LIMITATION}个字符 以
  */
-class GitRepoDatabase implements Database {
+class GitRepoDatabase implements KeyValueDatabase {
     private final int LIMITATION = 500;//限制一个key可以储存多少个字符
     private final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
     private final DatabaseGitSyncManager manager;//git 同步管理器
     private boolean closed=false;//是否已经关闭
     private ReadWriteLock lock=new ReentrantReadWriteLock();//用于同步关闭状态的读写锁
-    
+
     private final String GLOBAL_PREFIX="global.";//global域的键需要添加的前缀
     private final String LOCAL_PREFIX="local.";//local域的键需要添加的前缀
     private final String GITIGNORE="/local@/*";//git需要忽略local文件夹下面的文件

@@ -3,7 +3,7 @@ package com.zz.utils.threadsafe.storage.impl;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DatabaseKeyToolTest {
+public class KeyValueDatabaseKeyToolTest {
 
     @Test
     public void isKeyValid() {
