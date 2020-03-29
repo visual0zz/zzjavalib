@@ -1,5 +1,6 @@
 package com.zz.utils.threadsafe.storage.impl.util;
 
+import com.sun.istack.internal.NotNull;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public final class DatabaseKeyTool {
             "([\\u4e00-\\u9fa5a-zA-z0-9_]+\\.)*[\\u4e00-\\u9fa5a-zA-z0-9_]+");//需要匹配的模式
     private static final Pattern negative=Pattern.compile(
             "[\\[\\]^$%#@!~`&*()\\-=+\\\\|/\";:'{}]");//需要排除的奇怪字符
-    public static boolean isKeyValid(String key){
+    public static boolean isKeyValid(@NotNull String key){
         key=key.trim();
         if(!positive.matcher(key).matches())return false;
         if(negative.matcher(key).find())return false;
@@ -31,7 +32,8 @@ public final class DatabaseKeyTool {
      * @param baseFolder 数据库的根目录
      * @return 对应key的储存文件路径
      */
-    public static File keyToFilePath(String key,File baseFolder){
+    @NotNull
+    public static File keyToFilePath(@NotNull String key,@NotNull File baseFolder){
         if (!isKeyValid(key))throw new InvalidDatabaseKeyException("bad key: <"+key+"> ");
         return new File(baseFolder.getAbsolutePath()
                 +File.separator+

@@ -5,8 +5,8 @@ import com.zz.utils.threadsafe.storage.impl.util.DatabaseRegion;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class GitRepoDatabaseTest {
-    GitRepoDatabase database=new GitRepoDatabase("test\\repository_for_test");
+public class GitRepoKVDBTest {
+    GitRepoKVDB database=new GitRepoKVDB("test\\repository_for_test");
 
     @Test
     public void getAndSet() {

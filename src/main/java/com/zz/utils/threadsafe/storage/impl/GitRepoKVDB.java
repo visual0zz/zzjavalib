@@ -1,29 +1,24 @@
 package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.filesystem.Bash;
-import com.zz.utils.threadsafe.storage.exceptions.ClosedDatabaseException;
 import com.zz.utils.threadsafe.storage.KeyValueDatabase;
 import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 import com.zz.utils.threadsafe.storage.impl.util.DatabaseKeyTool;
 import com.zz.utils.threadsafe.storage.impl.util.DatabaseRegion;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 将git仓库组织成一个键值数据库,键的格式为 a.b.Key  值是字符串
  * 写一个null表示删除对应键 ，每个键存在于三个域，Global Local Temp
- * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoDatabase#LIMITATION}个字符 以
+ * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoKVDB#LIMITATION}个字符 
  */
-class GitRepoDatabase implements KeyValueDatabase {
+class GitRepoKVDB implements KeyValueDatabase {
     private static final int LIMITATION = 500;//限制一个key可以储存多少个字符
     private static final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
 
@@ -37,7 +32,7 @@ class GitRepoDatabase implements KeyValueDatabase {
      *
      * @param baseFolder 数据库使用的根目录
      */
-    private GitRepoDatabase(File baseFolder){
+    private GitRepoKVDB(File baseFolder){
         PrintStream ignore=null;
         try {
             Bash.mkdir(baseFolder);
@@ -149,7 +144,7 @@ class GitRepoDatabase implements KeyValueDatabase {
     /**
      * 从文件读取键值
      * @param key 要读取的键
-     * @return 得到的值 只能读取前 {@link GitRepoDatabase#LIMITATION}个字符
+     * @return 得到的值 只能读取前 {@link GitRepoKVDB#LIMITATION}个字符
      */
     private String _get_(String key) {
         try {
@@ -162,7 +157,7 @@ class GitRepoDatabase implements KeyValueDatabase {
     /**
      * 向文件写入值
      * @param key 要写的键
-     * @param value 写入的值 只有前 {@link GitRepoDatabase#LIMITATION}个字符会被写入
+     * @param value 写入的值 只有前 {@link GitRepoKVDB#LIMITATION}个字符会被写入
      */
     private void _set_(String key, String value) {
         try {
@@ -173,7 +168,7 @@ class GitRepoDatabase implements KeyValueDatabase {
     }
 
     /**
-     * 写文件函数  不会全写 ，只会写前 {@link GitRepoDatabase#LIMITATION} 个字符
+     * 写文件函数  不会全写 ，只会写前 {@link GitRepoKVDB#LIMITATION} 个字符
      * @param file 要写入的文件
      * @param s 要写入的字符串 如果为null会删除对应文件
      * @throws IOException 文件操作异常
@@ -202,9 +197,9 @@ class GitRepoDatabase implements KeyValueDatabase {
     }
 
     /**
-     * 读文件函数 ，不会完全读，只会读取前 {@link GitRepoDatabase#LIMITATION}个字符
+     * 读文件函数 ，不会完全读，只会读取前 {@link GitRepoKVDB#LIMITATION}个字符
      * @param file 要读取的文件路径
-     * @return 读文件得到的内容 读取编码由{@link GitRepoDatabase#CHARSET}变量指定
+     * @return 读文件得到的内容 读取编码由{@link GitRepoKVDB#CHARSET}变量指定
      * @throws IOException 文件操作异常
      */
     private String readFromFile(File file) throws IOException {
