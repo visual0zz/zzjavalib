@@ -31,9 +31,20 @@ public class ResourcePool <T>{
         this.data = (SoftReference<T>[]) new SoftReference[capacity];
         this.capacity=capacity;
     }
+
+    /**
+     * 随意获得一个对象
+     * @return 获得的对象
+     */
     public T getAny(){
         return get(random.nextInt(capacity));
     }
+
+    /**
+     * 根据key获得对象 如果key对应的对象还没有失效，则相等的key会获得同一个对象
+     * @param key key
+     * @return 获得的对象
+     */
     public T getWithKey(String key){
         return get(key.hashCode()%capacity);
     }
