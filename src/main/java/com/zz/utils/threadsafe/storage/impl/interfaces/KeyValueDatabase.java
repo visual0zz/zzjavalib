@@ -1,4 +1,4 @@
-package com.zz.utils.threadsafe.storage;
+package com.zz.utils.threadsafe.storage.impl.interfaces;
 
 import com.zz.utils.threadsafe.storage.impl.DatabaseGitSyncManager;
 import com.zz.utils.threadsafe.storage.impl.util.DatabaseRegion;

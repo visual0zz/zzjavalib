@@ -1,7 +1,7 @@
 package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.storage.exceptions.ClosedDatabaseException;
-import com.zz.utils.threadsafe.storage.KeyValueDatabase;
+import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
 import org.eclipse.jgit.api.Git;
 
 import java.io.Closeable;

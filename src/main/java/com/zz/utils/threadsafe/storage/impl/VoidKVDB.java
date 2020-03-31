@@ -1,14 +1,14 @@
 package com.zz.utils.threadsafe.storage.impl;
 
-import com.zz.utils.threadsafe.storage.KeyValueDatabase;
+import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
 
 import java.io.IOException;
 
 /**
- * 黑体数据库
+ *
  * 一个假数据库，不储存任何数据，永远返回固定值，
  */
-public class BlackBodyKVDB implements KeyValueDatabase {
+public class VoidKVDB implements KeyValueDatabase {
     private final String value= String.valueOf(hashCode());
     @Override
     public String get(String key) {

@@ -1,7 +1,7 @@
 package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.filesystem.Bash;
-import com.zz.utils.threadsafe.storage.KeyValueDatabase;
+import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
 import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
 import com.zz.utils.threadsafe.storage.impl.util.DatabaseKeyTool;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 将git仓库组织成一个键值数据库,键的格式为 a.b.Key  值是字符串
  * 写一个null表示删除对应键 ，每个键存在于三个域，Global Local Temp
- * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoKVDB#LIMITATION}个字符 
+ * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoKVDB#LIMITATION}个字符
  */
 class GitRepoKVDB implements KeyValueDatabase {
     private static final int LIMITATION = 500;//限制一个key可以储存多少个字符
