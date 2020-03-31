@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * 产生的哈希是弱哈希，单向性不好，仅仅用于保持访问的局部性原理，用作储存的key
  */
+@Incomplete("前缀性非常不好")
 final class PrefixHash {
     private long seed;
     private final byte FACTOR = 113;

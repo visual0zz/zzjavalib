@@ -1,7 +1,7 @@
 package com.zz.utils.threadsafe.storage.impl.util;
 
-import com.sun.istack.internal.NotNull;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.regex.Pattern;

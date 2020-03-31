@@ -1,5 +1,6 @@
 package com.zz.utils.threadsafe.storage.impl;
 
+import com.zz.utils.threadsafe.basicwork.Incomplete;
 import com.zz.utils.threadsafe.filesystem.Bash;
 import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
 import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 写一个null表示删除对应键 ，每个键存在于三个域，Global Local Temp
  * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoKVDB#LIMITATION}个字符
  */
+@Incomplete("没有对删除文件进行并发控制")
 class GitRepoKVDB implements KeyValueDatabase {
     private static final int LIMITATION = 500;//限制一个key可以储存多少个字符
     private static final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
@@ -28,6 +30,7 @@ class GitRepoKVDB implements KeyValueDatabase {
 
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
     private final File baseFolder;
+    public static GitRepoKVDB getInstance(String root){return new GitRepoKVDB(new File(root));}
     /**
      *
      * @param baseFolder 数据库使用的根目录

@@ -1,10 +1,12 @@
 package com.zz.utils.threadsafe.basicwork.impl;
 
 import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
+import com.zz.utils.threadsafe.basicwork.HashService;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +14,7 @@ public class PrefixHashTest {
 
     @Test
     public void hash() throws UnsupportedEncodingException {
+        HashService prefix= HashService.prefix;
         String[]data={
                 "fdasfasdfasdfsafshdfghgfhsryer12345678322"
                 ,"fdasfasdfa54f6sd54af684sd56f468sda4f8sda4"
@@ -20,7 +23,7 @@ public class PrefixHashTest {
                 ,"fsadffasdfsdafasdfasdgfasdfasdf1234567876"};
         for(String s:data){
             //System.out.println(s);
-            //System.out.println(ByteArrayUtils.bytes2binaryString(new PrefixHash().hash(s.getBytes("utf-8"))));
+            //System.out.println(prefix.getHash(s.getBytes("utf-8")));
         }
     }
 }

@@ -45,6 +45,7 @@ tasks.withType(JavaCompile) {//enable UTF-8 so that gradle can deal with chinese
 
 dependencies {
     // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
+    compile group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.7.0.202003110725-r'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
