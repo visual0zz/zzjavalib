@@ -6,7 +6,6 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
-@Incomplete("先不做")
 public class ResourcePool <T>{
     private final ResourceFactory<T> factory;
     private final SoftReference<T>[] data;//用于储存对象的数组
