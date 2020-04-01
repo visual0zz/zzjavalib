@@ -31,10 +31,23 @@ class GitRepoKVDB implements KeyValueDatabase {
     private final BatchLock batchLock;//预估并发线程5个
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
     private final File baseFolder;
-    public static GitRepoKVDB getInstance(String root,int concurrent){return new GitRepoKVDB(new File(root),concurrent);}
+
+    public static GitRepoKVDB getInstance(File baseFolder,int concurrent){
+        return new GitRepoKVDB(baseFolder,concurrent);
+    }
+
+    /**
+     * @param root 数据库使用的根目录
+     * @param concurrent 预估并发的线程数量
+     * @return 数据库实例
+     */
+    public static GitRepoKVDB getInstance(String root,int concurrent){return getInstance(new File(root),concurrent);}
+
+
     /**
      *
      * @param baseFolder 数据库使用的根目录
+     * @param concurrent 预估并发的线程数量
      */
     private GitRepoKVDB(File baseFolder,int concurrent){
         PrintStream ignore=null;
