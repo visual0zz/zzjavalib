@@ -6,6 +6,10 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
+/**
+ * 用于缓存任何限量供应的对象的缓存池
+ * @param <T> 要缓存的对象的类型
+ */
 public class ResourcePool <T>{
     private final ResourceFactory<T> factory;
     private final SoftReference<T>[] data;//用于储存对象的数组
