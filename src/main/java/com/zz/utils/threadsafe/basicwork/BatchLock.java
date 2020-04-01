@@ -40,9 +40,10 @@ public class BatchLock {
      * @return 当前资源锁计数，会在通一个线程反复lock时累加
      */
     public int lock(String key){
-        locks[key.hashCode()%locks.length].lock();
-        count[key.hashCode()%locks.length]++;
-        return count[key.hashCode()%locks.length];
+        int hash=getHashCode(key);
+        locks[hash].lock();
+        count[hash]++;
+        return count[hash];
     }
     /**
      * 对某个资源解锁
@@ -50,10 +51,17 @@ public class BatchLock {
      * @return 当前资源锁计数，会在通一个线程反复unlock时累减
      */
     public int unlock(String key){
-        locks[key.hashCode()%locks.length].unlock();
-        count[key.hashCode()%locks.length]--;
-        return count[key.hashCode()%locks.length];
+        int hash=getHashCode(key);
+        locks[hash].unlock();
+        count[hash]--;
+        return count[hash];
     }
 
+    private int getHashCode(String key){//key到某个锁位置的哈希映射
+        int hash=key.hashCode();
+        hash=hash>0?hash:-hash;
+        hash=hash%locks.length;
+        return hash;
+    }
 
 }
