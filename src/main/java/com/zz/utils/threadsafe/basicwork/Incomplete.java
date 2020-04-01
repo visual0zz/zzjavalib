@@ -1,7 +1,5 @@
 package com.zz.utils.threadsafe.basicwork;
 
-import sun.security.x509.InhibitAnyPolicyExtension;
-
 import java.lang.annotation.*;
 
 
