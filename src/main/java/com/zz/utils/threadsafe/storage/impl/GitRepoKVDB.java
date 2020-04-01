@@ -145,18 +145,6 @@ class GitRepoKVDB implements KeyValueDatabase {
         }
     }
 
-    /**
-     * 关闭数据库对象
-     * @throws IOException
-     */
-    @Override
-    public void close() throws IOException {
-    }
-
-    @Override
-    public boolean isClosed() {
-        return false;
-    }
     //region #private#
 
     /**

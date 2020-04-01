@@ -19,14 +19,4 @@ public class VoidKVDB implements KeyValueDatabase {
     public void set(String key, String value) {
 
     }
-
-    @Override
-    public void close() throws IOException {
-
-    }
-
-    @Override
-    public boolean isClosed() {
-        return false;
-    }
 }

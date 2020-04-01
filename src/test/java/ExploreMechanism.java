@@ -10,6 +10,6 @@ import java.util.Properties;
 public class ExploreMechanism {
     @Test
     public void testJGit() throws GitAPIException, IOException {
-
+        Properties p=new Properties();
     }
 }
