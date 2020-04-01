@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 
 /**
- * 标记一个类没有写完，还不能正常使用
+ * 标记代码没有写完，还不能正常使用
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)
