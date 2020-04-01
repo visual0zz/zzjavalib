@@ -28,7 +28,7 @@ class GitRepoKVDB implements KeyValueDatabase {
     private static final String GLOBAL_PREFIX="global.";//global域的键需要添加的前缀
     private static final String LOCAL_PREFIX="local.";//local域的键需要添加的前缀
     private static final String GITIGNORE="/local@/*";//git需要忽略local文件夹下面的文件
-    private final BatchLock batchLock;//预估并发线程5个
+    private final BatchLock batchLock;//锁 防止对同一文件同时读写
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
     private final File baseFolder;
 
