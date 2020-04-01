@@ -1,5 +1,6 @@
 package com.zz.utils.threadsafe.storage.impl;
 
+import com.zz.utils.threadsafe.basicwork.BatchLock;
 import com.zz.utils.threadsafe.basicwork.Incomplete;
 import com.zz.utils.threadsafe.filesystem.Bash;
 import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
@@ -27,15 +28,15 @@ class GitRepoKVDB implements KeyValueDatabase {
     private static final String GLOBAL_PREFIX="global.";//global域的键需要添加的前缀
     private static final String LOCAL_PREFIX="local.";//local域的键需要添加的前缀
     private static final String GITIGNORE="/local@/*";//git需要忽略local文件夹下面的文件
-
+    private final BatchLock batchLock;//预估并发线程5个
     private final ConcurrentHashMap<String ,String> temp=new ConcurrentHashMap<>();//储存temp域的数据
     private final File baseFolder;
-    public static GitRepoKVDB getInstance(String root){return new GitRepoKVDB(new File(root));}
+    public static GitRepoKVDB getInstance(String root,int concurrent){return new GitRepoKVDB(new File(root),concurrent);}
     /**
      *
      * @param baseFolder 数据库使用的根目录
      */
-    private GitRepoKVDB(File baseFolder){
+    private GitRepoKVDB(File baseFolder,int concurrent){
         PrintStream ignore=null;
         try {
             Bash.mkdir(baseFolder);
@@ -53,6 +54,7 @@ class GitRepoKVDB implements KeyValueDatabase {
                 ignore.close();
         }
         this.baseFolder=baseFolder;//保存仓库根目录地址
+        batchLock=new BatchLock(concurrent);
     }
     @Override
     public String get(String key){return get(key, DatabaseRegion.Auto);}
@@ -151,9 +153,12 @@ class GitRepoKVDB implements KeyValueDatabase {
      */
     private String _get_(String key) {
         try {
+            batchLock.lock(key);//防止对同一文件的读写删除同时进行造成错误
             return readFromFile(DatabaseKeyTool.keyToFilePath(key,baseFolder));
         } catch (IOException e) {
             throw new DatabaseIOException(e);
+        }finally {
+            batchLock.unlock(key);
         }
     }
 
@@ -164,9 +169,12 @@ class GitRepoKVDB implements KeyValueDatabase {
      */
     private void _set_(String key, String value) {
         try {
+            batchLock.lock(key);//防止对同一文件的读写删除同时进行造成错误
             writeToFile(DatabaseKeyTool.keyToFilePath(key,baseFolder),value);
         } catch (IOException e) {
             throw new DatabaseIOException(e);
+        }finally {
+            batchLock.unlock(key);
         }
     }
 

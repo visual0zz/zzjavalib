@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class GitRepoKVDBTest {
-    GitRepoKVDB database=GitRepoKVDB.getInstance("test\\repository_for_test");
+    GitRepoKVDB database=GitRepoKVDB.getInstance("test\\repository_for_test",1);
 
     @Test
     public void getAndSet() {
