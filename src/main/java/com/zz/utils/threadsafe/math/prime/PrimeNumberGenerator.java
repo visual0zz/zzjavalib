@@ -1,7 +1,10 @@
 package com.zz.utils.threadsafe.math.prime;
 
-import java.math.BigInteger;
+import com.zz.utils.threadsafe.basicwork.Incomplete;
 
+import java.math.BigInteger;
+@Deprecated
+@Incomplete
 public class PrimeNumberGenerator{
     private PrimeNumberGenerator(){}
     private static PrimeNumberGenerator generator=new PrimeNumberGenerator();
