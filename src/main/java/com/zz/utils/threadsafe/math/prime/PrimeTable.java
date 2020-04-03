@@ -2,7 +2,7 @@ package com.zz.utils.threadsafe.math.prime;
 
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
-class PrimeTable {
+public class PrimeTable {
 
 
     int basicPrimeNumbers[] = {//预先储存一万以内的质数
