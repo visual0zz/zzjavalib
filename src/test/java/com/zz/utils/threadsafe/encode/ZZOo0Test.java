@@ -12,7 +12,7 @@ public class ZZOo0Test {
     public void encode() {
         byte[]data= HashService.md5.getRandomHash().getByteArray();
         String code= ZZOoO.encode(data);
-        System.out.println(code);
+        //System.out.println(code);
         byte[] decode=ZZOoO.decode(code);
         Assert.assertArrayEquals(data,decode);
     }
