@@ -1,4 +1,4 @@
-package com.zz.utils.threadsafe.basicwork;
+package com.zz.utils.threadsafe.encode;
 
 import org.jetbrains.annotations.NotNull;
 

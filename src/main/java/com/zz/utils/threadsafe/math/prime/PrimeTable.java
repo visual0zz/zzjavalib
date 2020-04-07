@@ -5,7 +5,7 @@ import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 public class PrimeTable {
 
 
-    int basicPrimeNumbers[] = {//预先储存一万以内的质数
+    public static final int basicPrimeNumbers[] = {//预先储存一万以内的质数
             2,3,5,7,11,13,17,19,23,29,
             31,37,41,43,47,53,59,61,67,71,
             73,79,83,89,97,101,103,107,109,113,
@@ -133,16 +133,16 @@ public class PrimeTable {
     /**
      * 仅仅用来计算代码内预制的质数表，没有其他意义.
      */
-    static void calculateBasicPrimeNumbers(){
-        int count=0;
-        prime:for(int i=2;i<10000;i++){
-            yinzi:for(int j=2;j<i;j++){
-                if(i%j==0)continue prime;
-            }
-            System.out.print(i+",");
-            count++;
-            if(count%10==0)System.out.println();
-        }
-    }
+//    static void calculateBasicPrimeNumbers(){
+//        int count=0;
+//        prime:for(int i=2;i<10000;i++){
+//            yinzi:for(int j=2;j<i;j++){
+//                if(i%j==0)continue prime;
+//            }
+//            System.out.print(i+",");
+//            count++;
+//            if(count%10==0)System.out.println();
+//        }
+//    }
 }
 
