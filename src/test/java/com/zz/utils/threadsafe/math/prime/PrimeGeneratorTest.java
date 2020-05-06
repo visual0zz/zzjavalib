@@ -27,6 +27,6 @@ public class PrimeGeneratorTest {
         Assert.assertFalse(PrimeGenerator.roughCheckIsPrime(BigInteger.valueOf(4)));
         Assert.assertFalse(PrimeGenerator.roughCheckIsPrime(BigInteger.valueOf(9)));
         Assert.assertFalse(PrimeGenerator.roughCheckIsPrime(BigInteger.valueOf(144)));
-        Assert.assertFalse(PrimeGenerator.roughCheckIsPrime(BigInteger.valueOf(3678941)));
+        Assert.assertFalse(PrimeGenerator.roughCheckIsPrime(new BigInteger("1272827244769358601")));
     }
 }

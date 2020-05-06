@@ -1,10 +1,8 @@
 package com.zz.utils.threadsafe.encode;
 
-import com.zz.utils.threadsafe.basicwork.HashService;
+import com.zz.utils.threadsafe.hash.HashService;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ZZOo0Test {
 

@@ -1,7 +1,6 @@
 package com.zz.utils.threadsafe.encode;
 
-import com.zz.utils.threadsafe.basicwork.HashService;
-import com.zz.utils.threadsafe.encode.ZZBase16;
+import com.zz.utils.threadsafe.hash.HashService;
 import org.junit.Assert;
 import org.junit.Test;
 

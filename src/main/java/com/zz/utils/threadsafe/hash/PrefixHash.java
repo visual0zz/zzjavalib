@@ -1,6 +1,7 @@
-package com.zz.utils.threadsafe.basicwork;
+package com.zz.utils.threadsafe.hash;
 
 import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
+import com.zz.utils.threadsafe.basicwork.Incomplete;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

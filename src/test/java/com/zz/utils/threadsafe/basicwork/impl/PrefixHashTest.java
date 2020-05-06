@@ -1,14 +1,9 @@
 package com.zz.utils.threadsafe.basicwork.impl;
 
-import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
-import com.zz.utils.threadsafe.basicwork.HashService;
+import com.zz.utils.threadsafe.hash.HashService;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
 
 public class PrefixHashTest {
 

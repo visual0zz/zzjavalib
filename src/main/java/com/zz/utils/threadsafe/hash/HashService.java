@@ -1,10 +1,15 @@
-package com.zz.utils.threadsafe.basicwork;
+package com.zz.utils.threadsafe.hash;
+
+import com.zz.utils.threadsafe.basicwork.ByteArrayUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 对常用哈希的简单包装，提供十六进制格式的方便转换
+ */
 public enum HashService {
 
     md5,
