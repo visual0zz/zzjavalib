@@ -59,7 +59,7 @@ public class BatchLock {
 
     private int getHashCode(String key){//key到某个锁位置的哈希映射
         int hash=key.hashCode();
-        hash=hash>0?hash:-hash;
+        hash=hash>=0?hash:-hash;
         hash=hash%locks.length;
         return hash;
     }
