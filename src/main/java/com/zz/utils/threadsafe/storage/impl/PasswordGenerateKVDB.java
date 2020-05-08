@@ -8,6 +8,9 @@ import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
  */
 public class PasswordGenerateKVDB implements KeyValueDatabase {
 
+    public PasswordGenerateKVDB(String seed){
+
+    }
     @Override
     public String get(String key) {
         return null;

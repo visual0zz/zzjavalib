@@ -1,11 +1,10 @@
 package com.zz.utils.threadsafe.storage.impl;
 
 import com.zz.utils.threadsafe.basicwork.BatchLock;
-import com.zz.utils.threadsafe.basicwork.Incomplete;
 import com.zz.utils.threadsafe.filesystem.Bash;
-import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
 import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
 import com.zz.utils.threadsafe.storage.exceptions.InvalidDatabaseKeyException;
+import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueRegionDatabase;
 import com.zz.utils.threadsafe.storage.impl.util.DatabaseKeyTool;
 import com.zz.utils.threadsafe.storage.impl.util.DatabaseRegion;
 
@@ -20,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 写一个null表示删除对应键 ，每个键存在于三个域，Global Local Temp
  * 关系类比git config 的管理方式 ， 每个键可以储存 {@link GitRepoKVDB#LIMITATION}个字符
  */
-class GitRepoKVDB implements KeyValueDatabase {
+class GitRepoKVDB implements KeyValueRegionDatabase {
     private static final int LIMITATION = 500;//限制一个key可以储存多少个字符
     private static final Charset CHARSET=StandardCharsets.UTF_8;//储存使用的编码格式
 
@@ -80,6 +79,7 @@ class GitRepoKVDB implements KeyValueDatabase {
      * @param region 域 用于表示这条数据的管理方法
      * @see  DatabaseRegion
      */
+    @Override
     public String get(String key, DatabaseRegion region){
         key=Optional.of(key).get();//过滤null值
         region= Optional.of(region).get();
@@ -110,6 +110,7 @@ class GitRepoKVDB implements KeyValueDatabase {
      * @param region 域 用于表示这条数据的管理方法
      * @see  DatabaseRegion
      */
+    @Override
     public void set(String key, String value, DatabaseRegion region){
         key=Optional.of(key).get();//过滤null值
         region= Optional.of(region).get();
