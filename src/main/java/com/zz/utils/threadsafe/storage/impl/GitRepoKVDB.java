@@ -36,7 +36,7 @@ class GitRepoKVDB implements KeyValueRegionDatabase {
 
     /**
      * @param root 数据库使用的根目录
-     * @param concurrent 预估并发的线程数量
+     * @param concurrent 预估并发的线程数量 0表示不需要并发控制，会生成一个线程不安全的实例
      * @return 数据库实例
      */
     public static GitRepoKVDB getInstance(String root,int concurrent){return getInstance(new File(root),concurrent);}
@@ -45,7 +45,7 @@ class GitRepoKVDB implements KeyValueRegionDatabase {
     /**
      *
      * @param baseFolder 数据库使用的根目录
-     * @param concurrent 预估并发的线程数量
+     * @param concurrent 预估并发的线程数量 0表示不需要并发控制，会生成一个线程不安全的实例
      */
     private GitRepoKVDB(File baseFolder,int concurrent){
         PrintStream ignore=null;

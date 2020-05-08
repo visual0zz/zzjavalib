@@ -25,8 +25,13 @@ public class BatchLock {
 
     /**
      * @param threads_num 预估的并发线程量
+     *                    =0 或者 <0 表示不需要锁， lock和unlock都变成空操作。
      */
     public BatchLock(int threads_num) {
+        if(threads_num<=0){
+            locks=null;
+            return;
+        }
         locks=new ReentrantLock[threads_num*RATE];//储存锁的数组
         for(int i=0;i<locks.length;i++){
             locks[i]=new ReentrantLock();
@@ -40,6 +45,7 @@ public class BatchLock {
      * @return 当前资源锁计数，会在通一个线程反复lock时累加
      */
     public int lock(String key){
+        if(locks==null)return 0;
         int hash=getHashCode(key);
         locks[hash].lock();
         count[hash]++;
@@ -51,6 +57,7 @@ public class BatchLock {
      * @return 当前资源锁计数，会在通一个线程反复unlock时累减
      */
     public int unlock(String key){
+        if(locks==null)return 0;
         int hash=getHashCode(key);
         locks[hash].unlock();
         count[hash]--;

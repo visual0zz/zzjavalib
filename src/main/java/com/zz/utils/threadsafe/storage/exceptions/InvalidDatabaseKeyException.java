@@ -2,7 +2,7 @@ package com.zz.utils.threadsafe.storage.exceptions;
 
 public class InvalidDatabaseKeyException extends RuntimeException {
     public InvalidDatabaseKeyException() {
-        super();
+        super("错误的键格式。");
     }
 
     public InvalidDatabaseKeyException(String message) {
