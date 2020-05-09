@@ -4,10 +4,15 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.ExpandVetoException;
 
+/**
+ * 字符表经过筛选，去掉了所有易于 阅读混淆 听说混淆 草体书写混淆
+ *  和 不易口述的字符 (如特殊字符和大写字母)
+ *  用于以 人类兼容 的方式来传递二进制信息。
+ */
 public class ZZBase16 {
     private static final char[] codeTable={//编码使用的字符表
             'a','c','d','e','f','g','h','x',
-            'k','m','y','4','8','r','t','w'};
+            'k','m','y','4','8','7','t','w'};
 
     public static String encode(byte[]data){
         assert data!=null;
