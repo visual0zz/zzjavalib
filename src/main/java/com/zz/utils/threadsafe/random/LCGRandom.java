@@ -1,5 +1,7 @@
 package com.zz.utils.threadsafe.random;
 
+import com.zz.utils.threadsafe.basicwork.Incomplete;
+
 /**
  * 线性同余法
  * N[i+1] = ( A*N[i]+B )%M
@@ -10,5 +12,7 @@ package com.zz.utils.threadsafe.random;
  * 4. A B N[0] 都小于M
  * 5. A B都是正整数
  */
+@Incomplete
+@Deprecated
 public class LCGRandom {
 }

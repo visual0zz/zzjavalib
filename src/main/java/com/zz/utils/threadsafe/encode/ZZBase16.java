@@ -7,7 +7,7 @@ import javax.swing.tree.ExpandVetoException;
 public class ZZBase16 {
     private static final char[] codeTable={//编码使用的字符表
             'a','c','d','e','f','g','h','x',
-            'k','m','y','p','q','r','t','w'};
+            'k','m','y','4','8','r','t','w'};
 
     public static String encode(byte[]data){
         assert data!=null;
