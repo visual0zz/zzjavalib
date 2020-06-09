@@ -1,5 +1,6 @@
 package com.zz.utils.threadsafe.storage.impl;
 
+import com.zz.utils.threadsafe.storage.exceptions.DatabaseIOException;
 import com.zz.utils.threadsafe.storage.impl.interfaces.KeyValueDatabase;
 
 /**
@@ -15,5 +16,7 @@ public class PasswordGenerateKVDB implements KeyValueDatabase {
         return null;
     }
 
-    @Override public void set(String key,String value){}
+    @Override public void set(String key,String value){
+        throw new DatabaseIOException(PasswordGenerateKVDB.class.getName()+" is read only.");
+    }
 }
