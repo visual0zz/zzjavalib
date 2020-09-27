@@ -1,9 +1,7 @@
 package com.zz.utils.threadsafe.basicwork;
 
-import org.jetbrains.annotations.Contract;
 
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 import java.util.Random;
 
 /**
@@ -27,12 +25,11 @@ public class ResourcePool <T>{
      * @param factory 用于生产 T 对象的工厂
      * @param capacity 最多保存多少个 T
      */
-    @Contract(value = "null, _-> fail", pure = true)
     public ResourcePool(ResourceFactory<T> factory, int capacity) {
         assert factory!=null;
         assert capacity>0;
         this.factory = factory;
-        this.data = (SoftReference<T>[]) new SoftReference[capacity];
+        this.data =  new SoftReference[capacity];
         this.capacity=capacity;
     }
 
