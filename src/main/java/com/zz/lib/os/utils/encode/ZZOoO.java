@@ -1,4 +1,4 @@
-package com.zz.utils.threadsafe.encode;
+package com.zz.lib.os.utils.encode;
 
 /**
  * 没什么卵用的编码 用来将数据编码成非常难以阅读的形式

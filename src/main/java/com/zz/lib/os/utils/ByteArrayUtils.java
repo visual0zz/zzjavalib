@@ -1,11 +1,11 @@
-package com.zz.utils.threadsafe.basicwork;
+package com.zz.lib.os.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
 
-public class ByteArrayUtils {
+public final class ByteArrayUtils {
 
     public static byte[] int2byte(int res) {//小端序
         byte[] targets = new byte[4];

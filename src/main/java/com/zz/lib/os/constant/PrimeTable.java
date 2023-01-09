@@ -1,11 +1,9 @@
-package com.zz.utils.threadsafe.math.prime;
+package com.zz.lib.os.constant;
 
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-
-public class PrimeTable {
+public interface PrimeTable {
 
 
-    public static final int basicPrimeNumbers[] = {//预先储存一万以内的质数
+    int basicPrimeNumbers[] = {//预先储存一万以内的质数
             2,3,5,7,11,13,17,19,23,29,
             31,37,41,43,47,53,59,61,67,71,
             73,79,83,89,97,101,103,107,109,113,

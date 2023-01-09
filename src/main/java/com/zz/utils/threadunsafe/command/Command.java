@@ -1,6 +1,6 @@
 package com.zz.utils.threadunsafe.command;
 
-import com.zz.utils.threadsafe.basicwork.ShellColor;
+import com.zz.lib.os.constant.ShellColorConst;
 import com.zz.utils.threadunsafe.command.impl.CommandManager;
 import com.zz.utils.threadunsafe.command.impl.CommandTriger;
 
@@ -42,7 +42,7 @@ public abstract class Command {
         StringBuilder result=new StringBuilder();
         Class clazz=this.getClass();
 
-        result.append(ShellColor.blue+ShellColor.hightlight+this.commandLine()+ShellColor.clear);//写上指令名
+        result.append(ShellColorConst.blue+ ShellColorConst.hightlight+this.commandLine()+ ShellColorConst.clear);//写上指令名
 
         boolean hasOptions=false;
         for(Field field:clazz.getDeclaredFields()){

@@ -1,6 +1,6 @@
 package com.zz.utils.threadunsafe.command.impl;
 
-import com.zz.utils.threadsafe.basicwork.ShellColor;
+import com.zz.lib.os.constant.ShellColorConst;
 import com.zz.utils.threadunsafe.command.ArgumentMark;
 import com.zz.utils.threadunsafe.command.Command;
 
@@ -12,7 +12,7 @@ public class HelpCommand extends Command {
     @Override
     public void run() {
         if(command==null) {
-            System.out.println(ShellColor.sky + ShellColor.hightlight + "Available commands" + ShellColor.clear + ":");
+            System.out.println(ShellColorConst.sky + ShellColorConst.hightlight + "Available commands" + ShellColorConst.clear + ":");
             for (CommandTriger triger : manager.commands) {
                 System.out.println(triger.commandObject.generateHelpInformationThroughReflection(true));
             }

@@ -1,7 +1,7 @@
 package com.zz.utils.threadunsafe.command.impl;
 
 
-import com.zz.utils.threadsafe.basicwork.ShellColor;
+import com.zz.lib.os.constant.ShellColorConst;
 import com.zz.utils.threadunsafe.command.Command;
 import com.zz.utils.threadunsafe.command.exceptions.CommandClassReadException;
 import com.zz.utils.threadunsafe.command.exceptions.CommandLineFormatException;
@@ -79,7 +79,7 @@ public class CommandManager {
             try {
                 excuteCommand((String[]) split(line));
             } catch (CommandLineFormatException e) {
-                new PrintStream(erroOut).println(ShellColor.red+e.getMessage()+ShellColor.clear);
+                new PrintStream(erroOut).println(ShellColorConst.red+e.getMessage()+ ShellColorConst.clear);
             }
             System.out.print(prompt);
         }

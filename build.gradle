@@ -6,7 +6,8 @@ apply plugin :'maven-publish'
 group 'com.zz.utils'
 version '0.1'
 
-sourceCompatibility = 1.8
+project.sourceCompatibility = '8'
+project.targetCompatibility = '8'
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
 }
@@ -20,18 +21,6 @@ publishing {
             }
         }
     }
-    // 配置发布到哪里
-//    repositories {
-//        maven {
-//            //指定要上传的 maven 私服仓库
-//            url = ""
-//            //认证用户和密码
-//            credentials {
-//                username 'root'
-//                password 'admin'
-//            }
-//        }
-//    }
 }
 repositories {
     mavenLocal()
@@ -44,8 +33,5 @@ tasks.withType(JavaCompile) {//enable UTF-8 so that gradle can deal with chinese
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
-    //compile group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
-    //compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.7.0.202003110725-r'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
