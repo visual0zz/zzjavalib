@@ -1,6 +1,5 @@
-package com.zz.lib.crypto.cipher;
+package com.zz.lib.crypto.define;
 
-import com.zz.lib.crypto.encoder.Encoder;
 
 public interface Cihper{
     byte[] encrypt(byte[] raw,byte[] key,byte[]salt);

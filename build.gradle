@@ -1,33 +1,33 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
-apply plugin :'maven-publish'
-
-group 'com.zz.utils'
+group 'com.zz.lib'
 version '0.1'
 
 project.sourceCompatibility = '8'
 project.targetCompatibility = '8'
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    //mavenCentral()
+}
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
 }
 publishing {
     publications {
-        // publishProject 为自定义名称,可写多个发布任务
-        publishProject(MavenPublication){
-            from components.java  // 发布 jar 包
+        maven(MavenPublication) {
+            groupId = rootProject.group
+            artifactId = rootProject.name
+            version = rootProject.version
+            from components.java
             artifact sourceJar {
                 classifier "sources"
             }
         }
     }
 }
-repositories {
-    mavenLocal()
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-    //mavenCentral()
-}
-
 tasks.withType(JavaCompile) {//enable UTF-8 so that gradle can deal with chinese characters on Windows
     options.encoding = "UTF-8"
 }

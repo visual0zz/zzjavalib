@@ -1,4 +1,4 @@
-package com.zz.lib.crypto.encode;
+package com.zz.lib.encode;
 
 
 /**

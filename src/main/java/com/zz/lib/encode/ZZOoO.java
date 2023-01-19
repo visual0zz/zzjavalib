@@ -1,4 +1,4 @@
-package com.zz.lib.crypto.encode;
+package com.zz.lib.encode;
 
 /**
  * 没什么卵用的编码 用来将数据编码成非常难以阅读的形式
