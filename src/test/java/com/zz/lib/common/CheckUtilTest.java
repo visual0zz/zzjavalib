@@ -5,6 +5,7 @@ import com.zz.lib.common.exception.DataTypeException;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,4 +51,18 @@ public class CheckUtilTest {
     public void assertSize3() {
         CheckUtil.assertSize(1,2);
     }
+    public void a(int b){
+
+    }
+    @Test
+    public void assertMethodParamTypes1() throws NoSuchMethodException {
+        CheckUtil.assertMethodParamTypes(CheckUtilTest.class.getMethod("assertMethodParamTypes1"));
+        CheckUtil.assertMethodParamTypes(CheckUtil.class.getMethod("assertMethodParamTypes", Method.class, Class[].class), Method.class, Class[].class);
+        CheckUtil.assertMethodParamTypes(CheckUtilTest.class.getMethod("a", int.class), Integer.TYPE);
+    }
+    @Test(expected = DataTypeException.class)
+    public void assertMethodParamTypes2() throws NoSuchMethodException {
+        CheckUtil.assertMethodParamTypes(CheckUtil.class.getMethod("assertMethodParamTypes", Method.class, Class[].class),Integer.class,Boolean.class);
+    }
+
 }

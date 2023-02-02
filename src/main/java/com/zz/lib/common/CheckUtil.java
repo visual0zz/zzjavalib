@@ -52,9 +52,9 @@ public final class CheckUtil {
     public static void assertSize(Object container, int expectedSize, String message) {
         Class<?> clazz = container.getClass();
         Integer actualSizeValue = null;
-        if(clazz.isArray()){
-            actualSizeValue= Array.getLength(container);
-        }else{
+        if (clazz.isArray()) {
+            actualSizeValue = Array.getLength(container);
+        } else {
             Field sizeField = null;
             for (String name : sizeFieldNames) {
                 try {
@@ -95,5 +95,30 @@ public final class CheckUtil {
 
     public static void assertSize(Object container, int expectedSize) {
         assertSize(container, expectedSize, null);
+    }
+
+    //assert the types of param list of the method
+    public static void assertMethodParamTypes(Method method, String message, Class<?>... expectedTypes) {
+        Class<?>[] actualTypes = method.getParameterTypes();
+        boolean matches = true;
+        if (actualTypes.length != expectedTypes.length) {
+            matches = false;
+        }
+        for (int i = 0; i < expectedTypes.length && matches; i++) {
+            if (actualTypes[i] != expectedTypes[i]) {
+                matches = false;
+            }
+        }
+        if (!matches) {
+            if (message != null) {
+                throw new DataTypeException(message);
+            } else {
+                throw new DataTypeException("actual method \"" + method + "\" doesn't match the expected.");
+            }
+        }
+    }
+
+    public static void assertMethodParamTypes(Method method, Class<?>... expectedTypes) {
+        assertMethodParamTypes(method, null, expectedTypes);
     }
 }
