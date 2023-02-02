@@ -1,6 +1,6 @@
 package com.zz.lib.common.exception;
 
-public class DataTypeException extends RuntimeException{
+public class DataTypeException extends DataCheckException{
     public DataTypeException() {
         super();
     }

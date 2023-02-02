@@ -1,6 +1,6 @@
 package com.zz.lib.common.exception;
 
-public class DataSizeException extends RuntimeException{
+public class DataSizeException extends DataCheckException{
     public DataSizeException() {
         super();
     }

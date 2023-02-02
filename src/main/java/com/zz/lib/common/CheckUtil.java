@@ -1,5 +1,6 @@
 package com.zz.lib.common;
 
+import com.zz.lib.common.exception.DataFormatException;
 import com.zz.lib.common.exception.DataSizeException;
 import com.zz.lib.common.exception.DataTypeException;
 
@@ -7,6 +8,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.regex.Pattern;
 
 public final class CheckUtil {
     private final static String[] sizeMethodNames = {"size", "length"};
@@ -120,5 +122,14 @@ public final class CheckUtil {
 
     public static void assertMethodParamTypes(Method method, Class<?>... expectedTypes) {
         assertMethodParamTypes(method, null, expectedTypes);
+    }
+    //assert that all strings match the regex
+    public static void assertRegex(String regex,String...strings){
+        Pattern pattern=Pattern.compile(regex);
+        for(int i=0;i<strings.length;i++){
+            if(strings[i]==null || !pattern.matcher(strings[i]).matches()){
+                throw new DataFormatException("strings["+i+"]="+(strings[i]==null?"null":("\""+strings[i]+"\""))+" doesn't match regex:"+regex);
+            }
+        }
     }
 }
