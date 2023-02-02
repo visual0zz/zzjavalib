@@ -1,6 +1,7 @@
 package com.zz.lib.common;
 
-import com.zz.lib.common.exception.DataFormatException;
+import com.zz.lib.common.exception.DataCheckException;
+import com.zz.lib.common.exception.DataContentException;
 import com.zz.lib.common.exception.DataSizeException;
 import com.zz.lib.common.exception.DataTypeException;
 
@@ -23,10 +24,30 @@ public final class CheckUtil {
 
     public static void assertTrue(Boolean condition, String message) {
         if (!condition) {
-            throw new RuntimeException(message);
+            throw new DataCheckException(message);
         }
     }
 
+    public static <T> void assertEquals(T actual, T expected, String message) {
+        boolean fail=false;
+        if (actual != null && expected != null) {
+            if (!expected.equals(actual)) {
+                fail=true;
+            }
+        }else if (!(actual == null && expected == null)) {
+            fail=true;
+        }
+        if(fail){
+            if(message==null)
+                throw new DataContentException("assert fail,expected=" + expected + "  actual=" + actual);
+            else
+                throw new DataContentException(message);
+        }
+    }
+
+    public static <T> void assertEquals(T actual, T expected) {
+        assertEquals(actual,expected,null);
+    }
     public static void assertNotNull(Object object) {
         if (object == null) {
             throw new NullPointerException();
@@ -123,12 +144,13 @@ public final class CheckUtil {
     public static void assertMethodParamTypes(Method method, Class<?>... expectedTypes) {
         assertMethodParamTypes(method, null, expectedTypes);
     }
+
     //assert that all strings match the regex
-    public static void assertRegex(String regex,String...strings){
-        Pattern pattern=Pattern.compile(regex);
-        for(int i=0;i<strings.length;i++){
-            if(strings[i]==null || !pattern.matcher(strings[i]).matches()){
-                throw new DataFormatException("strings["+i+"]="+(strings[i]==null?"null":("\""+strings[i]+"\""))+" doesn't match regex:"+regex);
+    public static void assertRegex(String regex, String... strings) {
+        Pattern pattern = Pattern.compile(regex);
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i] == null || !pattern.matcher(strings[i]).matches()) {
+                throw new DataContentException("strings[" + i + "]=" + (strings[i] == null ? "null" : ("\"" + strings[i] + "\"")) + " doesn't match regex:" + regex);
             }
         }
     }

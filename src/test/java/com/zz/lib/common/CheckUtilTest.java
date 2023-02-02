@@ -1,15 +1,12 @@
 package com.zz.lib.common;
 
+import com.zz.lib.common.exception.DataContentException;
 import com.zz.lib.common.exception.DataSizeException;
 import com.zz.lib.common.exception.DataTypeException;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class CheckUtilTest {
     @Test
@@ -63,6 +60,19 @@ public class CheckUtilTest {
     @Test(expected = DataTypeException.class)
     public void assertMethodParamTypes2() throws NoSuchMethodException {
         CheckUtil.assertMethodParamTypes(CheckUtil.class.getMethod("assertMethodParamTypes", Method.class, Class[].class),Integer.class,Boolean.class);
+    }
+    @Test
+    public void assertEquals1(){
+        CheckUtil.assertEquals(null,null);
+        CheckUtil.assertEquals("123","123");
+    }
+    @Test(expected = DataContentException.class)
+    public void assertEquals2(){
+        CheckUtil.assertEquals("null",null);
+    }
+    @Test(expected = DataContentException.class)
+    public void assertEquals3(){
+        CheckUtil.assertEquals("123","456");
     }
 
 }
