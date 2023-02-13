@@ -1,7 +1,12 @@
 package com.zz.lib.zzscript;
 
 public abstract class Command {
-    public Command(String commandName, String... alias) {
-
+    private CommandManager manager;
+    private String name;
+    public Command(String name) {
+        this.name=name;
+    }
+    public CommandManager getManager() {
+        return manager;
     }
 }

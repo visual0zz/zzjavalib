@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 标记指令的执行代码
+ * 标记必须参数
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Run {
-    String value();//含义描述
+@Target(ElementType.PARAMETER)
+public @interface Req {
+    String value();//参数描述
 }
