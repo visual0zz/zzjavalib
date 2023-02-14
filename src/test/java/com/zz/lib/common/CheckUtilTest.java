@@ -1,5 +1,6 @@
 package com.zz.lib.common;
 
+import com.sun.tools.javac.comp.Check;
 import com.zz.lib.common.exception.DataContentException;
 import com.zz.lib.common.exception.DataSizeException;
 import com.zz.lib.common.exception.DataTypeException;
@@ -36,17 +37,17 @@ public class CheckUtilTest {
     }
     @Test
     public void assertSize1() {
-        CheckUtil.assertSize(new String[]{""},1);
-        CheckUtil.assertSize(new String[]{"","123"},2);
-        CheckUtil.assertSize(new ArrayList<String>(),0);
+        CheckUtil.assertSize(new String[]{""},1,1);
+        CheckUtil.assertSize(new String[]{"","123"},2,2);
+        CheckUtil.assertSize(new ArrayList<String>(),0,0);
     }
     @Test(expected = DataSizeException.class)
     public void assertSize2() {
-        CheckUtil.assertSize(new String[]{""},2);
+        CheckUtil.assertSize(new String[]{""},2,2);
     }
     @Test(expected = DataTypeException.class)
     public void assertSize3() {
-        CheckUtil.assertSize(1,2);
+        CheckUtil.assertSize(1,2,2);
     }
     public void a(int b){
 
@@ -73,6 +74,19 @@ public class CheckUtilTest {
     @Test(expected = DataContentException.class)
     public void assertEquals3(){
         CheckUtil.assertEquals("123","456");
+    }
+
+    @Test
+    public void assertRegex1(){
+        CheckUtil.assertRegex("[0-9]{3}","123","456","789");
+    }
+    @Test(expected = DataContentException.class)
+    public void assertRegex2(){
+        CheckUtil.assertRegex("[0-9]{2}","123","456","789");
+    }
+    @Test(expected = DataContentException.class)
+    public void assertRegex3(){
+        CheckUtil.assertRegex("[0-9]{3}",null,"456","789");
     }
 
 }

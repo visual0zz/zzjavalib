@@ -72,7 +72,7 @@ public final class CheckUtil {
         assertIsA(object, clazz, null);
     }
 
-    public static void assertSize(Object container, int expectedSize, String message) {
+    public static void assertSize(Object container, int min,int max, String message) {
         Class<?> clazz = container.getClass();
         Integer actualSizeValue = null;
         if (clazz.isArray()) {
@@ -107,17 +107,17 @@ public final class CheckUtil {
         }
         if (actualSizeValue == null) {
             throw new DataTypeException("getting size info failed,object may be not a container.");
-        } else if (actualSizeValue != expectedSize) {
+        } else if (actualSizeValue <min || actualSizeValue>max) {
             if (message != null) {
                 throw new DataSizeException(message);
             } else {
-                throw new DataSizeException("container size=" + actualSizeValue + ",not equal to the expected value " + expectedSize + ".");
+                throw new DataSizeException("container size=" + actualSizeValue + ",not in [" + min + ","+max+"].");
             }
         }
     }
 
-    public static void assertSize(Object container, int expectedSize) {
-        assertSize(container, expectedSize, null);
+    public static void assertSize(Object container, int min,int max) {
+        assertSize(container, min,max, null);
     }
 
     //assert the types of param list of the method
