@@ -24,7 +24,7 @@ public class CheckUtilTest {
     }
     @Test(expected = NullPointerException.class)
     public void assertNotNull2() {
-        CheckUtil.assertNotNull(null);
+        CheckUtil.assertNotNull(null,null);
     }
     @Test
     public void assertIsA1() {

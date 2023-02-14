@@ -18,13 +18,15 @@ public final class CheckUtil {
     private CheckUtil() {
     }
 
-    public static void assertTrue(Boolean condition) {
-        assertTrue(condition, "error,assertTrue()=false.");
+    public static void assertTrue(Boolean ...conditions) {
+        assertTrue( "error,assertTrue()=false.",conditions);
     }
 
-    public static void assertTrue(Boolean condition, String message) {
-        if (!condition) {
-            throw new DataCheckException(message);
+    public static void assertTrue(String message,Boolean ...conditions) {
+        for(Boolean condition:conditions){
+            if (!condition) {
+                throw new DataCheckException(message);
+            }
         }
     }
 
@@ -48,9 +50,11 @@ public final class CheckUtil {
     public static <T> void assertEquals(T actual, T expected) {
         assertEquals(actual,expected,null);
     }
-    public static void assertNotNull(Object object) {
-        if (object == null) {
-            throw new NullPointerException();
+    public static void assertNotNull(Object ...objects) {
+        for(Object object:objects){
+            if (object == null) {
+                throw new NullPointerException();
+            }
         }
     }
 
