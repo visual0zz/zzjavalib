@@ -29,7 +29,7 @@ final class TupleCodeGenerator {
         code.append("package com.zz.lib.common.container.tuple;\n" +
                 "import com.zz.lib.common.exception.InvalidOperationException;\n" +
                 "import java.io.Serializable;\n" +
-                "\n\n" +
+                "\n" +
                 "public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {\n" +
                 "    private final static long serialVersionUID=1L;\n" +
                 "    private final Object[]contents;\n" +
@@ -57,6 +57,13 @@ final class TupleCodeGenerator {
                 "            return  ((Comparable) o1).compareTo(o2);\n" +
                 "        }\n" +
                 "        throw new InvalidOperationException(\"not comparable.\");\n" +
+                "    }\n" +
+                "    @Override\n" +
+                "    public boolean equals(Object o){\n" +
+                "        if(!(o instanceof Tuple)){\n" +
+                "            return false;\n" +
+                "        }\n" +
+                "        return this.compareTo((Tuple) o)==0;\n" +
                 "    }\n" +
                 "    @Override\n" +
                 "    public int compareTo(Tuple v) {\n" +

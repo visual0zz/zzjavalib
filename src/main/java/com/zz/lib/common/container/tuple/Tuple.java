@@ -2,7 +2,6 @@ package com.zz.lib.common.container.tuple;
 import com.zz.lib.common.exception.InvalidOperationException;
 import java.io.Serializable;
 
-
 public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
     private final static long serialVersionUID=1L;
     private final Object[]contents;
@@ -30,6 +29,13 @@ public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
             return  ((Comparable) o1).compareTo(o2);
         }
         throw new InvalidOperationException("not comparable.");
+    }
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Tuple)){
+            return false;
+        }
+        return this.compareTo((Tuple) o)==0;
     }
     @Override
     public int compareTo(Tuple v) {
