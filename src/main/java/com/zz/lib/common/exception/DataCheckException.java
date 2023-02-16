@@ -17,8 +17,4 @@ public class DataCheckException extends RuntimeException {
     public DataCheckException(Throwable cause) {
         super(cause);
     }
-
-    protected DataCheckException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

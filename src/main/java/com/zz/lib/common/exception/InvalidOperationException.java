@@ -17,7 +17,4 @@ public class InvalidOperationException extends DataCheckException{
         super(cause);
     }
 
-    protected InvalidOperationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

@@ -17,7 +17,4 @@ public class DataContentException extends DataCheckException {
         super(cause);
     }
 
-    protected DataContentException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

@@ -17,7 +17,4 @@ public class DataSizeException extends DataCheckException{
         super(cause);
     }
 
-    protected DataSizeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }
