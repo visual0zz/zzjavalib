@@ -11,4 +11,10 @@ public final class Tuple2 <T1,T2> extends Tuple{
     public T2 getV2(){
         return (T2)getVn(2);
     }
+    public T1 getLeft(){
+        return getV1();
+    }
+    public T2 getRight(){
+        return getV2();
+    }
 }

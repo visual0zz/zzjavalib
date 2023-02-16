@@ -1,11 +1,12 @@
 package com.zz.lib.common.container.tuple;
 import com.zz.lib.common.exception.InvalidOperationException;
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
     private final static long serialVersionUID=1L;
     private final Object[]contents;
-    public Tuple( Object...vs) {
+    protected Tuple( Object...vs) {
         contents=vs;
     }
     public int size(){
@@ -14,7 +15,6 @@ public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
     public Object getVn(int i){
         return contents[i-1];
     }
-
     private static <T> int compare(T o1, T o2) {
         if(o1==null && o2==null){
             return 0;
@@ -31,13 +31,6 @@ public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
         throw new InvalidOperationException("not comparable.");
     }
     @Override
-    public boolean equals(Object o){
-        if(!(o instanceof Tuple)){
-            return false;
-        }
-        return this.compareTo((Tuple) o)==0;
-    }
-    @Override
     public int compareTo(Tuple v) {
         for(int i=1,n = Math.min(this.size(), v.size()); i <= n; ++i) {
             int result = compare(this.getVn(i), v.getVn(i));
@@ -51,7 +44,6 @@ public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
     public Tuple clone(){
         return new Tuple(this.contents);
     }
-
     public static <T1,T2> Tuple2<T1,T2> of(T1 v1,T2 v2){
         return new Tuple2(v1,v2);
     }
@@ -138,5 +130,16 @@ public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {
     }
     public static <T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23,T24,T25,T26,T27,T28,T29,T30> Tuple30<T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23,T24,T25,T26,T27,T28,T29,T30> of(T1 v1,T2 v2,T3 v3,T4 v4,T5 v5,T6 v6,T7 v7,T8 v8,T9 v9,T10 v10,T11 v11,T12 v12,T13 v13,T14 v14,T15 v15,T16 v16,T17 v17,T18 v18,T19 v19,T20 v20,T21 v21,T22 v22,T23 v23,T24 v24,T25 v25,T26 v26,T27 v27,T28 v28,T29 v29,T30 v30){
         return new Tuple30(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16,v17,v18,v19,v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,v30);
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tuple)) return false;
+        Tuple tuple = (Tuple) o;
+        return Arrays.equals(contents, tuple.contents);
+    }
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(contents);
     }
 }

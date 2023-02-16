@@ -14,4 +14,13 @@ public final class Tuple3 <T1,T2,T3> extends Tuple{
     public T3 getV3(){
         return (T3)getVn(3);
     }
+    public T1 getLeft(){
+        return getV1();
+    }
+    public T2 getMid(){
+        return getV2();
+    }
+    public T3 getRight(){
+        return getV3();
+    }
 }

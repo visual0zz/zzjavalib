@@ -29,11 +29,11 @@ final class TupleCodeGenerator {
         code.append("package com.zz.lib.common.container.tuple;\n" +
                 "import com.zz.lib.common.exception.InvalidOperationException;\n" +
                 "import java.io.Serializable;\n" +
-                "\n" +
+                "import java.util.Arrays;\n\n" +
                 "public class Tuple implements Cloneable, Comparable<Tuple>, Serializable {\n" +
                 "    private final static long serialVersionUID=1L;\n" +
                 "    private final Object[]contents;\n" +
-                "    public Tuple( Object...vs) {\n" +
+                "    protected Tuple( Object...vs) {\n" +
                 "        contents=vs;\n" +
                 "    }\n" +
                 "    public int size(){\n" +
@@ -42,7 +42,6 @@ final class TupleCodeGenerator {
                 "    public Object getVn(int i){\n" +
                 "        return contents[i-1];\n" +
                 "    }\n" +
-                "\n" +
                 "    private static <T> int compare(T o1, T o2) {\n" +
                 "        if(o1==null && o2==null){\n" +
                 "            return 0;\n" +
@@ -59,13 +58,6 @@ final class TupleCodeGenerator {
                 "        throw new InvalidOperationException(\"not comparable.\");\n" +
                 "    }\n" +
                 "    @Override\n" +
-                "    public boolean equals(Object o){\n" +
-                "        if(!(o instanceof Tuple)){\n" +
-                "            return false;\n" +
-                "        }\n" +
-                "        return this.compareTo((Tuple) o)==0;\n" +
-                "    }\n" +
-                "    @Override\n" +
                 "    public int compareTo(Tuple v) {\n" +
                 "        for(int i=1,n = Math.min(this.size(), v.size()); i <= n; ++i) {\n" +
                 "            int result = compare(this.getVn(i), v.getVn(i));\n" +
@@ -78,7 +70,7 @@ final class TupleCodeGenerator {
                 "    @Override\n" +
                 "    public Tuple clone(){\n" +
                 "        return new Tuple(this.contents);\n" +
-                "    }\n");
+                "    }");
         for(int i=2;i<=n;i++){
             code.append("\n    public static <");
             for(int j=1;j<=i;j++){
@@ -102,7 +94,18 @@ final class TupleCodeGenerator {
             }
             code.append(");\n    }");
         }
-        code.append("\n}");
+        code.append(
+                "\n    @Override\n" +
+                "    public boolean equals(Object o) {\n" +
+                "        if (this == o) return true;\n" +
+                "        if (!(o instanceof Tuple)) return false;\n" +
+                "        Tuple tuple = (Tuple) o;\n" +
+                "        return Arrays.equals(contents, tuple.contents);\n" +
+                "    }\n"+
+                "    @Override\n" +
+                "    public int hashCode() {\n" +
+                "        return Arrays.hashCode(contents);\n" +
+                "    }\n}");
         return code.toString();
     }
     static String tupleNCode(int n){
@@ -130,6 +133,26 @@ final class TupleCodeGenerator {
         for(int i=1;i<=n;i++){
             code.append("\n    public T").append(i).append(" getV").append(i).append("(){")
                     .append("\n        return (T").append(i).append(")getVn(").append(i).append(");\n    }");
+        }
+        if(n==2){
+            code.append("\n" +
+                    "    public T1 getLeft(){\n" +
+                    "        return getV1();\n" +
+                    "    }\n" +
+                    "    public T2 getRight(){\n" +
+                    "        return getV2();\n" +
+                    "    }");
+        }else if(n==3){
+            code.append("\n" +
+                    "    public T1 getLeft(){\n" +
+                    "        return getV1();\n" +
+                    "    }\n" +
+                    "    public T2 getMid(){\n" +
+                    "        return getV2();\n" +
+                    "    }\n" +
+                    "    public T3 getRight(){\n" +
+                    "        return getV3();\n" +
+                    "    }");
         }
         code.append("\n}");
         return code.toString();
