@@ -91,4 +91,9 @@ public class CheckUtilTest {
         CheckUtil.assertRegex("[0-9]{3}",null,"456","789");
     }
 
+    @Test(expected = NullPointerException.class)
+    public void assertRegex4(){
+        CheckUtil.assertRegex(null,null,"456","789");
+    }
+
 }

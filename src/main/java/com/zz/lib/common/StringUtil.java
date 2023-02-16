@@ -14,7 +14,7 @@ public final class StringUtil {
         int placeHolderCount=0;
         for(int i=0;i<format.length();i++){
             char currentChar=format.charAt(i);
-            if(currentChar=='{'&&format.charAt(i+1)=='}'){
+            if(currentChar=='{'&&i+1<format.length()&&format.charAt(i+1)=='}'){
                 if(placeHolderCount<params.length){
                     builder.append(params[placeHolderCount].toString());
                 }

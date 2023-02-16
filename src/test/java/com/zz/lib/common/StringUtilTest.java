@@ -11,6 +11,8 @@ public class StringUtilTest {
     @Test
     public void format() {
         Assert.assertEquals("123456,{,},{hhh",StringUtil.format("123{},{,},{{}",456,"hhh"));
+        Assert.assertEquals("{}{",StringUtil.format("{{}{","}"));
+        Assert.assertEquals("{",StringUtil.format("{"));
     }
     @Test(expected = DataSizeException.class)
     public void formatError1() {
