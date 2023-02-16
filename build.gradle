@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 group 'com.zz.lib'
-version '0.1'
+version '0.2'
 
 project.sourceCompatibility = '8'
 project.targetCompatibility = '8'
