@@ -21,10 +21,12 @@ public class CheckUtilTest {
     @Test
     public void assertNotNull1() {
         CheckUtil.assertNotNull("");
+        CheckUtil.assertNotNull("","");
+        CheckUtil.assertNotNull(9L,1,2,3);
     }
     @Test(expected = NullPointerException.class)
     public void assertNotNull2() {
-        CheckUtil.assertNotNull(null,null);
+        CheckUtil.assertNotNull(null, (Object) null);
     }
     @Test
     public void assertIsA1() {
