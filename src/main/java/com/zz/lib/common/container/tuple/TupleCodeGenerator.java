@@ -6,26 +6,32 @@ import java.io.File;
 import java.io.PrintStream;
 import java.nio.file.Files;
 
+/**
+ * 生成Tuple代码的生成器
+ * Tuple之间可以比较大小，比较规则为: 不存在 小于 null 小于 任何其他值
+ * 例如 tuple(1,"a") 小于 tuple(1,"a",null) 小于 tuple(1,"a",-120)
+ */
 final class TupleCodeGenerator {
     public static void main(String[] args) throws Exception {
-        String folder="src/main/java/com/zz/lib/common/container/tuple";
-        int tuples=30;
-        for(int n=2;n<=tuples;n++){
-            File f=new File(folder,"Tuple"+n+".java");
-            if(!f.exists()){
+        String folder = "src/main/java/com/zz/lib/common/container/tuple";
+        int tuples = 30;
+        for (int n = 2; n <= tuples; n++) {
+            File f = new File(folder, "Tuple" + n + ".java");
+            if (!f.exists()) {
                 f.createNewFile();
             }
-            PrintStream p=new PrintStream(Files.newOutputStream(f.toPath()));
+            PrintStream p = new PrintStream(Files.newOutputStream(f.toPath()));
             p.print(tupleNCode(n));
             p.flush();
             p.close();
         }
-        PrintStream p=new PrintStream(Files.newOutputStream(new File(folder, "/Tuple.java").toPath()));
+        PrintStream p = new PrintStream(Files.newOutputStream(new File(folder, "/Tuple.java").toPath()));
         p.print(tupleRootCode(tuples));
     }
-    static String tupleRootCode(int n){
-        CheckUtil.assertTrue(n>0);
-        StringBuilder code=new StringBuilder();
+
+    static String tupleRootCode(int n) {
+        CheckUtil.assertTrue(n > 0);
+        StringBuilder code = new StringBuilder();
         code.append("package com.zz.lib.common.container.tuple;\n" +
                 "import com.zz.lib.common.exception.InvalidOperationException;\n" +
                 "import java.io.Serializable;\n" +
@@ -71,70 +77,71 @@ final class TupleCodeGenerator {
                 "    public Tuple clone(){\n" +
                 "        return new Tuple(this.contents);\n" +
                 "    }");
-        for(int i=2;i<=n;i++){
+        for (int i = 2; i <= n; i++) {
             code.append("\n    public static <");
-            for(int j=1;j<=i;j++){
+            for (int j = 1; j <= i; j++) {
                 code.append("T").append(j);
-                if(j!=i)code.append(",");
+                if (j != i) code.append(",");
             }
             code.append("> Tuple").append(i).append("<");
-            for(int j=1;j<=i;j++){
+            for (int j = 1; j <= i; j++) {
                 code.append("T").append(j);
-                if(j!=i)code.append(",");
+                if (j != i) code.append(",");
             }
             code.append("> of").append("(");
-            for(int j=1;j<=i;j++){
+            for (int j = 1; j <= i; j++) {
                 code.append("T").append(j).append(" v").append(j);
-                if(j!=i)code.append(",");
+                if (j != i) code.append(",");
             }
             code.append("){").append("\n        return new Tuple").append(i).append("(");
-            for(int j=1;j<=i;j++){
+            for (int j = 1; j <= i; j++) {
                 code.append("v").append(j);
-                if(j!=i)code.append(",");
+                if (j != i) code.append(",");
             }
             code.append(");\n    }");
         }
         code.append(
                 "\n    @Override\n" +
-                "    public boolean equals(Object o) {\n" +
-                "        if (this == o) return true;\n" +
-                "        if (!(o instanceof Tuple)) return false;\n" +
-                "        Tuple tuple = (Tuple) o;\n" +
-                "        return Arrays.equals(contents, tuple.contents);\n" +
-                "    }\n"+
-                "    @Override\n" +
-                "    public int hashCode() {\n" +
-                "        return Arrays.hashCode(contents);\n" +
-                "    }\n}");
+                        "    public boolean equals(Object o) {\n" +
+                        "        if (this == o) return true;\n" +
+                        "        if (!(o instanceof Tuple)) return false;\n" +
+                        "        Tuple tuple = (Tuple) o;\n" +
+                        "        return Arrays.equals(contents, tuple.contents);\n" +
+                        "    }\n" +
+                        "    @Override\n" +
+                        "    public int hashCode() {\n" +
+                        "        return Arrays.hashCode(contents);\n" +
+                        "    }\n}");
         return code.toString();
     }
-    static String tupleNCode(int n){
-        CheckUtil.assertTrue(n>0);
-        StringBuilder code=new StringBuilder();
+
+    static String tupleNCode(int n) {
+        CheckUtil.assertTrue(n > 0);
+        StringBuilder code = new StringBuilder();
         code.append("package com.zz.lib.common.container.tuple;\n\n" +
                 "\n");
         code.append("public final class Tuple").append(n).append(" <");
-        for(int i=1;i<=n;i++){
+        for (int i = 1; i <= n; i++) {
             code.append("T").append(i);
-            if(i!=n)code.append(",");
+            if (i != n) code.append(",");
         }
         code.append("> extends Tuple{");
         code.append("\n    public Tuple").append(n).append("(");
-        for(int i=1;i<=n;i++){
+        for (int i = 1; i <= n; i++) {
             code.append("T").append(i).append(" v").append(i);
-            if(i!=n)code.append(",");
+            if (i != n) code.append(",");
         }
         code.append(") {\n        super(");
-        for(int i=1;i<=n;i++){
+        for (int i = 1; i <= n; i++) {
             code.append("v").append(i);
-            if(i!=n)code.append(",");
+            if (i != n) code.append(",");
         }
         code.append(");\n    }");
-        for(int i=1;i<=n;i++){
+        for (int i = 1; i <= n; i++) {
             code.append("\n    public T").append(i).append(" getV").append(i).append("(){")
                     .append("\n        return (T").append(i).append(")getVn(").append(i).append(");\n    }");
         }
-        if(n==2){
+        if (n == 2) {
             code.append("\n" +
                     "    public T1 getLeft(){\n" +
                     "        return getV1();\n" +
@@ -142,7 +149,7 @@ final class TupleCodeGenerator {
                     "    public T2 getRight(){\n" +
                     "        return getV2();\n" +
                     "    }");
-        }else if(n==3){
+        } else if (n == 3) {
             code.append("\n" +
                     "    public T1 getLeft(){\n" +
                     "        return getV1();\n" +
