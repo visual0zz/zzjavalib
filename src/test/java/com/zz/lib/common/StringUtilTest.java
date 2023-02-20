@@ -22,4 +22,17 @@ public class StringUtilTest {
     public void formatError2() {
         Assert.assertEquals("123456,{,},{hhh",StringUtil.format("123{},{,},{{}",456));
     }
+    @Test
+    public void testToString(){
+        Assert.assertEquals("null",StringUtil.toString(null));
+        Assert.assertEquals("123",StringUtil.toString(123L));
+        Assert.assertEquals("[]",StringUtil.toString(new char[]{}));
+        Assert.assertEquals("[a]",StringUtil.toString(new char[]{'a'}));
+        Assert.assertEquals("[123, 456]",StringUtil.toString(new int[]{123,456}));
+        Object[]a=new Object[2];
+        a[0]=a;
+        a[1]=a;
+        Assert.assertEquals("[[...], [...]]",StringUtil.toString(a));
+        Assert.assertEquals("ggg",StringUtil.toString("ggg"));
+    }
 }
