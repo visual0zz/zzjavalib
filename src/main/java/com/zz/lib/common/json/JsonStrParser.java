@@ -1,21 +1,39 @@
 package com.zz.lib.common.json;
 
+import com.zz.lib.common.StringUtil;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class JsonStrParser {
 
     public int index;
-    public CharSequence charSequence;
-    boolean ended = false;
-
+    public final CharSequence charSequence;
+    boolean ended;
+    public JsonStrParser(CharSequence charSequence){
+        this.charSequence =charSequence;
+        index=0;
+        ended=false;
+    }
     public char next() {
         if (ended) {
-            throw new RuntimeException("Substring bounds error");
+            throw new JsonParseException("unexpected eof.");
         }
         if (index >= charSequence.length() - 1) {
             ended = true;
         }
         return charSequence.charAt(index++);
     }
-
+    public char next(char c){
+        char n=next();
+        if(n!=c){
+            throw new JsonParseException("expected "+c+" but got "+n+" [pos:"+--index+"]");
+        }
+        return n;
+    }
     public String next(int n) {
         if (n == 0) {
             return "";
@@ -26,7 +44,15 @@ public class JsonStrParser {
         }
         return new String(result);
     }
-
+    public char nextClean(){
+        char c;
+        while (true) {
+            c = next();
+            if (c == 0 || c > ' ') {
+                return c;
+            }
+        }
+    }
     public String nextString(char quote) {
         char c;
         StringBuilder sb = new StringBuilder();
@@ -75,5 +101,92 @@ public class JsonStrParser {
                     sb.append(c);
             }
         }
+    }
+    public Map<String,Object> nextObject(){
+        HashMap<String,Object> result=new HashMap();
+        while(true){
+            char c=nextClean();
+            switch (c){
+                case '"':
+                case '\'':
+                    String key=nextString(c);
+                    next(':');
+                    Object value=nextValue();
+                    if(result.containsKey(key)){
+                        throw new JsonParseException("duplicate key found:"+key);
+                    }
+                    result.put(key,value);
+                    char n=nextClean();
+                    if(n==','){
+                        continue;
+                    }else if(n!='}'){
+                        throw new JsonParseException("unexpected char found: "+n+" [pos:"+--index+"]");
+                    }
+                case '}':
+                    return result;
+                default:
+                    throw new JsonParseException("unexpected char found: "+c+" [pos:"+--index+"]");
+            }
+        }
+    }
+    public List<Object> nextArray(){
+        List<Object> result=new ArrayList<>();
+        while(true){
+            Object value=nextValue();
+            result.add(value);
+            char c=nextClean();
+            if(c==']'){
+                return result;
+            }
+            if(c!=','){
+                throw new JsonParseException("unexpected char found: "+c+" [pos:"+--index+"]");
+            }
+        }
+    }
+    public Object nextValue() {
+        char c = this.nextClean();
+        switch (c) {
+            case '"':
+            case '\'':
+                return this.nextString(c);
+            case '{':
+                return nextObject();
+            case '[':
+                return nextArray();
+        }
+        StringBuilder sb = new StringBuilder();
+        while (c >= ' ' && ",:]}/\\\"[{;=#".indexOf(c) < 0) {
+            sb.append(c);
+            if(ended){
+                break;
+            }
+            c = this.next();
+        }
+        String string = sb.toString().trim();
+        if(!ended) {
+            index--;
+        }
+        if (StringUtil.isBlankStr(string) || "null".equalsIgnoreCase(string)) {
+            return null;
+        }
+        if ("true".equalsIgnoreCase(string)) {
+            return Boolean.TRUE;
+        }
+        if ("false".equalsIgnoreCase(string)) {
+            return Boolean.FALSE;
+        }
+        char b = string.charAt(0);
+        if ((b >= '0' && b <= '9') || b == '-') {
+            if (string.contains(".")|| string.contains("e")|| string.contains("E")) {
+                return new BigDecimal(string);
+            } else {
+                long longValue=Long.parseLong(string);
+                if(string.equals(Long.toString(longValue)) && (int)longValue==longValue){
+                    return (int)longValue;
+                }
+                return longValue;
+            }
+        }
+        throw new JsonParseException("unparseable string: "+ string);
     }
 }
