@@ -1,5 +1,7 @@
 package com.zz.lib.common;
 
+import com.zz.lib.common.exception.DataContentException;
+
 /**
  * 字符工具类<br>
  * 部分工具来自于Apache Commons系列
@@ -8,26 +10,6 @@ package com.zz.lib.common;
  * @since 4.0.1
  */
 public class CharUtil {
-
-	public static char SPACE = ' ';
-	public static char TAB = '	';
-	public static char DOT = '.';
-	public static char SLASH = '/';
-	public static char BACKSLASH = '\\';
-	public static char CR = '\r';
-	public static char LF = '\n';
-	public static char DASHED = '-';
-	public static char UNDERLINE = '_';
-	public static char COMMA = ',';
-	public static char DELIM_START = '{';
-	public static char DELIM_END = '}';
-	public static char BRACKET_START = '[';
-	public static char BRACKET_END = ']';
-	public static char DOUBLE_QUOTES = '"';
-	public static char SINGLE_QUOTE = '\'';
-	public static char AMP = '&';
-	public static char COLON = ':';
-	public static char AT = '@';
 	public static boolean isAsciiChar(char ch) {
 		return ch < 128;
 	}
@@ -63,11 +45,6 @@ public class CharUtil {
 		return isLetter(ch) || isNumberChar(ch);
 	}
 
-	public static boolean isChar(Object value) {
-		//noinspection ConstantConditions
-		return value instanceof Character || value.getClass() == char.class;
-	}
-
 	public static boolean isBlankChar(char c) {
 		return isBlankChar((int) c);
 	}
@@ -95,7 +72,7 @@ public class CharUtil {
 				((c >= 0x100000) && (c <= 0x10FFFF)));
 	}
 	public static boolean isFileSeparator(char c) {
-		return SLASH == c || BACKSLASH == c;
+		return '/' == c || '\\' == c;
 	}
 
 	/**
@@ -106,34 +83,10 @@ public class CharUtil {
 	}
 
 	/**
-	 * 获取字符类型
-	 *
-	 * @param c 字符
-	 * @return 字符类型
-	 * @since 5.2.3
-	 */
-	public static int getType(int c) {
-		return Character.getType(c);
-	}
-
-	/**
-	 * 获取给定字符的16进制数值
-	 *
-	 * @param b 字符
-	 * @return 16进制字符
-	 * @since 5.3.1
-	 */
-	public static int digit16(int b) {
-		return Character.digit(b, 16);
-	}
-
-	/**
 	 * 将字母、数字转换为带圈的字符：
 	 *     '1' -》 '①'
 	 *     'A' -》 'Ⓐ'
 	 *     'a' -》 'ⓐ'
-	 * 获取带圈数字 /封闭式字母数字 ，从1-20,超过1-20报错
-	 *
 	 * @param c 被转换的字符，如果字符不支持转换，返回原字符
 	 * @return 转换后的字符
 	 */
@@ -150,18 +103,17 @@ public class CharUtil {
 	}
 
 	/**
-	 * 将[1-20]数字转换为带圈的字符：
+	 * 将1-20数字转换为带圈的字符：
 	 *     1 -》 '①'
 	 *     12 -》 '⑫'
 	 *     20 -》 '⑳'
-	 * 也称作：封闭式字符，英文：Enclosed Alphanumerics
 	 *
 	 * @param number 被转换的数字
 	 * @return 转换后的字符
 	 */
 	public static char toCloseByNumber(int number) {
 		if (number > 20) {
-			throw new IllegalArgumentException("Number must be [1-20]");
+			throw new DataContentException("input number must between 1 and 20.");
 		}
 		return (char) ('①' + number - 1);
 	}

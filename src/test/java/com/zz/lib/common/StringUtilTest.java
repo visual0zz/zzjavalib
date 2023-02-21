@@ -4,6 +4,8 @@ import com.zz.lib.common.exception.DataSizeException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 public class StringUtilTest {
@@ -15,6 +17,12 @@ public class StringUtilTest {
         Assert.assertEquals("{",StringUtil.format("{"));
         Assert.assertEquals("{}{}",StringUtil.format("{}{}","{}{","}"));
         Assert.assertEquals("{}{",StringUtil.format("{}{}","{}{",null));
+
+
+        HashMap<String,Object> map=new HashMap<>();
+        map.put("a",123);
+        map.put("b","9f0sadf");
+        assertEquals("{c}123,9f0sadf{", StringUtil.format("{c}{a},{b}{", map));
     }
     @Test
     public void testToString(){

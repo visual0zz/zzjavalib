@@ -79,7 +79,6 @@ public final class StringUtil {
 
     /**
      * 用格式字符串拼接字符串
-     *
      * @param format      格式字符串类似"xxx={},xxx={}" 这种，使用指定占位符表示填充数据的位置
      * @param placeHolder 占位符，例如{}
      * @param params      用于填充格式字符串空位的数据
@@ -94,32 +93,29 @@ public final class StringUtil {
         }
         final int strPatternLength = format_.length();
         final int placeHolderLength = placeHolder_.length();
-
-        // 初始化定义好的长度以获得更好的性能
-        final StringBuilder buffer = new StringBuilder(strPatternLength + 50);
-
-        int current = 0;// 记录已经处理到的位置
-        int placeHolderIndex;// 占位符所在位置
+        final StringBuilder buffer = new StringBuilder(strPatternLength + 60);
+        int current = 0;
+        int placeHolderIndex;
         for (int i = 0; i < params.length; i++) {
             placeHolderIndex = format_.indexOf(placeHolder_, current);
-            if (placeHolderIndex == -1) {// 剩余部分无占位符
+            if (placeHolderIndex == -1) {
                 break;
             }
-            // 转义符
-            if (placeHolderIndex > 0 && format_.charAt(placeHolderIndex - 1) == '\\') {// 转义符
-                if (placeHolderIndex > 1 && format_.charAt(placeHolderIndex - 2) == '\\') {// 双转义符
-                    // 转义符之前还有一个转义符，占位符依旧有效
+            if (placeHolderIndex > 0 && format_.charAt(placeHolderIndex - 1) == '\\') {
+                if (placeHolderIndex > 1 && format_.charAt(placeHolderIndex - 2) == '\\') {
+                    //双转义符
                     buffer.append(format_, current, placeHolderIndex - 1);
                     buffer.append(params[i]==null?"":params[i].toString());
                     current = placeHolderIndex + placeHolderLength;
                 } else {
-                    // 占位符被转义
+                    //单转义符
                     i--;
                     buffer.append(format_, current, placeHolderIndex - 1);
                     buffer.append(placeHolder_.charAt(0));
                     current = placeHolderIndex + 1;
                 }
-            } else {// 正常占位符
+            } else {
+                // 正常占位符
                 buffer.append(format_, current, placeHolderIndex);
                 buffer.append(params[i]==null?"":params[i].toString());
                 current = placeHolderIndex + placeHolderLength;
@@ -148,22 +144,19 @@ public final class StringUtil {
      * @param params      用于填充格式字符串空位的数据，其中key会被作为变量名，value会填充到对应位置
      * @return 拼接后的字符串
      */
-    public static String format(CharSequence format, Map<?, ?> params) {
-        if (null == format) {
+    public static String format(CharSequence format, Map<String, Object> params) {
+        if (format == null) {
             return null;
         }
-        if (null == params || params.isEmpty()) {
+        if (params == null || params.isEmpty()) {
             return format.toString();
         }
-
         String template = format.toString();
-        String value;
-        for (Map.Entry<?, ?> entry : params.entrySet()) {
-            value = entry.getValue()==null?"":entry.getValue().toString();
-            if (null == value) {
-                continue;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            Object value =entry.getValue();
+            if (value != null) {
+                template = template.replace("{" + entry.getKey() + "}", value.toString());
             }
-            template = template.replace("{" + entry.getKey() + "}", value);
         }
         return template;
     }
