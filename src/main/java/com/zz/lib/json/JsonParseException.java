@@ -1,4 +1,4 @@
-package com.zz.lib.common.json;
+package com.zz.lib.json;
 
 /**
  * 数据校验错误，输入数据的尺寸、类型、内容模式等不符合预期。

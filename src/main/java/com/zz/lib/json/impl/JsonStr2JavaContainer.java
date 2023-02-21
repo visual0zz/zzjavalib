@@ -1,6 +1,8 @@
-package com.zz.lib.common.json;
+package com.zz.lib.json.impl;
 
+import com.zz.lib.common.CharUtil;
 import com.zz.lib.common.StringUtil;
+import com.zz.lib.json.JsonParseException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,17 +10,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JsonStrParser {
+public class JsonStr2JavaContainer {
+    public static Object parse(CharSequence json){
+        JsonStr2JavaContainer parser=new JsonStr2JavaContainer(json);
+        char firstValidChar=parser.nextCleanChar();
+        if(firstValidChar!='{' && firstValidChar!='['){
+            throw new JsonParseException("json must start with [ or { ");
+        }
+        parser.index--;
+        Object result=parser.nextValue();
+        while(!parser.ended){
+            if(!CharUtil.isBlankChar(parser.nextChar())){
+                throw new JsonParseException("json string with redundant tail:"+json.subSequence(parser.index,json.length()));
+            }
+        }
+        return result;
+    }
 
-    public int index;
-    public final CharSequence charSequence;
+    int index;
+    final CharSequence charSequence;
     boolean ended;
-    public JsonStrParser(CharSequence charSequence){
+    JsonStr2JavaContainer(CharSequence charSequence){
         this.charSequence =charSequence;
         index=0;
         ended=false;
     }
-    public char next() {
+    char nextChar() {
         if (ended) {
             throw new JsonParseException("unexpected eof.");
         }
@@ -27,44 +44,44 @@ public class JsonStrParser {
         }
         return charSequence.charAt(index++);
     }
-    public char next(char c){
-        char n=next();
+    char nextChar(char c){
+        char n= nextChar();
         if(n!=c){
             throw new JsonParseException("expected "+c+" but got "+n+" [pos:"+--index+"]");
         }
         return n;
     }
-    public String next(int n) {
+    String nextChar(int n) {
         if (n == 0) {
             return "";
         }
         char[] result = new char[n];
         for (int i = 0; i < n; i++) {
-            result[i] = next();
+            result[i] = nextChar();
         }
         return new String(result);
     }
-    public char nextClean(){
+    char nextCleanChar(){
         char c;
         while (true) {
-            c = next();
+            c = nextChar();
             if (c == 0 || c > ' ') {
                 return c;
             }
         }
     }
-    public String nextString(char quote) {
+    String parseString(char quote) {
         char c;
         StringBuilder sb = new StringBuilder();
         while (true) {
-            c = next();
+            c = nextChar();
             switch (c) {
                 case 0:
                 case '\n':
                 case '\r':
                     throw new RuntimeException("Unterminated string");
                 case '\\':// 转义符
-                    c = next();
+                    c = nextChar();
                     switch (c) {
                         case 'b':
                             sb.append('\b');
@@ -82,7 +99,7 @@ public class JsonStrParser {
                             sb.append('\r');
                             break;
                         case 'u':// Unicode符
-                            sb.append((char) Integer.parseInt(next(4), 16));
+                            sb.append((char) Integer.parseInt(nextChar(4), 16));
                             break;
                         case '"':
                         case '\'':
@@ -102,21 +119,23 @@ public class JsonStrParser {
             }
         }
     }
-    public Map<String,Object> nextObject(){
+    Map<String,Object> parseObject(){
         HashMap<String,Object> result=new HashMap();
         while(true){
-            char c=nextClean();
+            char c= nextCleanChar();
             switch (c){
                 case '"':
                 case '\'':
-                    String key=nextString(c);
-                    next(':');
+                    String key= parseString(c);
+                    nextChar(':');
                     Object value=nextValue();
                     if(result.containsKey(key)){
                         throw new JsonParseException("duplicate key found:"+key);
                     }
-                    result.put(key,value);
-                    char n=nextClean();
+                    if(value!=null){
+                        result.put(key,value);
+                    }
+                    char n= nextCleanChar();
                     if(n==','){
                         continue;
                     }else if(n!='}'){
@@ -129,12 +148,14 @@ public class JsonStrParser {
             }
         }
     }
-    public List<Object> nextArray(){
+    List<Object> parseArray(){
         List<Object> result=new ArrayList<>();
         while(true){
             Object value=nextValue();
-            result.add(value);
-            char c=nextClean();
+            if(value!=null) {
+                result.add(value);
+            }
+            char c= nextCleanChar();
             if(c==']'){
                 return result;
             }
@@ -143,16 +164,16 @@ public class JsonStrParser {
             }
         }
     }
-    public Object nextValue() {
-        char c = this.nextClean();
+    Object nextValue() {
+        char c = this.nextCleanChar();
         switch (c) {
             case '"':
             case '\'':
-                return this.nextString(c);
+                return this.parseString(c);
             case '{':
-                return nextObject();
+                return parseObject();
             case '[':
-                return nextArray();
+                return parseArray();
         }
         StringBuilder sb = new StringBuilder();
         while (c >= ' ' && ",:]}/\\\"[{;=#".indexOf(c) < 0) {
@@ -160,7 +181,7 @@ public class JsonStrParser {
             if(ended){
                 break;
             }
-            c = this.next();
+            c = this.nextChar();
         }
         String string = sb.toString().trim();
         if(!ended) {
@@ -189,4 +210,5 @@ public class JsonStrParser {
         }
         throw new JsonParseException("unparseable string: "+ string);
     }
+
 }

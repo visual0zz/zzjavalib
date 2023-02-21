@@ -1,4 +1,4 @@
-package com.zz.lib.java;
+package com.zz.lib.reflection;
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;

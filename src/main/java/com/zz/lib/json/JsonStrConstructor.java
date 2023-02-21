@@ -1,4 +1,4 @@
-package com.zz.lib.common.json;
+package com.zz.lib.json;
 
 public class JsonStrConstructor {
 }
