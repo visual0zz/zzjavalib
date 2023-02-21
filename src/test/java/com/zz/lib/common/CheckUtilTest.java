@@ -38,17 +38,17 @@ public class CheckUtilTest {
     }
     @Test
     public void assertSize1() {
-        CheckUtil.mustAsSize(new String[]{""},1,1);
-        CheckUtil.mustAsSize(new String[]{"","123"},2,2);
-        CheckUtil.mustAsSize(new ArrayList<String>(),0,0);
+        CheckUtil.mustMatchSize(new String[]{""},1,1);
+        CheckUtil.mustMatchSize(new String[]{"","123"},2,2);
+        CheckUtil.mustMatchSize(new ArrayList<String>(),0,0);
     }
     @Test(expected = DataSizeException.class)
     public void assertSize2() {
-        CheckUtil.mustAsSize(new String[]{""},2,2);
+        CheckUtil.mustMatchSize(new String[]{""},2,2);
     }
     @Test(expected = DataTypeException.class)
     public void assertSize3() {
-        CheckUtil.mustAsSize(1,2,2);
+        CheckUtil.mustMatchSize(1,2,2);
     }
     public void a(int b){
 

@@ -81,7 +81,7 @@ public final class CheckUtil {
      * @param max 最大尺寸（包含）
      * @param message 如果不符合，那么抛出异常携带的信息
      */
-    public static void mustAsSize(Object container, int min, int max, String message) {
+    public static void mustMatchSize(Object container, int min, int max, String message) {
         Class<?> clazz = container.getClass();
         Integer actualSizeValue = null;
         if (clazz.isArray()) {
@@ -124,8 +124,8 @@ public final class CheckUtil {
             }
         }
     }
-    public static void mustAsSize(Object container, int min, int max) {
-        mustAsSize(container, min, max, null);
+    public static void mustMatchSize(Object container, int min, int max) {
+        mustMatchSize(container, min, max, null);
     }
     //assert the types of param list of the method
     public static void mustWithParamTypes(Method method, String message, Class<?>... expectedTypes) {
