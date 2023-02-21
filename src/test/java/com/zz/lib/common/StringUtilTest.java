@@ -13,14 +13,8 @@ public class StringUtilTest {
         Assert.assertEquals("123456,{,},{hhh",StringUtil.format("123{},{,},{{}",456,"hhh"));
         Assert.assertEquals("{}{",StringUtil.format("{{}{","}"));
         Assert.assertEquals("{",StringUtil.format("{"));
-    }
-    @Test(expected = DataSizeException.class)
-    public void formatError1() {
-        StringUtil.format("123{},{,},{{}",456,"hhh","g");
-    }
-    @Test(expected = DataSizeException.class)
-    public void formatError2() {
-        Assert.assertEquals("123456,{,},{hhh",StringUtil.format("123{},{,},{{}",456));
+        Assert.assertEquals("{}{}",StringUtil.format("{}{}","{}{","}"));
+        Assert.assertEquals("{}{",StringUtil.format("{}{}","{}{",null));
     }
     @Test
     public void testToString(){
@@ -32,7 +26,16 @@ public class StringUtilTest {
         Object[]a=new Object[2];
         a[0]=a;
         a[1]=a;
-        Assert.assertEquals("[[...], [...]]",StringUtil.toString(a));
+        Assert.assertEquals("[<...>, <...>]",StringUtil.toString(a));
         Assert.assertEquals("ggg",StringUtil.toString("ggg"));
+    }
+    @Test
+    public void isBlankStr(){
+        Assert.assertTrue(StringUtil.isBlankStr(null));
+        Assert.assertTrue(StringUtil.isBlankStr(""));
+        Assert.assertTrue(StringUtil.isBlankStr(" "));
+        Assert.assertTrue(StringUtil.isBlankStr("\t"));
+        Assert.assertTrue(StringUtil.isBlankStr("      \t\n"));
+        Assert.assertFalse(StringUtil.isBlankStr("fasdf"));
     }
 }

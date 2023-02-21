@@ -13,17 +13,17 @@ public final class CheckUtil {
     private final static String[] sizeFieldNames = {"size", "length"};
     private CheckUtil() {
     }
-    public static void assertTrue(Boolean... conditions) {
-        assertTrue("error,assertTrue()=false.", conditions);
+    public static void mustTrue(Boolean... conditions) {
+        mustTrue("error,assertTrue()=false.", conditions);
     }
-    public static void assertTrue(String message, Boolean... conditions) {
+    public static void mustTrue(String message, Boolean... conditions) {
         for (Boolean condition : conditions) {
             if (!condition) {
                 throw new DataCheckException(message);
             }
         }
     }
-    public static <T> void assertEquals(T actual, T expected, String message) {
+    public static <T> void mustEquals(T actual, T expected, String message) {
         boolean fail = false;
         if (actual != null && expected != null) {
             if (!expected.equals(actual)) {
@@ -39,15 +39,15 @@ public final class CheckUtil {
                 throw new DataContentException(message);
         }
     }
-    public static <T> void assertEquals(T actual, T expected) {
-        assertEquals(actual, expected, null);
+    public static <T> void mustEquals(T actual, T expected) {
+        mustEquals(actual, expected, null);
     }
-    public static void assertNotNull(Object object) {
+    public static void mustNotNull(Object object) {
         if (object == null) {
             throw new NullPointerException();
         }
     }
-    public static void assertNotNull(Object object,Object... objects) {
+    public static void mustNotNull(Object object, Object... objects) {
         if (object == null) {
             throw new NullPointerException();
         }
@@ -58,7 +58,7 @@ public final class CheckUtil {
         }
     }
     //assert that the object provided is an instance of the class provided.
-    public static <T> void assertIsA(Object object, Class<T> clazz, String message) {
+    public static <T> void mustIsA(Object object, Class<T> clazz, String message) {
         if (object == null) {
             throw new DataTypeException("null is not a " + clazz.getCanonicalName());
         }
@@ -70,10 +70,18 @@ public final class CheckUtil {
             }
         }
     }
-    public static <T> void assertIsA(Object object, Class<T> clazz) {
-        assertIsA(object, clazz, null);
+    public static <T> void mustIsA(Object object, Class<T> clazz) {
+        mustIsA(object, clazz, null);
     }
-    public static void assertSize(Object container, int min, int max, String message) {
+
+    /**
+     * 声明一个容器具有特定的尺寸
+     * @param container 容器
+     * @param min 最小尺寸（包含）
+     * @param max 最大尺寸（包含）
+     * @param message 如果不符合，那么抛出异常携带的信息
+     */
+    public static void mustAsSize(Object container, int min, int max, String message) {
         Class<?> clazz = container.getClass();
         Integer actualSizeValue = null;
         if (clazz.isArray()) {
@@ -116,11 +124,11 @@ public final class CheckUtil {
             }
         }
     }
-    public static void assertSize(Object container, int min, int max) {
-        assertSize(container, min, max, null);
+    public static void mustAsSize(Object container, int min, int max) {
+        mustAsSize(container, min, max, null);
     }
     //assert the types of param list of the method
-    public static void assertMethodParamTypes(Method method, String message, Class<?>... expectedTypes) {
+    public static void mustWithParamTypes(Method method, String message, Class<?>... expectedTypes) {
         Class<?>[] actualTypes = method.getParameterTypes();
         boolean matches = true;
         if (actualTypes.length != expectedTypes.length) {
@@ -139,11 +147,11 @@ public final class CheckUtil {
             }
         }
     }
-    public static void assertMethodParamTypes(Method method, Class<?>... expectedTypes) {
-        assertMethodParamTypes(method, null, expectedTypes);
+    public static void mustWithParamTypes(Method method, Class<?>... expectedTypes) {
+        mustWithParamTypes(method, null, expectedTypes);
     }
     //assert that all strings match the regex
-    public static void assertRegex(String regex, String... strings) {
+    public static void mustMatchRegex(String regex, String... strings) {
         Pattern pattern = Pattern.compile(regex);
         for (int i = 0; i < strings.length; i++) {
             if (strings[i] == null || !pattern.matcher(strings[i]).matches()) {

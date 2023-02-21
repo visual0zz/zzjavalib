@@ -30,7 +30,7 @@ final class TupleCodeGenerator {
     }
 
     static String tupleRootCode(int n) {
-        CheckUtil.assertTrue(n > 0);
+        CheckUtil.mustTrue(n > 0);
         StringBuilder code = new StringBuilder();
         code.append("package com.zz.lib.common.container.tuple;\n" +
                 "import com.zz.lib.common.exception.InvalidOperationException;\n" +
@@ -116,7 +116,7 @@ final class TupleCodeGenerator {
     }
 
     static String tupleNCode(int n) {
-        CheckUtil.assertTrue(n > 0);
+        CheckUtil.mustTrue(n > 0);
         StringBuilder code = new StringBuilder();
         code.append("package com.zz.lib.common.container.tuple;\n\n" +
                 "\n");

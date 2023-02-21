@@ -2,7 +2,6 @@ package com.zz.lib.zzscript.impl;
 
 import com.zz.lib.common.CheckUtil;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public class ActualArguments {
     private List<Class> type;
     private ActualArguments(){}
     public static ActualArguments of(Object ...obj){
-        CheckUtil.assertNotNull(obj);
+        CheckUtil.mustNotNull(obj);
         ActualArguments d=new ActualArguments();
 //        d.data=obj;
 //        d.type=obj.getClass();
