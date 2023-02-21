@@ -3,11 +3,8 @@ package com.zz.lib.common;
 import com.zz.lib.common.exception.DataContentException;
 
 /**
- * 字符工具类<br>
- * 部分工具来自于Apache Commons系列
+ * 字符工具类
  *
- * @author looly
- * @since 4.0.1
  */
 public class CharUtil {
 	public static boolean isAsciiChar(char ch) {
