@@ -1,7 +1,7 @@
 package com.zz.lib.json;
 
 /**
- * 数据校验错误，输入数据的尺寸、类型、内容模式等不符合预期。
+ * json字符串解析错误，输入json字符串格式异常导致无法解析。
  */
 
 public class JsonParseException extends RuntimeException {

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class JavaObject2JsonStr {
     private static JavaObject2JsonStr BUILDER = new JavaObject2JsonStr(false);
-    private static JavaObject2JsonStr FORMATTED_BUILDER = new JavaObject2JsonStr(false);
+    private static JavaObject2JsonStr FORMATTED_BUILDER = new JavaObject2JsonStr(true);
 
     JavaObject2JsonStr(boolean formatted) {
         this.formatted = formatted;
@@ -25,7 +25,7 @@ public class JavaObject2JsonStr {
 
     String construct(Object object, int level) {
         if (object == null) {
-            return null;
+            return "null";
         } else if (object instanceof Integer || object instanceof Long || object instanceof Short || object instanceof Byte) {
             return String.valueOf(object);
         } else if (object instanceof BigDecimal) {
@@ -84,9 +84,11 @@ public class JavaObject2JsonStr {
             return constructString(builder.toString());
         } else if (object instanceof String || object instanceof Character) {
             return constructString("" + object);
+        }else if(object instanceof Boolean){
+            return object.toString();
         }
         //todo 判断对象是直接继承Object的简单对象，直接提取内部属性
-        return "";
+        return "error...";
     }
 
     String constructArray(List<Object> array, int level) {
@@ -95,9 +97,11 @@ public class JavaObject2JsonStr {
         if (formatted) {
             result.append("\n");
         }
+        boolean emptyArray=true;
         for (int i = 0; i < array.size(); i++) {
             Object obj = array.get(i);
             if (obj != null) {
+                emptyArray=false;
                 leadingSpace(result, level);
                 result.append(construct(obj, level + 1));
                 if (i < array.size() - 1) {
@@ -107,6 +111,9 @@ public class JavaObject2JsonStr {
                     result.append("\n");
                 }
             }
+        }
+        if(emptyArray){
+            return "[]";
         }
         leadingSpace(result, level - 1);
         result.append(']');
@@ -119,8 +126,10 @@ public class JavaObject2JsonStr {
         if (formatted) {
             result.append("\n");
         }
+        boolean emptyMap=true;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() != null) {
+                emptyMap=false;
                 leadingSpace(result, level);
                 result.append('"').append(entry.getKey()).append("\": ").append(construct(entry.getValue(), level + 1)).append(',');
                 if (formatted) {
@@ -128,9 +137,14 @@ public class JavaObject2JsonStr {
                 }
             }
         }
+        if(emptyMap){
+            return "{}";
+        }
         if (result.charAt(result.length() - 1) == ',') {
             result.deleteCharAt(result.length() - 1);
         }
+        leadingSpace(result,level-1);
+        result.append("}");
         return result.toString();
     }
 
@@ -146,62 +160,53 @@ public class JavaObject2JsonStr {
     }
 
     String constructString(String str) {
-        StringBuilder s=new StringBuilder();
-        if (str == null || str.isEmpty()) {
-            s.append("\"\"");
-            return s.toString();
-        }
-
-        char c; // 当前字符
-        int len = str.length();
-        s.append('"');
-
-        for (int i = 0; i < len; i++) {
-            c = str.charAt(i);
+        StringBuilder result = new StringBuilder();
+        result.append('"');
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
             switch (c) {
                 case '\\':
                 case '"':
-                    s.append("\\");
-                    s.append(c);
+                    result.append("\\");
+                    result.append(c);
                     break;
                 default:
-                    String result;
+                    String replace;
                     switch (c) {
                         case '\b':
-                            result = "\\b";
+                            replace = "\\b";
                             break;
                         case '\t':
-                            result = "\\t";
+                            replace = "\\t";
                             break;
                         case '\n':
-                            result = "\\n";
+                            replace = "\\n";
                             break;
                         case '\f':
-                            result = "\\f";
+                            replace = "\\f";
                             break;
                         case '\r':
-                            result = "\\r";
+                            replace = "\\r";
                             break;
                         default:
-                            if (c < ' ' || //
-                                    (c >= '\u0080' && c <= '\u00a0') || //
-                                    (c >= '\u2000' && c <= '\u2010') || //
-                                    (c >= '\u2028' && c <= '\u202F') || //
-                                    (c >= '\u2066' && c <= '\u206F')//
+                            if (c < ' ' ||
+                                    (c >= '\u0080' && c <= '\u00a0') ||
+                                    (c >= '\u2000' && c <= '\u2010') ||
+                                    (c >= '\u2028' && c <= '\u202F') ||
+                                    (c >= '\u2066' && c <= '\u206F')
                             ) {
-                                result = "\\u" + Integer.toString(c, 16);
+                                replace = "\\u" + Integer.toString(c, 16);
                                 break;
                             } else {
-                                result = Character.toString(c);
+                                replace = Character.toString(c);
                                 break;
                             }
                     }
-                    s.append(result);
+                    result.append(replace);
             }
         }
-        s.append('"');
-
-        return s.toString();
+        result.append('"');
+        return result.toString();
     }
 
     private void leadingSpace(StringBuilder builder, int level) {

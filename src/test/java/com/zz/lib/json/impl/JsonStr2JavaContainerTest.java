@@ -1,5 +1,6 @@
 package com.zz.lib.json.impl;
 
+import com.zz.lib.json.JsonParseException;
 import com.zz.lib.json.impl.JsonStr2JavaContainer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,5 +58,9 @@ public class JsonStr2JavaContainerTest {
                 "]], root=[3, 1, 4, 1, 5]}, name2=\"Name\", name1=Name}, {number3=99" +
                 ".99, number4=1E+2, number1=100, number2=-100, number5=-1E+2}, {flag2=f" +
                 "alse, flag1=true}]",JsonStr2JavaContainer.parse(json).toString());
+    }
+    @Test(expected= JsonParseException.class)
+    public void parseError(){
+        JsonStr2JavaContainer.parse("[null  fff]");
     }
 }
