@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 public final class StringUtil {
-
     /**
      * 是否是一个空或者空白字符串，不是字符串或者字符串不为空白都会返回false，输入空白字符串或者null返回true
      *
@@ -57,7 +56,6 @@ public final class StringUtil {
             return Arrays.toString((double[]) object);
         } else if (object.getClass().isArray()) {
             if (dejaVu.contains(object)) {
-                //todo 通过缓存object改为缓存object的地址来防止多个内容一样的object触发"循环引用消除"机制
                 return "<...>";
             }
             dejaVu.add(object);

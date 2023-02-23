@@ -18,6 +18,50 @@ public class JavaObject2JsonStrTest {
         Object obj = JsonStr2JavaContainer.parse(json);
         Assert.assertEquals("[{\"data\": {\"dig\": [[false],[],[[[],[1,\"a\",true]],[]]],\"root\": [3,1,4,1,5]},\"name2\": \"\\\"Name\\\"\",\"name1\": \"Name\"},{\"number3\": 99.99,\"number4\": 100,\"number1\": 100,\"number2\": -100,\"number5\": -100},{\"flag2\": false,\"flag1\": true}]"
                 , JavaObject2JsonStr.toJson(obj));
+        Assert.assertEquals("[\n" +
+                        "  {\n" +
+                        "    \"data\": {\n" +
+                        "      \"dig\": [\n" +
+                        "        [\n" +
+                        "          false\n" +
+                        "        ],\n" +
+                        "        [],\n" +
+                        "        [\n" +
+                        "          [\n" +
+                        "            [],\n" +
+                        "            [\n" +
+                        "              1,\n" +
+                        "              \"a\",\n" +
+                        "              true\n" +
+                        "            ]\n" +
+                        "          ],\n" +
+                        "          []\n" +
+                        "        ]\n" +
+                        "      ],\n" +
+                        "      \"root\": [\n" +
+                        "        3,\n" +
+                        "        1,\n" +
+                        "        4,\n" +
+                        "        1,\n" +
+                        "        5\n" +
+                        "      ]\n" +
+                        "    },\n" +
+                        "    \"name2\": \"\\\"Name\\\"\",\n" +
+                        "    \"name1\": \"Name\"\n" +
+                        "  },\n" +
+                        "  {\n" +
+                        "    \"number3\": 99.99,\n" +
+                        "    \"number4\": 100,\n" +
+                        "    \"number1\": 100,\n" +
+                        "    \"number2\": -100,\n" +
+                        "    \"number5\": -100\n" +
+                        "  },\n" +
+                        "  {\n" +
+                        "    \"flag2\": false,\n" +
+                        "    \"flag1\": true\n" +
+                        "  }\n" +
+                        "]"
+                , JavaObject2JsonStr.toFormatJson(obj));
     }
 
     @Test
@@ -63,8 +107,8 @@ public class JavaObject2JsonStrTest {
     }
 
     @Test
-    public void testIntegerToString() {
-
+    public void testEscape() {
+        Assert.assertEquals("\"\\u0001\\n反反复复\\\"'\\\\\\t\\r😊\"",JavaObject2JsonStr.toFormatJson("\u0001\n反反复复\"'\\\t\r😊"));
     }
 
 }

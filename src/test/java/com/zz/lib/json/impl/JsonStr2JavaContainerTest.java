@@ -61,6 +61,6 @@ public class JsonStr2JavaContainerTest {
     }
     @Test(expected= JsonParseException.class)
     public void parseError(){
-        JsonStr2JavaContainer.parse("[null  fff]");
+        JsonStr2JavaContainer.parse("'a':false");
     }
 }

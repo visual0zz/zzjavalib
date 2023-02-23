@@ -2,6 +2,7 @@ package com.zz.lib.json.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +89,7 @@ public class JavaObject2JsonStr {
             return object.toString();
         }
         //todo 判断对象是直接继承Object的简单对象，直接提取内部属性
-        return "error...";
+        return "<...error...>";
     }
 
     String constructArray(List<Object> array, int level) {
@@ -127,11 +128,15 @@ public class JavaObject2JsonStr {
             result.append("\n");
         }
         boolean emptyMap=true;
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
+        for (Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, Object> entry = it.next();
             if (entry.getValue() != null) {
                 emptyMap=false;
                 leadingSpace(result, level);
-                result.append('"').append(entry.getKey()).append("\": ").append(construct(entry.getValue(), level + 1)).append(',');
+                result.append('"').append(entry.getKey()).append("\": ").append(construct(entry.getValue(), level + 1));
+                if(it.hasNext()){
+                    result.append(',');
+                }
                 if (formatted) {
                     result.append("\n");
                 }
@@ -139,9 +144,6 @@ public class JavaObject2JsonStr {
         }
         if(emptyMap){
             return "{}";
-        }
-        if (result.charAt(result.length() - 1) == ',') {
-            result.deleteCharAt(result.length() - 1);
         }
         leadingSpace(result,level-1);
         result.append("}");
@@ -171,22 +173,22 @@ public class JavaObject2JsonStr {
                     result.append(c);
                     break;
                 default:
-                    String replace;
+                    String escape;
                     switch (c) {
                         case '\b':
-                            replace = "\\b";
+                            escape = "\\b";
                             break;
                         case '\t':
-                            replace = "\\t";
+                            escape = "\\t";
                             break;
                         case '\n':
-                            replace = "\\n";
+                            escape = "\\n";
                             break;
                         case '\f':
-                            replace = "\\f";
+                            escape = "\\f";
                             break;
                         case '\r':
-                            replace = "\\r";
+                            escape = "\\r";
                             break;
                         default:
                             if (c < ' ' ||
@@ -195,14 +197,18 @@ public class JavaObject2JsonStr {
                                     (c >= '\u2028' && c <= '\u202F') ||
                                     (c >= '\u2066' && c <= '\u206F')
                             ) {
-                                replace = "\\u" + Integer.toString(c, 16);
+                                StringBuilder escapeBuilder = new StringBuilder(Integer.toString(c, 16));
+                                for(int j=4-escapeBuilder.length();j>0;j--){
+                                    escapeBuilder.insert(0,"0");
+                                }
+                                escape=escapeBuilder.insert(0,"\\u").toString();
                                 break;
                             } else {
-                                replace = Character.toString(c);
+                                escape = Character.toString(c);
                                 break;
                             }
                     }
-                    result.append(replace);
+                    result.append(escape);
             }
         }
         result.append('"');
