@@ -57,6 +57,7 @@ public final class StringUtil {
             return Arrays.toString((double[]) object);
         } else if (object.getClass().isArray()) {
             if (dejaVu.contains(object)) {
+                //todo 通过缓存object改为缓存object的地址来防止多个内容一样的object触发"循环引用消除"机制
                 return "<...>";
             }
             dejaVu.add(object);
@@ -160,4 +161,5 @@ public final class StringUtil {
         }
         return template;
     }
+    //todo 驼峰写法和下划线写法和小驼峰写法的转换
 }

@@ -13,11 +13,6 @@ import java.util.Map;
 public class JsonStr2JavaContainer {
     public static Object parse(CharSequence json){
         JsonStr2JavaContainer parser=new JsonStr2JavaContainer(json);
-        char firstValidChar=parser.nextCleanChar();
-        if(firstValidChar!='{' && firstValidChar!='['){
-            throw new JsonParseException("json must start with [ or { ");
-        }
-        parser.index--;
         Object result=parser.nextValue();
         while(!parser.ended){
             if(!CharUtil.isBlankChar(parser.nextChar())){
