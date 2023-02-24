@@ -1,7 +1,5 @@
 package com.zz.lib.common;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public final class StringUtil {
     /**
@@ -159,5 +157,92 @@ public final class StringUtil {
         }
         return template;
     }
-    //todo 驼峰写法和下划线写法和小驼峰写法的转换
+
+    /**
+     *
+     * @param camelName 大驼峰或者小驼峰格式的标识符
+     * @return 中间结果，用以转换为其他格式
+     */
+    public static Words fromCamelCase(String camelName){
+        return new Words(camelName.split("((?=[A-Z])|(?<=[0-9])(?=[a-zA-z])|(?<=[a-zA-z])(?=[0-9]))"));
+    }
+    /**
+     *
+     * @param name 下划线或者连接符格式的标识符
+     * @return 中间结果，用以转换为其他格式
+     */
+    public static Words fromSnakeOrKebab(String name){
+        return new Words(name.split("([\\-_]|(?<=[0-9])(?=[a-zA-z])|(?<=[a-zA-z])(?=[0-9]))"));
+    }
+
+    public final static class Words{
+        private final List<String> data;
+        private Words(String[]data){
+            CheckUtil.mustMatchRegex("[A-Za-z0-9]*",data);
+            this.data=new ArrayList<>();
+            for (String datum : data) {
+                if(!datum.isEmpty()) {
+                    this.data.add(datum.toLowerCase());
+                }
+            }
+        }
+
+        /**
+         * 转换为大驼峰格式
+         * @return 大驼峰格式 例如 MyCompanyName
+         */
+        public String toUpperCamelCase(){
+            StringBuilder result=new StringBuilder();
+            for(int i=0;i<data.size();i++){
+                result.append(upperTheFirstLetter(data.get(i)));
+            }
+            return result.toString();
+        }
+
+        /**
+         * 转换为小驼峰格式
+         * @return 小驼峰格式 例如 myCompanyName
+         */
+        public String toLowerCamelCase(){
+            StringBuilder result=new StringBuilder();
+            for(int i=0;i<data.size();i++){
+                if(i==0){
+                    result.append(data.get(i));
+                }else{
+                    result.append(upperTheFirstLetter(data.get(i)));
+                }
+            }
+            return result.toString();
+        }
+
+        /**
+         * 转换为下划线格式
+         * @return 下划线格式 例如 my_company_name
+         */
+        public String toSnakeCase(){
+            return String.join("_",this.data);
+        }
+
+        /**
+         * 转换为连接符格式
+         * @return 连接符格式 例如 my-company-name
+         */
+        public String toKebabCase(){
+            return String.join("-",this.data);
+        }
+        private String upperTheFirstLetter(String origin){
+            if(origin==null||origin.length()==0){
+                return origin;
+            }
+            char first=origin.charAt(0);
+            if(first>='a'&&first<='z'){
+                first= (char) (first-('a'-'A'));
+            }
+            if(origin.length()>1) {
+                return first+origin.substring(1);
+            }else {
+                return String.valueOf(first);
+            }
+        }
+    }
 }

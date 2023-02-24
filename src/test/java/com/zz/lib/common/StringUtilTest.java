@@ -46,4 +46,18 @@ public class StringUtilTest {
         Assert.assertTrue(StringUtil.isBlankStr("      \t\n"));
         Assert.assertFalse(StringUtil.isBlankStr("fasdf"));
     }
+
+    @Test
+    public void caseSwitch(){
+        Assert.assertEquals("myCompanyName",StringUtil.fromCamelCase("MyCompanyName").toLowerCamelCase());
+        Assert.assertEquals("MyCompanyName",StringUtil.fromCamelCase("myCompanyName").toUpperCamelCase());
+        Assert.assertEquals("my-company-name",StringUtil.fromCamelCase("myCompanyName").toKebabCase());
+        Assert.assertEquals("my_company_name",StringUtil.fromCamelCase("myCompanyName").toSnakeCase());
+        Assert.assertEquals("myCompanyName",StringUtil.fromSnakeOrKebab("my_company_name").toLowerCamelCase());
+        Assert.assertEquals("myCompanyName",StringUtil.fromSnakeOrKebab("my-company-name").toLowerCamelCase());
+        Assert.assertEquals("myCompanyName",StringUtil.fromSnakeOrKebab("my-company-name").toLowerCamelCase());
+
+        Assert.assertEquals("my0Company123Name",StringUtil.fromSnakeOrKebab("my-0company-123name").toLowerCamelCase());
+        Assert.assertEquals("my-a-b-c-012-name",StringUtil.fromCamelCase("myABC012Name").toKebabCase());
+    }
 }
