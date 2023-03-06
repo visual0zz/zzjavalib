@@ -7,19 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 public class JavaObject2JsonStr {
-    private static JavaObject2JsonStr BUILDER = new JavaObject2JsonStr(false);
-    private static JavaObject2JsonStr FORMATTED_BUILDER = new JavaObject2JsonStr(true);
 
     JavaObject2JsonStr(boolean formatted) {
         this.formatted = formatted;
     }
 
     public static String toJson(Object object) {
-        return BUILDER.construct(object, 1);
+        return new JavaObject2JsonStr(false).construct(object, 1);
     }
 
     public static String toFormatJson(Object object) {
-        return FORMATTED_BUILDER.construct(object, 1);
+        return new JavaObject2JsonStr(true).construct(object, 1);
     }
 
     boolean formatted;
