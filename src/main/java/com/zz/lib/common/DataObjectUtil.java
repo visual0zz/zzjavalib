@@ -15,12 +15,13 @@ public class DataObjectUtil {
 
     /**
      * 将一个数据对象的内部属性使用map来表示,所有public的属性或者getter函数都会被用来获得属性
-     * @param obj 数据对象(不能定义在java.*包下面)
-     * @return map
+     * @param obj 数据对象(不能定义在java.*包下面) 应当是简单的数据对象，不应当是容器、数组或者别的复杂对象
+     * @return 根据数据对象的属性转化为的map
      */
     static public Map<String,Object> extract(Object obj){
         Class<?>currentClazz=obj.getClass();
         Map<String,Object>properties=new HashMap<>();
+
         return null;
     }
     static public Map<String,Object> deepExtract(Object obj){
