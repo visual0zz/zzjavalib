@@ -42,11 +42,6 @@ public final class CheckUtil {
     public static <T> void mustEquals(T actual, T expected) {
         mustEquals(actual, expected, null);
     }
-    public static void mustNotNull(Object object) {
-        if (object == null) {
-            throw new NullPointerException();
-        }
-    }
     public static void mustNotNull(Object object, Object... objects) {
         if (object == null) {
             throw new NullPointerException();
@@ -82,6 +77,36 @@ public final class CheckUtil {
      * @param message 如果不符合，那么抛出异常携带的信息
      */
     public static void mustMatchSize(Object container, int min, int max, String message) {
+        int actualSizeValue = getContainerSize(container);
+        if (actualSizeValue < min || actualSizeValue > max) {
+            if (message != null) {
+                throw new DataSizeException(message);
+            } else {
+                throw new DataSizeException("container size=" + actualSizeValue + ",not in [" + min + "," + max + "].");
+            }
+        }
+    }
+
+    /**
+     * 声明两个容器尺寸相等
+     * @param container1 容器1
+     * @param container2 容器2
+     * @param message 如果不符合，那么抛出异常携带的信息
+     */
+    public static void mustSameSize(Object container1, Object container2,String message) {
+        if (getContainerSize(container1)!=getContainerSize(container2)) {
+            if (message != null) {
+                throw new DataSizeException(message);
+            } else {
+                throw new DataSizeException("container size not equal.");
+            }
+        }
+    }
+
+    public static void mustSameSize(Object container1, Object container2){
+        mustSameSize(container1,container2,null);
+    }
+    private static int getContainerSize(Object container) {
         Class<?> clazz = container.getClass();
         Integer actualSizeValue = null;
         if (clazz.isArray()) {
@@ -90,7 +115,9 @@ public final class CheckUtil {
             Field sizeField = null;
             for (String name : sizeFieldNames) {
                 try {
-                    sizeField = clazz.getField(name);
+                    if(sizeField==null) {
+                        sizeField = clazz.getField(name);
+                    }
                 } catch (NoSuchFieldException ignore) {
                 }
             }
@@ -103,7 +130,9 @@ public final class CheckUtil {
             Method sizeMethod = null;
             for (String name : sizeMethodNames) {
                 try {
-                    sizeMethod = clazz.getMethod(name);
+                    if(sizeMethod==null) {
+                        sizeMethod = clazz.getMethod(name);
+                    }
                 } catch (NoSuchMethodException ignore) {
                 }
             }
@@ -116,14 +145,10 @@ public final class CheckUtil {
         }
         if (actualSizeValue == null) {
             throw new DataTypeException("getting size info failed,object may be not a container.");
-        } else if (actualSizeValue < min || actualSizeValue > max) {
-            if (message != null) {
-                throw new DataSizeException(message);
-            } else {
-                throw new DataSizeException("container size=" + actualSizeValue + ",not in [" + min + "," + max + "].");
-            }
         }
+        return actualSizeValue;
     }
+
     public static void mustMatchSize(Object container, int min, int max) {
         mustMatchSize(container, min, max, null);
     }
