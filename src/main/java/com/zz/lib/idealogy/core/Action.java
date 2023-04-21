@@ -1,4 +1,9 @@
 package com.zz.lib.idealogy.core;
 
-public interface Action extends Object{
+import com.zz.lib.common.tags.ReadOnly;
+import com.zz.lib.idealogy.constant.ActionImportance;
+
+@ReadOnly
+public interface Action {
+    ActionImportance getImportance();
 }

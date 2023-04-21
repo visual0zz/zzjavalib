@@ -3,7 +3,7 @@ package com.zz.lib.common;
 import org.junit.Test;
 
 
-public class DataObjectUtilTest {
+public class DataThingUtilTest {
 
     @Test
     public void deepEquals() {

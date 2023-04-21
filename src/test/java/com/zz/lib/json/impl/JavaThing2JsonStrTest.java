@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-public class JavaObject2JsonStrTest {
+public class JavaThing2JsonStrTest {
 
     @Test
     public void toJson() {
