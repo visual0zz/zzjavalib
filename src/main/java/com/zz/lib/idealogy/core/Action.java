@@ -6,4 +6,6 @@ import com.zz.lib.idealogy.constant.ActionImportance;
 @ReadOnly
 public interface Action {
     ActionImportance getImportance();
+
+    <T> T getAttribute(Class<T> attributeType);
 }

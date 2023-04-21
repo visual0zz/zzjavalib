@@ -1,5 +1,7 @@
 package com.zz.lib.idealogy.constant;
 
-public enum ActionImportance {
+import com.zz.lib.idealogy.core.Attribute;
+
+public enum ActionImportance implements Attribute {
     CORE,IMPORTANT,MID,NORMAL,NOTHING
 }
