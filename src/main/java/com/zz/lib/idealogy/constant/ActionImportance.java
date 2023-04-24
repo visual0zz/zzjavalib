@@ -13,4 +13,9 @@ public enum ActionImportance implements Attribute {
         }
         return null;
     }
+
+    @Override
+    public <T extends Attribute> T copy() {
+        return (T) this;
+    }
 }
