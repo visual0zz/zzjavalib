@@ -4,7 +4,8 @@ public interface Thing {
 
     void setAttribute(Attribute attribute);
 
-    <T> T getAttribute(Class<T> attributeType);
+    <T extends Attribute> T getAttribute(Class<T> attributeType);
+    <T extends Attribute> Object getAttributeValue(Class<T> attributeType,Object key);
 
     boolean effectedBy(Action action);
 }
