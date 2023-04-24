@@ -1,11 +1,11 @@
 package com.zz.lib.idealogy.core;
 
-public interface Thing {
+import com.zz.lib.idealogy.interfaces.AttributeHolder;
 
-    void setAttribute(Attribute attribute);
+public interface Thing extends AttributeHolder {
 
-    <T extends Attribute> T getAttribute(Class<T> attributeType);
-    <T extends Attribute> Object getAttributeValue(Class<T> attributeType,Object key);
+    <T extends Attribute<T>>void setAttribute(Attribute<T> attribute);
+    <T extends Attribute<T>> Object getAttributeValue(Class<T> attributeType,Object key);
 
     boolean effectedBy(Action action);
 }

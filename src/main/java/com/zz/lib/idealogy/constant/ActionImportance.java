@@ -2,7 +2,7 @@ package com.zz.lib.idealogy.constant;
 
 import com.zz.lib.idealogy.core.Attribute;
 
-public enum ActionImportance implements Attribute {
+public enum ActionImportance implements Attribute<ActionImportance> {
     CORE,VITAL,ESSENTIAL,IMPORTANT,MEDIUM,NORMAL,BACKGROUND,NOTHING;
     @Override
     public Object getValue(Object key) {
@@ -15,7 +15,7 @@ public enum ActionImportance implements Attribute {
     }
 
     @Override
-    public <T extends Attribute> T copy() {
-        return (T) this;
+    public ActionImportance copy() {
+        return this;
     }
 }

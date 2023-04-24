@@ -3,7 +3,7 @@ package com.zz.lib.idealogy.core;
 import com.zz.lib.common.tags.ReadOnly;
 
 @ReadOnly
-public interface AttributeFilter<T extends Attribute> {
+public interface AttributeFilter<T extends Attribute<T>> {
     boolean match(T attribute);
     default AttributeFilter<T> or(AttributeFilter<T> otherFilter){
         AttributeFilter<T>self=this;
@@ -21,6 +21,6 @@ public interface AttributeFilter<T extends Attribute> {
         AttributeFilter<T>self=this;
         return (AttributeFilterJoiner<T>) attribute -> self.match(attribute)^otherFilter.match(attribute);
     }
-    interface AttributeFilterJoiner<T extends Attribute> extends AttributeFilter<T>{
+    interface AttributeFilterJoiner<T extends Attribute<T>> extends AttributeFilter<T>{
     }
 }

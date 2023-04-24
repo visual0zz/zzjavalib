@@ -4,7 +4,7 @@ import com.zz.lib.common.tags.ReadOnly;
 import java.lang.reflect.Field;
 
 @ReadOnly
-public interface Attribute {
+public interface Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
     default Object getValue(Object key){
         try{
             Field field=this.getClass().getDeclaredField((String) key);
@@ -14,7 +14,7 @@ public interface Attribute {
             throw new RuntimeException(e);
         }
     }
-    default <T extends Attribute> T copy(){
+    default T copy(){
         try{
             T result= (T) this.getClass().getDeclaredConstructor().newInstance();
             Field[] fields=this.getClass().getDeclaredFields();
@@ -26,5 +26,13 @@ public interface Attribute {
         }catch (Exception e){
             throw new RuntimeException(e);
         }
+    }
+    @Override
+    boolean equals(Object other);
+    @Override
+    int hashCode();
+    @Override
+    default boolean match(T attribute){
+        return equals(attribute);
     }
 }
