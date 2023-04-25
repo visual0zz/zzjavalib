@@ -1,5 +1,6 @@
 package com.zz.lib.idealogy.core;
 import com.zz.lib.common.tags.ReadOnly;
+import com.zz.lib.idealogy.interfaces.AttributeHolder;
 
 import java.lang.reflect.Field;
 
@@ -14,7 +15,7 @@ public interface Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
             throw new RuntimeException(e);
         }
     }
-    default T copy(){
+    default Attribute<T> copy(){
         try{
             T result= (T) this.getClass().getDeclaredConstructor().newInstance();
             Field[] fields=this.getClass().getDeclaredFields();
