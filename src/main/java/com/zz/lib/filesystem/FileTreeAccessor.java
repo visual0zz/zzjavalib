@@ -4,7 +4,7 @@ package com.zz.lib.filesystem;
 import java.io.File;
 import java.util.List;
 
-public interface FileTreeTraveler {
+public interface FileTreeAccessor {
     /**
      * @param layer_level 当前文件夹在迭代树上的层数 根文件夹为0
      * @param folder 当前文件夹

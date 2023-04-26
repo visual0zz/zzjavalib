@@ -12,14 +12,14 @@ import java.util.List;
  * @apiNote  采用后序遍历，一个文件夹的所有子文件和文件夹被travel一遍之后，这个文件夹本身才会被travel
  * 这个类本身只会抛出FileNotFoundException 抛出Exception只是转发FileTreeTraveler接口抛出的异常
  */
-public final class FileTreeTravelManager {
+public final class FileTreeTraverseManager {
     private File rootFolder;//储存迭代树的根目录
     /**
      *
      * @param folder 迭代树的根目录，但也可以是一个文件，如果是一个文件，就只会调用traveler.travelFile一次。
      * @throws FileNotFoundException  如果根目录根本不存在就抛出异常
      */
-    public FileTreeTravelManager(String folder) throws FileNotFoundException {
+    public FileTreeTraverseManager(String folder) throws FileNotFoundException {
         this(new File(folder));
     }
 
@@ -28,7 +28,7 @@ public final class FileTreeTravelManager {
      * @param folder 迭代树的根目录，但也可以是一个文件，如果是一个文件，就只会调用traveler.travelFile一次。
      * @throws FileNotFoundException 如果根目录根本不存在就抛出异常
      */
-    public FileTreeTravelManager(File folder) throws FileNotFoundException {
+    public FileTreeTraverseManager(File folder) throws FileNotFoundException {
         if(!folder.exists())throw new FileNotFoundException("找不到这个文件:"+folder.getPath());
         rootFolder=folder;//保存文件夹
     }
@@ -38,12 +38,12 @@ public final class FileTreeTravelManager {
      * @param traveler 用于处理每个被遍历到的文件夹和文件的处理器对象
      * @return  返回用于用户自定义功能的字符串列表，这个列表会在遍历过程中反复传给traveler，供其根据情况修改其内容。
      */
-    public List<String> travel(FileTreeTraveler traveler) throws Exception {
+    public List<String> travel(FileTreeAccessor traveler) throws Exception {
         ArrayList<String> list=new ArrayList<>();
         travelOneLayer(rootFolder,0,traveler,list);
         return list;
     }
-    private void travelOneLayer(File file,int level_count,FileTreeTraveler traveler,List<String> list) throws Exception {
+    private void travelOneLayer(File file, int level_count, FileTreeAccessor traveler, List<String> list) throws Exception {
         if(file.exists()){//如果文件存在
             if(file.isDirectory()){//如果是文件夹
                 if(traveler.shouldTravelIntoFolder(level_count,file)) {

@@ -144,7 +144,7 @@ public final class Bash {
             }
             else if(file.isDirectory()){//如果是一个文件夹，就递归删除所有下级文件夹和文件。
                 try {
-                    new FileTreeTravelManager(file).travel(new FileTreeTraveler() {//遍历下级文件和文件夹。
+                    new FileTreeTraverseManager(file).travel(new FileTreeAccessor() {//遍历下级文件和文件夹。
                         @Override
                         public boolean shouldTravelIntoFolder(int layer_level, File folder) {
                             return true;
@@ -189,7 +189,7 @@ public final class Bash {
     public static ArrayList<File> ls(File file,boolean recursive,boolean fileOnly){
         ArrayList<File> result=new ArrayList<>();
         try {
-            new FileTreeTravelManager(file).travel(new FileTreeTraveler() {
+            new FileTreeTraverseManager(file).travel(new FileTreeAccessor() {
                 @Override
                 public boolean shouldTravelIntoFolder(int layer_level, File folder){
                     if(layer_level>0)
@@ -238,7 +238,7 @@ public final class Bash {
     public static ArrayList<File> find(File rootFolder,String regex,boolean findDirectory){
         ArrayList<File> list=new ArrayList<>();
         try {
-            new FileTreeTravelManager(rootFolder).travel(new FileTreeTraveler() {
+            new FileTreeTraverseManager(rootFolder).travel(new FileTreeAccessor() {
                 @Override
                 public boolean shouldTravelIntoFolder(int layer_level, File folder){
                     return true;
@@ -286,7 +286,7 @@ public final class Bash {
      */
     public static void purge(File rootFolder) throws AccessDeniedException {
         try {
-            new FileTreeTravelManager(rootFolder).travel(new FileTreeTraveler() {
+            new FileTreeTraverseManager(rootFolder).travel(new FileTreeAccessor() {
                 @Override
                 public boolean shouldTravelIntoFolder(int layer_level, File folder){
                     return true;
