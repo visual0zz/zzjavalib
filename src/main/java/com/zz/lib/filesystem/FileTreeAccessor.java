@@ -11,7 +11,7 @@ public interface FileTreeAccessor {
      * @return 如果返回true会继续深入此文件夹进行迭代，返回false不会继续迭代这个文件夹下面的内容。\
      * 不管返回true还是false，都会对当前这个文件夹本身调用travelFolder。
      */
-    default boolean shouldTravelIntoFolder(int layer_level, File folder)throws Exception{
+    default boolean intoFolder(int layer_level, File folder)throws Exception{
         return true;
     }
     /**
@@ -19,7 +19,7 @@ public interface FileTreeAccessor {
      * @param folder 当前文件夹
      * @param result 用于用户自定义功能的实现，迭代完成后会返回这个值，可以在travel代码中对其进行更改。
      */
-    default void travelFolder(int layer_level, File folder, List<String> result)throws Exception{
+    default void accessFolder(int layer_level, File folder, List<String> result)throws Exception{
 
     }
 
@@ -28,5 +28,5 @@ public interface FileTreeAccessor {
      * @param file 当前文件
      * @param result 用于用户自定义功能的实现，迭代完成后会返回这个值，可以在travel代码中对其进行更改。
      */
-    void travelFile(int layer_level,File file,List<String> result) throws Exception;
+    void accessFile(int layer_level, File file, List<String> result) throws Exception;
 }

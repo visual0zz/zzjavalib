@@ -146,19 +146,19 @@ public final class Bash {
                 try {
                     new FileTreeTraverseManager(file).travel(new FileTreeAccessor() {//遍历下级文件和文件夹。
                         @Override
-                        public boolean shouldTravelIntoFolder(int layer_level, File folder) {
+                        public boolean intoFolder(int layer_level, File folder) {
                             return true;
                         }
 
                         @Override
-                        public void travelFolder(int layer_level, File folder, List<String> result) throws AccessDeniedException {
+                        public void accessFolder(int layer_level, File folder, List<String> result) throws AccessDeniedException {
                             boolean res;
                             res=folder.delete();
                             if(!res)throw new AccessDeniedException("删除操作被拒绝"+folder.getPath());
                         }
 
                         @Override
-                        public void travelFile(int layer_level, File file, List<String> result) throws AccessDeniedException {
+                        public void accessFile(int layer_level, File file, List<String> result) throws AccessDeniedException {
                             boolean res;
                             res=file.delete();
                             if(!res)throw new AccessDeniedException("删除操作被拒绝"+file.getPath());
@@ -191,7 +191,7 @@ public final class Bash {
         try {
             new FileTreeTraverseManager(file).travel(new FileTreeAccessor() {
                 @Override
-                public boolean shouldTravelIntoFolder(int layer_level, File folder){
+                public boolean intoFolder(int layer_level, File folder){
                     if(layer_level>0)
                         return recursive;
                     else
@@ -199,13 +199,13 @@ public final class Bash {
                 }
 
                 @Override
-                public void travelFolder(int layer_level, File folder, List<String> res) {
+                public void accessFolder(int layer_level, File folder, List<String> res) {
                     if(!fileOnly&&layer_level>0)
                         result.add(folder);
                 }
 
                 @Override
-                public void travelFile(int layer_level, File file, List<String> res){
+                public void accessFile(int layer_level, File file, List<String> res){
                     result.add(file);
                 }
             });
@@ -240,12 +240,12 @@ public final class Bash {
         try {
             new FileTreeTraverseManager(rootFolder).travel(new FileTreeAccessor() {
                 @Override
-                public boolean shouldTravelIntoFolder(int layer_level, File folder){
+                public boolean intoFolder(int layer_level, File folder){
                     return true;
                 }
 
                 @Override
-                public void travelFolder(int layer_level, File folder, List<String> result) {
+                public void accessFolder(int layer_level, File folder, List<String> result) {
                     if(findDirectory){
                         Pattern p=Pattern.compile(regex);
                         Matcher m=p.matcher(folder.getName());
@@ -254,7 +254,7 @@ public final class Bash {
                 }
 
                 @Override
-                public void travelFile(int layer_level, File file, List<String> result) {
+                public void accessFile(int layer_level, File file, List<String> result) {
                     if(!findDirectory){
                         Pattern p=Pattern.compile(regex);
                         Matcher m=p.matcher(file.getName());
@@ -288,12 +288,12 @@ public final class Bash {
         try {
             new FileTreeTraverseManager(rootFolder).travel(new FileTreeAccessor() {
                 @Override
-                public boolean shouldTravelIntoFolder(int layer_level, File folder){
+                public boolean intoFolder(int layer_level, File folder){
                     return true;
                 }
 
                 @Override
-                public void travelFolder(int layer_level, File folder, List<String> result) throws AccessDeniedException {
+                public void accessFolder(int layer_level, File folder, List<String> result) throws AccessDeniedException {
                     if(layer_level==0)return;//不对根目录进行操作
                     File[] files = folder.listFiles();
                     if(files==null||files.length==0){
@@ -303,7 +303,7 @@ public final class Bash {
                 }
 
                 @Override
-                public void travelFile(int layer_level, File file, List<String> result){
+                public void accessFile(int layer_level, File file, List<String> result){
                 }
             });
         } catch (FileNotFoundException e) {

@@ -46,7 +46,7 @@ public final class FileTreeTraverseManager {
     private void travelOneLayer(File file, int level_count, FileTreeAccessor traveler, List<String> list) throws Exception {
         if(file.exists()){//如果文件存在
             if(file.isDirectory()){//如果是文件夹
-                if(traveler.shouldTravelIntoFolder(level_count,file)) {
+                if(traveler.intoFolder(level_count,file)) {
                     File[] files = file.listFiles();
                     if (files != null && files.length > 0) {
                         for (File f : files) {
@@ -54,9 +54,9 @@ public final class FileTreeTraverseManager {
                         }
                     }
                 }
-                traveler.travelFolder(level_count, file, list);
+                traveler.accessFolder(level_count, file, list);
             }else if(file.isFile()){//如果是文件
-                traveler.travelFile(level_count,file,list);
+                traveler.accessFile(level_count,file,list);
             }
         }
     }
