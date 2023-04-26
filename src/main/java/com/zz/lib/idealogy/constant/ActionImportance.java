@@ -3,7 +3,7 @@ package com.zz.lib.idealogy.constant;
 import com.zz.lib.idealogy.core.Attribute;
 
 public enum ActionImportance implements Attribute<ActionImportance> {
-    CORE,VITAL,ESSENTIAL,IMPORTANT,MEDIUM,NORMAL,BACKGROUND,NOTHING;
+    CORE,VITAL,ESSENTIAL,IMPORTANT,MEDIUM,NORMAL,MINOR,TRIVIAL;
     @Override
     public Object getValue(Object key) {
         if("name".equals(key)){
