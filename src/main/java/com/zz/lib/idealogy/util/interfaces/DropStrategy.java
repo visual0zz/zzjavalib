@@ -1,7 +1,7 @@
-package com.zz.lib.idealogy.interfaces;
+package com.zz.lib.idealogy.util.interfaces;
 
-import com.zz.lib.idealogy.core.Action;
-import com.zz.lib.idealogy.core.World;
+import com.zz.lib.idealogy.core.world.Action;
+import com.zz.lib.idealogy.core.world.World;
 
 public interface DropStrategy {
     /**

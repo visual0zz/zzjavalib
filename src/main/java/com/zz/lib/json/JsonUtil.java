@@ -34,7 +34,7 @@ public class JsonUtil {
      * @return 带缩进和回车的易读json字符串
      */
     public static String toReadableJsonStr(Object object){
-        return JavaObject2JsonStr.toJson(object);
+        return JavaObject2JsonStr.toFormatJson(object);
     }
 
     public Object getObject(Object object,String jsonPath){

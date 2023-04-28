@@ -1,6 +1,6 @@
-package com.zz.lib.idealogy.interfaces;
+package com.zz.lib.idealogy.util.interfaces;
 
-import com.zz.lib.idealogy.core.Attribute;
+import com.zz.lib.idealogy.core.world.Attribute;
 
 public interface AttributeHolder {
     <T extends Attribute<T>> T getAttribute(Class<T> attributeType);

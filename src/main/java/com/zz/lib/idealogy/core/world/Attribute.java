@@ -1,4 +1,4 @@
-package com.zz.lib.idealogy.core;
+package com.zz.lib.idealogy.core.world;
 import com.zz.lib.common.tags.ReadOnly;
 
 import java.lang.reflect.Field;

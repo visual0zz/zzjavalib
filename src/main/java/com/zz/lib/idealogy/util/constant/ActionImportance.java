@@ -1,6 +1,6 @@
-package com.zz.lib.idealogy.constant;
+package com.zz.lib.idealogy.util.constant;
 
-import com.zz.lib.idealogy.core.Attribute;
+import com.zz.lib.idealogy.core.world.Attribute;
 
 public enum ActionImportance implements Attribute<ActionImportance> {
     CORE,VITAL,ESSENTIAL,IMPORTANT,MEDIUM,NORMAL,MINOR,TRIVIAL;
