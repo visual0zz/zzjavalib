@@ -1,8 +1,28 @@
 package com.zz.lib.idealogy.util.interfaces;
-
 import com.zz.lib.idealogy.core.world.Attribute;
+import com.zz.lib.reflection.ReflectUtil;
 
-public interface AttributeHolder {
-    <T extends Attribute<T>> T getAttribute(Class<T> attributeType);
-    <T extends Attribute<T>> Object getAttributeValue(Class<T> attributeType,Object key);
+import java.lang.reflect.Field;
+
+public abstract class AttributeHolder {
+    public <T extends Attribute<T>> T getAttribute(Class<T> attributeType) {
+        try{
+            for (Field field : ReflectUtil.getFields(getClass(),true)) {
+                if (field.getType().equals(attributeType)) {
+                    field.setAccessible(true);
+                    return (T)field.get(this);
+                }
+            }
+            return null;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    public <T extends Attribute<T>> Object getAttributeValue(Class<T> attributeType, Object key) {
+        T attribute = getAttribute(attributeType);
+        if (attribute == null) {
+            return null;
+        }
+        return attribute.getValue(key);
+    }
 }
