@@ -11,10 +11,10 @@ public abstract class Thing extends AttributeHolder {
     }
 
     @Override
-    public <T extends Attribute<T>> T getAttribute(Class<T> attributeType) {
+    public <T extends Attribute> T getAttribute(Class<T> attributeType) {
         return super.getAttribute(attributeType);
     }
-    public <T extends Attribute<T>>void setAttribute(T attribute){
+    public <T extends Attribute>void setAttribute(T attribute){
         try{
             for (Field field : ReflectUtil.getDeclaredFieldsWithSuper(getClass())) {
                 if (field.getType().isAssignableFrom(attribute.getClass())) {
@@ -27,7 +27,7 @@ public abstract class Thing extends AttributeHolder {
             throw new RuntimeException(e);
         }
     }
-    public <T extends Attribute<T>> void setAttributeValue(Class<T> attributeType, Object key,Object value) {
+    public <T extends Attribute> void setAttributeValue(Class<T> attributeType, Object key,Object value) {
         try{
             for (Field field : ReflectUtil.getDeclaredFieldsWithSuper(getClass())) {
                 if (field.getType().isAssignableFrom(attributeType)) {

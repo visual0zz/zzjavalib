@@ -1,7 +1,10 @@
 package com.zz.lib.idealogy.core.world;
+
 import com.zz.lib.idealogy.util.interfaces.AttributeHolder;
 import com.zz.lib.idealogy.util.interfaces.DropStrategy;
+
 import java.util.List;
+
 public class World {
     /**
      * 向世界中添加物体
@@ -26,7 +29,7 @@ public class World {
      * @param filter 物体的属性的范围
      * @return 属性值符合特定范围的所有物体的集合
      */
-    public <T extends Attribute<T>> List<Id<Thing>> searchThings(AttributeFilter<T> filter) {
+    public List<Id<Thing>> searchThings(AttributeFilter filter) {
         return null;
     }
 
@@ -37,7 +40,7 @@ public class World {
      * @param filter    行为的目标对象的属性描述
      * @param tickDelay 注册到几个tick之后，应当大于或等于1
      */
-    public <T extends Attribute<T>> Id<Action> register(Action action, AttributeFilter<T> filter, long tickDelay) {
+    public Id<Action> register(Action action, AttributeFilter filter, long tickDelay) {
         return null;
     }
 
@@ -55,7 +58,7 @@ public class World {
      * @param filter 行为的属性的范围
      * @return 属性值符合特定范围的所有行为的集合
      */
-    public <T extends Attribute<T>> List<Id<Action>> searchActions(AttributeFilter<T> filter) {
+    public List<Id<Action>> searchActions(AttributeFilter filter) {
         return null;
     }
 

@@ -5,7 +5,7 @@ import com.zz.lib.reflection.ReflectUtil;
 import java.lang.reflect.Field;
 
 public abstract class AttributeHolder {
-    public <T extends Attribute<T>> T getAttribute(Class<T> attributeType) {
+    public <T extends Attribute> T getAttribute(Class<T> attributeType) {
         try{
             for (Field field : ReflectUtil.getDeclaredFieldsWithSuper(getClass())) {
                 if (field.getType().equals(attributeType)) {
@@ -18,7 +18,7 @@ public abstract class AttributeHolder {
             throw new RuntimeException(e);
         }
     }
-    public <T extends Attribute<T>> Object getAttributeValue(Class<T> attributeType, Object key) {
+    public <T extends Attribute> Object getAttributeValue(Class<T> attributeType, Object key) {
         T attribute = getAttribute(attributeType);
         if (attribute == null) {
             return null;

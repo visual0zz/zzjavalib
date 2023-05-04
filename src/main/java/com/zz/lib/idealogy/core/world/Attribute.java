@@ -1,7 +1,7 @@
 package com.zz.lib.idealogy.core.world;
 import java.lang.reflect.Field;
 
-public abstract class Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
+public abstract class Attribute implements AttributeFilter{
     public Object getValue(Object key){
         try{
             if(!(key instanceof String)){
@@ -29,9 +29,9 @@ public abstract class Attribute<T extends Attribute<T>> extends AttributeFilter<
             throw new RuntimeException(e);
         }
     }
-    public Attribute<T> copy(){
+    public Attribute copy(){
         try{
-            Attribute<T> result= (Attribute<T>) this.getClass().getDeclaredConstructor().newInstance();
+            Attribute result= this.getClass().getDeclaredConstructor().newInstance();
             Field[] fields=this.getClass().getDeclaredFields();
             for(Field field:fields){
                 field.setAccessible(true);
@@ -47,7 +47,7 @@ public abstract class Attribute<T extends Attribute<T>> extends AttributeFilter<
     @Override
     public abstract int hashCode();
     @Override
-    public boolean match(T attribute){
+    public boolean match(Attribute attribute){
         return equals(attribute);
     }
 }
