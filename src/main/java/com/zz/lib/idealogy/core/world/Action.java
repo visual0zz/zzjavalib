@@ -5,8 +5,13 @@ import com.zz.lib.idealogy.util.constant.ActionImportance;
 import com.zz.lib.idealogy.util.interfaces.AttributeHolder;
 
 @ReadOnly
-public class Action extends AttributeHolder {
-    ActionImportance getImportance(){
-        return null;
+public abstract class Action extends AttributeHolder {
+    private final ActionImportance importance;
+    public Action(ActionImportance importance){
+        this.importance=importance;
     }
+    public ActionImportance getImportance(){
+        return importance;
+    }
+
 }

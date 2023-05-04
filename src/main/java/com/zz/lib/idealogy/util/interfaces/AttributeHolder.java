@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 public abstract class AttributeHolder {
     public <T extends Attribute<T>> T getAttribute(Class<T> attributeType) {
         try{
-            for (Field field : ReflectUtil.getFields(getClass(),true)) {
+            for (Field field : ReflectUtil.getDeclaredFieldsWithSuper(getClass())) {
                 if (field.getType().equals(attributeType)) {
                     field.setAccessible(true);
                     return (T)field.get(this);
