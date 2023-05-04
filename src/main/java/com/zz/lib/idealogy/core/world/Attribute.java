@@ -1,10 +1,8 @@
 package com.zz.lib.idealogy.core.world;
-import com.zz.lib.common.tags.ReadOnly;
-
 import java.lang.reflect.Field;
 
-public interface Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
-    default Object getValue(Object key){
+public abstract class Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
+    public Object getValue(Object key){
         try{
             if(!(key instanceof String)){
                 return null;
@@ -18,7 +16,7 @@ public interface Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
             throw new RuntimeException(e);
         }
     }
-    default void setValue(Object key,Object value){
+    public void setValue(Object key,Object value){
         try{
             if(!(key instanceof String)){
                 return;
@@ -31,7 +29,7 @@ public interface Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
             throw new RuntimeException(e);
         }
     }
-    default Attribute<T> copy(){
+    public Attribute<T> copy(){
         try{
             Attribute<T> result= (Attribute<T>) this.getClass().getDeclaredConstructor().newInstance();
             Field[] fields=this.getClass().getDeclaredFields();
@@ -45,11 +43,11 @@ public interface Attribute<T extends Attribute<T>> extends AttributeFilter<T>{
         }
     }
     @Override
-    boolean equals(Object other);
+    public abstract boolean equals(Object other);
     @Override
-    int hashCode();
+    public abstract int hashCode();
     @Override
-    default boolean match(T attribute){
+    public boolean match(T attribute){
         return equals(attribute);
     }
 }

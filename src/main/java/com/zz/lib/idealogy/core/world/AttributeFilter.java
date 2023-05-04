@@ -3,24 +3,44 @@ package com.zz.lib.idealogy.core.world;
 import com.zz.lib.common.tags.ReadOnly;
 
 @ReadOnly
-public interface AttributeFilter<T extends Attribute<T>> {
-    boolean match(T attribute);
-    default AttributeFilter<T> or(AttributeFilter<T> otherFilter){
+public abstract class AttributeFilter<T extends Attribute<T>> {
+    public abstract boolean match(T attribute);
+    public AttributeFilter<T> or(AttributeFilter<T> otherFilter){
         AttributeFilter<T>self=this;
-        return (AttributeFilterJoiner<T>) attribute -> self.match(attribute)||otherFilter.match(attribute);
+        return new AttributeFilterJoiner() {
+            @Override
+            public boolean match(T attribute) {
+                return self.match(attribute)||otherFilter.match(attribute);
+            }
+        };
     }
-    default AttributeFilter<T> and(AttributeFilter<T> otherFilter){
+    public AttributeFilter<T> and(AttributeFilter<T> otherFilter){
         AttributeFilter<T>self=this;
-        return (AttributeFilterJoiner<T>) attribute -> self.match(attribute)&&otherFilter.match(attribute);
+        return new AttributeFilterJoiner() {
+            @Override
+            public boolean match(T attribute) {
+                return self.match(attribute)&&otherFilter.match(attribute);
+            }
+        };
     }
-    default AttributeFilter<T> sub(AttributeFilter<T> otherFilter){
+    public AttributeFilter<T> sub(AttributeFilter<T> otherFilter){
         AttributeFilter<T>self=this;
-        return (AttributeFilterJoiner<T>) attribute -> self.match(attribute)&&!otherFilter.match(attribute);
+        return new AttributeFilterJoiner() {
+            @Override
+            public boolean match(T attribute) {
+                return self.match(attribute)&&!otherFilter.match(attribute);
+            }
+        };
     }
-    default AttributeFilter<T> xor(AttributeFilter<T> otherFilter){
+    public AttributeFilter<T> xor(AttributeFilter<T> otherFilter){
         AttributeFilter<T>self=this;
-        return (AttributeFilterJoiner<T>) attribute -> self.match(attribute)^otherFilter.match(attribute);
+        return new AttributeFilterJoiner() {
+            @Override
+            public boolean match(T attribute) {
+                return self.match(attribute)^otherFilter.match(attribute);
+            }
+        };
     }
-    interface AttributeFilterJoiner<T extends Attribute<T>> extends AttributeFilter<T>{
+    abstract class AttributeFilterJoiner extends AttributeFilter<T>{
     }
 }
