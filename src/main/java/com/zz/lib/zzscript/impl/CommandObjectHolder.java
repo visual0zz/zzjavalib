@@ -13,16 +13,10 @@ public final class CommandObjectHolder {
 
     /**
      * 调用指令
-     * @param args 指令的参数
+     * @param arg 指令的参数
      * @return 指令的返回值
      */
-    public Object invoke(Object ... args){
+    public Argument invoke(Argument arg){
         return null;
-    }
-    public boolean invokable(Object...args){
-        return false;
-    }
-    public boolean invokable(Class<?>...args){
-        return  false;
     }
 }

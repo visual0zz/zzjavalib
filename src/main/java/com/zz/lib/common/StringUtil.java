@@ -245,4 +245,44 @@ public final class StringUtil {
             }
         }
     }
+    public static String escapeString(String str) {
+        StringBuilder result = new StringBuilder();
+        result.append('"');
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            switch (c) {
+                case '\\':
+                case '"':
+                    result.append("\\");
+                    result.append(c);
+                    break;
+                default:
+                    String escape;
+                    switch (c) {
+                        case '\b':
+                            escape = "\\b";
+                            break;
+                        case '\t':
+                            escape = "\\t";
+                            break;
+                        case '\n':
+                            escape = "\\n";
+                            break;
+                        case '\f':
+                            escape = "\\f";
+                            break;
+                        case '\r':
+                            escape = "\\r";
+                            break;
+                        default:
+                            escape = Character.toString(c);
+                            break;
+                    }
+                    result.append(escape);
+            }
+        }
+        result.append('"');
+        return result.toString();
+    }
+
 }
