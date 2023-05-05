@@ -18,6 +18,11 @@ public class CommandMethodHolder {
     private HashMap<String,Integer> requiredParamTypes;
     private HashSet<String> optionalParamTypes;
     private Method method;
+
+    /**
+     * 代理一个Command对象的某个@Run修饰的函数
+     * @param method 对应的函数
+     */
     CommandMethodHolder(Method method){
         this.method=method;
         requiredParamTypes=new HashMap<>();
@@ -41,6 +46,14 @@ public class CommandMethodHolder {
             }
         }
     }
+
+    /**
+     * 使用标准格式参数调用这个函数
+     * @param command 指令对象
+     * @param argument 标准格式的参数
+     * @param ignoreRedundantOptionalParam 是否忽略提供的参数中的多余的可选参数
+     * @return 以标准格式返回的结果
+     */
     public Argument invoke(Command command, Argument argument, boolean ignoreRedundantOptionalParam){
         //校验参数格式
         CheckUtil.mustSameSize(requiredParamTypes
@@ -80,6 +93,15 @@ public class CommandMethodHolder {
             return (Argument) ret;
         }
         return Argument.of(new HashMap<>(),ret);
+    }
+
+    /**
+     * 指令和某个参数列表的匹配度，是为了在同一个指令的多个实现中寻找应该调用哪个。
+     * @param argument 实际参数
+     * @return 匹配度 0到1之间
+     */
+    public double compatibility(Argument argument){
+        return 0;//todo 计算匹配度
     }
     private boolean containsAnnotation(Annotation[]annotations,Class<? extends Annotation> annoType){
         for(Annotation anno:annotations){
