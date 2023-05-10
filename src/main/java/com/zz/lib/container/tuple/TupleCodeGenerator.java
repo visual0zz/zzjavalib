@@ -42,8 +42,8 @@ final class TupleCodeGenerator {
                 "\npublic class Tuple implements Cloneable, Comparable<Tuple>, Serializable {\n" +
                 "    private final static long serialVersionUID=1L;\n" +
                 "    private final Object[]contents;\n" +
-                "    protected Tuple( Object...vs) {\n" +
-                "        CheckUtil.mustMatchSize(vs,2,"+n+");\n" +
+                "    public Tuple( Object...vs) {\n" +
+                "        CheckUtil.mustMatchSize(vs,0,"+n+");\n" +
                 "        contents=vs;\n" +
                 "    }\n" +
                 "    public int size(){\n" +
@@ -97,7 +97,7 @@ final class TupleCodeGenerator {
                 code.append("T").append(j).append(" v").append(j);
                 if (j != i) code.append(",");
             }
-            code.append("){").append("\n        return new Tuple").append(i).append("(");
+            code.append("){").append("\n        return new Tuple").append(i).append("<>(");
             for (int j = 1; j <= i; j++) {
                 code.append("v").append(j);
                 if (j != i) code.append(",");
