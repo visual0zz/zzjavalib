@@ -1,4 +1,4 @@
-package com.zz.lib.os.utils;
+package com.zz.lib.common;
 
 import java.io.IOException;
 import java.io.OutputStream;
