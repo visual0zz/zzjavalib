@@ -245,6 +245,12 @@ public final class StringUtil {
             }
         }
     }
+
+    /**
+     * 将字符串翻译为其转义形式 例如输入 "123\t\n" 输出 "\"123\\t\\n\""
+     * @param str 原始字符串
+     * @return 字符串的转义形式
+     */
     public static String escapeString(String str) {
         StringBuilder result = new StringBuilder();
         result.append('"');
