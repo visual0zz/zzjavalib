@@ -16,16 +16,31 @@ public class GnuStyleSimpleParamExtractor {
     boolean ignoreRedundantOptionalParam=false;
     public HashMap<String,Object> extract(String...args)throws IllegalArgumentException{
         HashMap<String,Object> result=new HashMap<>();
+        //把所有的布尔型参数预先塞上false
+        parsers.entrySet().stream()
+                .filter(e->e.getValue()==BOOLEAN_GHOST_PARSER)
+                .forEach(e->result.put(e.getKey(),false));
+
         for(int i=0;i<args.length;i++){
             String token=args[i];
             if(token.startsWith("--")){
                 String mainPart=token.substring(2);
                 String paramName=mainPart.contains("=")?mainPart.substring(0,mainPart.indexOf("=")):mainPart;
-                String paramValue=mainPart.contains("=")
-                        ?mainPart.substring(mainPart.indexOf("=")+1)
-                        :(++i<args.length?args[i]:null);
-                ParamParser parser=parsers.get(paramName);
-                parse(parser,paramName,paramValue);
+                ParamParser parser;
+                if(parsers.get(mainPart)==BOOLEAN_GHOST_PARSER){
+                    result.put(mainPart,true);
+                    continue;
+                }else if((parser=parsers.get(paramName))==null && !ignoreRedundantOptionalParam){
+                    throw new IllegalArgumentException("no such param :"+StringUtil.escapeString(paramName));
+                }else{
+                    String paramValue=mainPart.contains("=")
+                            ?mainPart.substring(mainPart.indexOf("=")+1)
+                            :(++i<args.length?args[i]:null);
+                    if(paramValue==null){
+                        throw new IllegalArgumentException("param "+StringUtil.escapeString(paramName)+" without value.");
+                    }
+                    result.put(paramName,parser==null?paramValue:parser.parse(paramValue));
+                }
             }else if(token.startsWith("-")){
 
             }else{
@@ -38,13 +53,6 @@ public class GnuStyleSimpleParamExtractor {
         return new Builder();
     }
 
-    private void parse(ParamParser parser, String paramName,String paramValue){
-        if(parser==null){
-            if(ignoreRedundantOptionalParam){
-            }
-            throw new IllegalArgumentException("no such param :"+StringUtil.escapeString(paramName));
-        }
-    }
     public static class Builder implements RequireParamNotSet,RequireParamSet{
         HashMap<String,ParamParser> parsers=new HashMap<>();
         boolean ignoreRedundantOptionalParam=false;
