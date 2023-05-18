@@ -33,7 +33,6 @@ public class GnuStyleSimpleParamExtractor {
                 if(parsers.get(mainPart)==BOOLEAN_GHOST_PARSER){
                     //布尔型参数没有参数值，直接返回
                     result.put(mainPart,true);
-                    continue;
                 }else if((parser=parsers.get(paramName))==null && !ignoreRedundantOptionalParam){
                     //找不到参数的解析器且配置不忽略多余参数，则报错
                     throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(paramName));
@@ -55,7 +54,6 @@ public class GnuStyleSimpleParamExtractor {
                     if(parsers.get(paramName)==BOOLEAN_GHOST_PARSER){
                         //布尔型参数没有参数值，直接返回
                         result.put(paramName,true);
-                        continue;
                     }else if((parser=parsers.get(paramName))==null && !ignoreRedundantOptionalParam){
                         //找不到参数的解析器且配置不忽略多余参数，则报错
                         throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(paramName));
@@ -82,10 +80,20 @@ public class GnuStyleSimpleParamExtractor {
                     throw new IllegalArgumentException("unknown: "+token);
                 }else{
                     //形如 -mav 属于多个单字母布尔参数的堆叠
+                    for(char c:token.substring(1).toCharArray()){
+                        ParamParser parser=parsers.get(String.valueOf(c));
+                        if(parser!=null && parser!=BOOLEAN_GHOST_PARSER){
+                            throw new IllegalArgumentException("wrong usage of param :"+StringUtil.escapeString(String.valueOf(c)));
+                        }else if(parser==null && !ignoreRedundantOptionalParam){
+                            throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(String.valueOf(c)));
+                        }else{
+                            result.put(String.valueOf(c),true);
+                        }
+                    }
                 }
             }else{
                 NumberFormat format=NumberFormat.getIntegerInstance();
-                format.setMinimumIntegerDigits(6);
+                format.setMinimumIntegerDigits(3);
                 result.put(REQUIRED_PARAM_PREFIX+format.format(requiredParamIndex++),token);
             }
         }
