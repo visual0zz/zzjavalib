@@ -1,4 +1,6 @@
 package com.zz.lib.common;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -11,6 +13,7 @@ public class GnuStyleSimpleParamExtractor {
     private static final ParamParser BOOLEAN_GHOST_PARSER= (k,v) -> {
         throw new Error("this object is just a placeholder,should not be invoked.");
     };
+    private static final String REQUIRED_PARAM_PREFIX="__require_var_";
     private HashMap<String, ParamParser> parsers;
     private GnuStyleSimpleParamExtractor(){}
     boolean ignoreRedundantOptionalParam=false;
@@ -20,7 +23,7 @@ public class GnuStyleSimpleParamExtractor {
         parsers.entrySet().stream()
                 .filter(e->e.getValue()==BOOLEAN_GHOST_PARSER)
                 .forEach(e->result.put(e.getKey(),false));
-
+        int requiredParamIndex=0;
         for(int i=0;i<args.length;i++){
             String token=args[i];
             if(token.startsWith("--")){
@@ -81,7 +84,9 @@ public class GnuStyleSimpleParamExtractor {
                     //形如 -mav 属于多个单字母布尔参数的堆叠
                 }
             }else{
-
+                NumberFormat format=NumberFormat.getIntegerInstance();
+                format.setMinimumIntegerDigits(6);
+                result.put(REQUIRED_PARAM_PREFIX+format.format(requiredParamIndex++),token);
             }
         }
         return result;
