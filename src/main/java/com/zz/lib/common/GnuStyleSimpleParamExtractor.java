@@ -8,7 +8,7 @@ import java.util.Optional;
  * 用于解析main函数的入参的工具类
  */
 public class GnuStyleSimpleParamExtractor {
-    private static final ParamParser BOOLEAN_GHOST_PARSER= paramString -> {
+    private static final ParamParser BOOLEAN_GHOST_PARSER= (k,v) -> {
         throw new Error("this object is just a placeholder,should not be invoked.");
     };
     private HashMap<String, ParamParser> parsers;
@@ -28,26 +28,63 @@ public class GnuStyleSimpleParamExtractor {
                 String paramName=mainPart.contains("=")?mainPart.substring(0,mainPart.indexOf("=")):mainPart;
                 ParamParser parser;
                 if(parsers.get(mainPart)==BOOLEAN_GHOST_PARSER){
+                    //布尔型参数没有参数值，直接返回
                     result.put(mainPart,true);
                     continue;
                 }else if((parser=parsers.get(paramName))==null && !ignoreRedundantOptionalParam){
-                    throw new IllegalArgumentException("no such param :"+StringUtil.escapeString(paramName));
+                    //找不到参数的解析器且配置不忽略多余参数，则报错
+                    throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(paramName));
                 }else{
+                    //根据token中是否包含等号来判断参数值是在等号后面还是下一个token
                     String paramValue=mainPart.contains("=")
                             ?mainPart.substring(mainPart.indexOf("=")+1)
                             :(++i<args.length?args[i]:null);
                     if(paramValue==null){
                         throw new IllegalArgumentException("param "+StringUtil.escapeString(paramName)+" without value.");
                     }
-                    result.put(paramName,parser==null?paramValue:parser.parse(paramValue));
+                    result.put(paramName,parser==null?paramValue:parser.parse(paramName,paramValue));
                 }
             }else if(token.startsWith("-")){
-
+                if(token.length()<=2){
+                    //形如 -m
+                    String paramName=token.substring(1);
+                    ParamParser parser;
+                    if(parsers.get(paramName)==BOOLEAN_GHOST_PARSER){
+                        //布尔型参数没有参数值，直接返回
+                        result.put(paramName,true);
+                        continue;
+                    }else if((parser=parsers.get(paramName))==null && !ignoreRedundantOptionalParam){
+                        //找不到参数的解析器且配置不忽略多余参数，则报错
+                        throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(paramName));
+                    }else{
+                        //根据token中是否包含等号来判断参数值是在等号后面还是下一个token
+                        String paramValue=++i<args.length?args[i]:null;
+                        if(paramValue==null){
+                            throw new IllegalArgumentException("param "+StringUtil.escapeString(paramName)+" without value.");
+                        }
+                        result.put(paramName,parser==null?paramValue:parser.parse(paramName,paramValue));
+                    }
+                }else if(token.charAt(2)=='='){
+                    //形如 -m=xxx
+                    String paramName=token.substring(1,2);
+                    String paramValue=token.substring(3);
+                    ParamParser parser=parsers.get(paramName);
+                    if(parser==null && !ignoreRedundantOptionalParam){
+                        //找不到参数的解析器且配置不忽略多余参数，则报错
+                        throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(paramName));
+                    }
+                    result.put(paramName,parser==null?paramValue:parser.parse(paramName,paramValue));
+                }else if(token.contains("=")) {
+                    //形如 -ma=sss 属于格式错误，无法解析
+                    throw new IllegalArgumentException("unknown: "+token);
+                }else{
+                    //形如 -mav 属于多个单字母布尔参数的堆叠
+                }
             }else{
 
             }
         }
-        return null;
+        return result;
     }
     public static RequireParamNotSet builder(){
         return new Builder();
@@ -82,7 +119,7 @@ public class GnuStyleSimpleParamExtractor {
          */
         @Override
         public Builder optionalString(String paramName){
-            return optionalParam(paramName,e->e);
+            return optionalParam(paramName,(k,v)->v);
         }
         /**
          * 定义一个枚举参数，例如git log --pretty=oneline 中的pretty，包含字符串格式的参数内容oneline。
@@ -94,16 +131,16 @@ public class GnuStyleSimpleParamExtractor {
          */
         @Override
         public<T extends Enum<T>> Builder optionalEnum(String paramName, Class<T> type, boolean ignoreCase){
-            return optionalParam(paramName,e->{
+            return optionalParam(paramName,(k,v)->{
                 Optional<T> value=Arrays.stream(type.getEnumConstants()).filter(a->{
                     if(ignoreCase){
-                        return a.name().toLowerCase(Locale.ROOT).equals(e.toLowerCase(Locale.ROOT));
+                        return a.name().toLowerCase(Locale.ROOT).equals(v.toLowerCase(Locale.ROOT));
                     }else{
-                        return a.name().equals(e);
+                        return a.name().equals(v);
                     }
                 }).findAny();
                 if(!value.isPresent()){
-                    throw new IllegalArgumentException("unknown value for param "+StringUtil.escapeString(paramName)+" :"+StringUtil.escapeString(e));
+                    throw new IllegalArgumentException("unknown value for param "+StringUtil.escapeString(paramName)+" :"+StringUtil.escapeString(v));
                 }
                 return value.get();
             });
@@ -175,6 +212,6 @@ public class GnuStyleSimpleParamExtractor {
         RequireParamNotSet ignoreRedundantOptionalParam();
     }
     public interface ParamParser{
-        Object parse(String paramString);
+        Object parse(String paramName,String paramValue);
     }
 }
