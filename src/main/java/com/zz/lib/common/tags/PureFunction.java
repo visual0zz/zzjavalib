@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 用于标记一个类是只读的
+ * 用于标记一个类提供的方法都是纯函数（大部分util类都符合这个条件)
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
-public @interface ReadOnly {
+public @interface PureFunction {
 }

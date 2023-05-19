@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 用于标记一个类是只读的
+ * 用于标记一个类不支持并发。
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
-public @interface ReadOnly {
+public @interface ThreadFragile {
 }

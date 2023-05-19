@@ -1,10 +1,10 @@
 package com.zz.lib.common;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用于解析main函数的入参的工具类
@@ -13,8 +13,13 @@ public class GnuStyleSimpleParamExtractor {
     private static final ParamParser BOOLEAN_GHOST_PARSER= (k,v) -> {
         throw new Error("this object is just a placeholder,should not be invoked.");
     };
+    private static final NumberFormat REQUIRED_PARAMS_ORDER_FORMAT;
+    static {
+        REQUIRED_PARAMS_ORDER_FORMAT =NumberFormat.getIntegerInstance();
+        REQUIRED_PARAMS_ORDER_FORMAT.setMinimumIntegerDigits(3);
+    }
     private static final String REQUIRED_PARAM_PREFIX="__require_var_";
-    private HashMap<String, ParamParser> parsers;
+    private ConcurrentHashMap<String, ParamParser> parsers;
     private GnuStyleSimpleParamExtractor(){}
     boolean ignoreRedundantOptionalParam=false;
     public HashMap<String,Object> extract(String...args)throws IllegalArgumentException{
@@ -92,9 +97,7 @@ public class GnuStyleSimpleParamExtractor {
                     }
                 }
             }else{
-                NumberFormat format=NumberFormat.getIntegerInstance();
-                format.setMinimumIntegerDigits(3);
-                result.put(REQUIRED_PARAM_PREFIX+format.format(requiredParamIndex++),token);
+                result.put(REQUIRED_PARAM_PREFIX+ REQUIRED_PARAMS_ORDER_FORMAT.format(requiredParamIndex++),token);
             }
         }
         return result;
@@ -104,7 +107,7 @@ public class GnuStyleSimpleParamExtractor {
     }
 
     public static class Builder implements RequireParamNotSet,RequireParamSet{
-        HashMap<String,ParamParser> parsers=new HashMap<>();
+        ConcurrentHashMap<String,ParamParser> parsers=new ConcurrentHashMap<>();
         boolean ignoreRedundantOptionalParam=false;
         @Override
         public GnuStyleSimpleParamExtractor build(){
