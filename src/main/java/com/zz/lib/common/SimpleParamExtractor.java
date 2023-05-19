@@ -7,20 +7,16 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 用于解析main函数的入参的工具类
+ * 用于解析main函数的入参的工具，仿Gnu风格的参数格式。
  */
-public class GnuStyleSimpleParamExtractor {
+public class SimpleParamExtractor {
     private static final ParamParser BOOLEAN_GHOST_PARSER= (k,v) -> {
         throw new Error("this object is just a placeholder,should not be invoked.");
     };
-    private static final NumberFormat REQUIRED_PARAMS_ORDER_FORMAT;
-    static {
-        REQUIRED_PARAMS_ORDER_FORMAT =NumberFormat.getIntegerInstance();
-        REQUIRED_PARAMS_ORDER_FORMAT.setMinimumIntegerDigits(3);
-    }
+    private static final int REQUIRED_PARAMS_ORDER_FORMAT=3;
     private static final String REQUIRED_PARAM_PREFIX="__require_var_";
     private ConcurrentHashMap<String, ParamParser> parsers;
-    private GnuStyleSimpleParamExtractor(){}
+    private SimpleParamExtractor(){}
     boolean ignoreRedundantOptionalParam=false;
     public HashMap<String,Object> extract(String...args)throws IllegalArgumentException{
         HashMap<String,Object> result=new HashMap<>();
@@ -97,7 +93,9 @@ public class GnuStyleSimpleParamExtractor {
                     }
                 }
             }else{
-                result.put(REQUIRED_PARAM_PREFIX+ REQUIRED_PARAMS_ORDER_FORMAT.format(requiredParamIndex++),token);
+                NumberFormat format =NumberFormat.getIntegerInstance();
+                format.setMinimumIntegerDigits(REQUIRED_PARAMS_ORDER_FORMAT);
+                result.put(REQUIRED_PARAM_PREFIX+ format.format(requiredParamIndex++),token);
             }
         }
         return result;
@@ -105,13 +103,12 @@ public class GnuStyleSimpleParamExtractor {
     public static RequireParamNotSet builder(){
         return new Builder();
     }
-
     public static class Builder implements RequireParamNotSet,RequireParamSet{
         ConcurrentHashMap<String,ParamParser> parsers=new ConcurrentHashMap<>();
         boolean ignoreRedundantOptionalParam=false;
         @Override
-        public GnuStyleSimpleParamExtractor build(){
-            GnuStyleSimpleParamExtractor extractor =new GnuStyleSimpleParamExtractor();
+        public SimpleParamExtractor build(){
+            SimpleParamExtractor extractor =new SimpleParamExtractor();
             extractor.parsers=this.parsers;
             extractor.ignoreRedundantOptionalParam=this.ignoreRedundantOptionalParam;
             return extractor;
@@ -215,7 +212,7 @@ public class GnuStyleSimpleParamExtractor {
         RequireParamSet optionalParam(String paramName,ParamParser parser);
         RequireParamSet ignoreRedundantOptionalParam(boolean ignore);
         RequireParamSet ignoreRedundantOptionalParam();
-        GnuStyleSimpleParamExtractor build();
+        SimpleParamExtractor build();
     }
     public interface RequireParamNotSet{
         RequireParamSet requiredParam(int min,int max);
