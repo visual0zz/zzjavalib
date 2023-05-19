@@ -1,10 +1,8 @@
 package com.zz.lib.common;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * 用于解析main函数的入参的工具，仿Gnu风格的参数格式。
@@ -13,12 +11,14 @@ public class SimpleParamExtractor {
     private static final ParamParser BOOLEAN_GHOST_PARSER= (k,v) -> {
         throw new Error("this object is just a placeholder,should not be invoked.");
     };
+    int requiredParamMin;
+    int requiredParamMax;
     private static final int REQUIRED_PARAMS_ORDER_FORMAT=3;
     private static final String REQUIRED_PARAM_PREFIX="__require_var_";
     private ConcurrentHashMap<String, ParamParser> parsers;
     private SimpleParamExtractor(){}
     boolean ignoreRedundantOptionalParam=false;
-    public HashMap<String,Object> extract(String...args)throws IllegalArgumentException{
+    public ParamInfo extract(String...args)throws IllegalArgumentException{
         HashMap<String,Object> result=new HashMap<>();
         //把所有的布尔型参数预先塞上false
         parsers.entrySet().stream()
@@ -93,23 +93,33 @@ public class SimpleParamExtractor {
                     }
                 }
             }else{
+                if(requiredParamIndex>requiredParamMax){
+                    throw new IllegalArgumentException("too many param");
+                }
                 NumberFormat format =NumberFormat.getIntegerInstance();
                 format.setMinimumIntegerDigits(REQUIRED_PARAMS_ORDER_FORMAT);
                 result.put(REQUIRED_PARAM_PREFIX+ format.format(requiredParamIndex++),token);
             }
+            if(requiredParamIndex<requiredParamMin){
+                throw new IllegalArgumentException("not enough param");
+            }
         }
-        return result;
+        return new ParamInfo(result);
     }
     public static RequireParamNotSet builder(){
         return new Builder();
     }
     public static class Builder implements RequireParamNotSet,RequireParamSet{
+        int requiredParamMin=0;
+        int requiredParamMax=Integer.MAX_VALUE;
         ConcurrentHashMap<String,ParamParser> parsers=new ConcurrentHashMap<>();
         boolean ignoreRedundantOptionalParam=false;
         @Override
         public SimpleParamExtractor build(){
             SimpleParamExtractor extractor =new SimpleParamExtractor();
             extractor.parsers=this.parsers;
+            extractor.requiredParamMin=this.requiredParamMin;
+            extractor.requiredParamMax=this.requiredParamMax;
             extractor.ignoreRedundantOptionalParam=this.ignoreRedundantOptionalParam;
             return extractor;
         }
@@ -177,6 +187,8 @@ public class SimpleParamExtractor {
          * @return this
          */
         public Builder requiredParam(int min,int max){
+            this.requiredParamMin=min;
+            this.requiredParamMax=max;
             return this;
         }
         /**
@@ -226,5 +238,38 @@ public class SimpleParamExtractor {
     }
     public interface ParamParser{
         Object parse(String paramName,String paramValue);
+    }
+    public static class ParamInfo{
+        Map<String,Object> optional;
+        List<String> required;
+        public ParamInfo(Map<String,Object> paramInfo){
+            optional=new HashMap<>();
+            List<Map.Entry<String,Object>> required=new ArrayList<>();
+            for(Map.Entry<String,Object> entry:paramInfo.entrySet()){
+                if(entry.getKey().startsWith(REQUIRED_PARAM_PREFIX)){
+                    required.add(entry);
+                }else{
+                    optional.put(entry.getKey(),entry.getValue());
+                }
+            }
+            this.required=required.stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .map(Map.Entry::getValue)
+                    .map(e->(String)e)
+                    .collect(Collectors.toList());
+        }
+        Object getOpt(String paramName){
+            return optional.get(paramName);
+        }
+        <T> T getOpt(String paramName,Class<T>paramType){
+            Object obj=getOpt(paramName);
+            if(paramType.isAssignableFrom(obj.getClass())){
+                return (T)obj;
+            }
+            throw new IllegalArgumentException("input param type error: "+StringUtil.escapeString(paramName));
+        }
+        List<String> getReqs(){
+            return required;
+        }
     }
 }
