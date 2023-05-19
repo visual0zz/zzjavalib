@@ -1,28 +1,37 @@
 package com.zz.lib.common;
+
 import com.zz.lib.common.exception.DataCheckException;
 import com.zz.lib.common.exception.DataContentException;
 import com.zz.lib.common.exception.DataSizeException;
 import com.zz.lib.common.exception.DataTypeException;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.regex.Pattern;
+
 public final class CheckUtil {
     private final static String[] sizeMethodNames = {"size", "length"};
     private final static String[] sizeFieldNames = {"size", "length"};
+
     private CheckUtil() {
     }
+
     public static void mustTrue(Boolean... conditions) {
-        mustTrue("error,assertTrue()=false.", conditions);
+        mustTrue(null, conditions);
     }
+
     public static void mustTrue(String message, Boolean... conditions) {
-        for (Boolean condition : conditions) {
-            if (!condition) {
-                throw new DataCheckException(message);
+        if (!Arrays.stream(conditions).allMatch(e -> e)) {
+            if (message == null) {
+                message = "some conditions are false,conditions=" + Arrays.toString(conditions);
             }
+            throw new DataContentException(message);
         }
     }
+
     public static <T> void mustEquals(T actual, T expected, String message) {
         boolean fail = false;
         if (actual != null && expected != null) {
@@ -39,9 +48,11 @@ public final class CheckUtil {
                 throw new DataContentException(message);
         }
     }
+
     public static <T> void mustEquals(T actual, T expected) {
         mustEquals(actual, expected, null);
     }
+
     public static void mustNotNull(Object object, Object... objects) {
         if (object == null) {
             throw new NullPointerException();
@@ -52,6 +63,7 @@ public final class CheckUtil {
             }
         }
     }
+
     //assert that the object provided is an instance of the class provided.
     public static <T> void mustIsA(Object object, Class<T> clazz, String message) {
         if (object == null) {
@@ -65,16 +77,18 @@ public final class CheckUtil {
             }
         }
     }
+
     public static <T> void mustIsA(Object object, Class<T> clazz) {
         mustIsA(object, clazz, null);
     }
 
     /**
      * 声明一个容器具有特定的尺寸
+     *
      * @param container 容器
-     * @param min 最小尺寸（包含）
-     * @param max 最大尺寸（包含）
-     * @param message 如果不符合，那么抛出异常携带的信息
+     * @param min       最小尺寸（包含）
+     * @param max       最大尺寸（包含）
+     * @param message   如果不符合，那么抛出异常携带的信息
      */
     public static void mustMatchSize(Object container, int min, int max, String message) {
         int actualSizeValue = getContainerSize(container);
@@ -89,12 +103,13 @@ public final class CheckUtil {
 
     /**
      * 声明两个容器尺寸相等
+     *
      * @param container1 容器1
      * @param container2 容器2
-     * @param message 如果不符合，那么抛出异常携带的信息
+     * @param message    如果不符合，那么抛出异常携带的信息
      */
-    public static void mustSameSize(Object container1, Object container2,String message) {
-        if (getContainerSize(container1)!=getContainerSize(container2)) {
+    public static void mustSameSize(Object container1, Object container2, String message) {
+        if (getContainerSize(container1) != getContainerSize(container2)) {
             if (message != null) {
                 throw new DataSizeException(message);
             } else {
@@ -103,9 +118,10 @@ public final class CheckUtil {
         }
     }
 
-    public static void mustSameSize(Object container1, Object container2){
-        mustSameSize(container1,container2,null);
+    public static void mustSameSize(Object container1, Object container2) {
+        mustSameSize(container1, container2, null);
     }
+
     private static int getContainerSize(Object container) {
         Class<?> clazz = container.getClass();
         Integer actualSizeValue = null;
@@ -115,7 +131,7 @@ public final class CheckUtil {
             Field sizeField = null;
             for (String name : sizeFieldNames) {
                 try {
-                    if(sizeField==null) {
+                    if (sizeField == null) {
                         sizeField = clazz.getField(name);
                     }
                 } catch (NoSuchFieldException ignore) {
@@ -130,7 +146,7 @@ public final class CheckUtil {
             Method sizeMethod = null;
             for (String name : sizeMethodNames) {
                 try {
-                    if(sizeMethod==null) {
+                    if (sizeMethod == null) {
                         sizeMethod = clazz.getMethod(name);
                     }
                 } catch (NoSuchMethodException ignore) {
@@ -152,6 +168,7 @@ public final class CheckUtil {
     public static void mustMatchSize(Object container, int min, int max) {
         mustMatchSize(container, min, max, null);
     }
+
     //assert the types of param list of the method
     public static void mustWithParamTypes(Method method, String message, Class<?>... expectedTypes) {
         Class<?>[] actualTypes = method.getParameterTypes();
@@ -172,9 +189,11 @@ public final class CheckUtil {
             }
         }
     }
+
     public static void mustWithParamTypes(Method method, Class<?>... expectedTypes) {
         mustWithParamTypes(method, null, expectedTypes);
     }
+
     //assert that all strings match the regex
     public static void mustMatchRegex(String regex, String... strings) {
         Pattern pattern = Pattern.compile(regex);
