@@ -1,6 +1,6 @@
 package com.zz.lib.common;
 
-import com.zz.lib.common.exception.DataSizeException;
+import com.zz.lib.common.util.StringUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ public class StringUtilTest {
 
     @Test
     public void format() {
-        Assert.assertEquals("123456,{,},{hhh",StringUtil.format("123{},{,},{{}",456,"hhh"));
+        Assert.assertEquals("123456,{,},{hhh", StringUtil.format("123{},{,},{{}",456,"hhh"));
         Assert.assertEquals("{}{",StringUtil.format("{{}{","}"));
         Assert.assertEquals("{",StringUtil.format("{"));
         Assert.assertEquals("{}{}",StringUtil.format("{}{}","{}{","}"));

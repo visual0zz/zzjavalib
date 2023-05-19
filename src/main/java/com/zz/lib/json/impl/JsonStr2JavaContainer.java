@@ -1,7 +1,7 @@
 package com.zz.lib.json.impl;
 
-import com.zz.lib.common.CharUtil;
-import com.zz.lib.common.StringUtil;
+import com.zz.lib.common.util.CharUtil;
+import com.zz.lib.common.util.StringUtil;
 import com.zz.lib.json.JsonParseException;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
 package com.zz.lib.container.tuple;
 
-import com.zz.lib.common.CheckUtil;
+import com.zz.lib.common.util.CheckUtil;
 
 import java.io.File;
 import java.io.PrintStream;

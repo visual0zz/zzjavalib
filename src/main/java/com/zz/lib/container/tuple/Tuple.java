@@ -2,7 +2,7 @@ package com.zz.lib.container.tuple;
 import com.zz.lib.common.exception.InvalidOperationException;
 import java.io.Serializable;
 import java.util.Arrays;
-import com.zz.lib.common.CheckUtil;
+import com.zz.lib.common.util.CheckUtil;
 import com.zz.lib.common.tags.ReadOnly;
 
 @ReadOnly

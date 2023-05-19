@@ -1,6 +1,6 @@
 package com.zz.lib.reflection;
-import com.zz.lib.common.ArrayUtil;
-import com.zz.lib.common.CheckUtil;
+import com.zz.lib.common.util.ArrayUtil;
+import com.zz.lib.common.util.CheckUtil;
 import java.lang.reflect.Field;
 
 public class ReflectUtil {

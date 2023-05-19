@@ -1,5 +1,5 @@
 package com.zz.lib.container;
-import com.zz.lib.common.CheckUtil;
+import com.zz.lib.common.util.CheckUtil;
 import java.math.BigInteger;
 import java.util.Arrays;
 

@@ -3,6 +3,7 @@ package com.zz.lib.common;
 import com.zz.lib.common.exception.DataContentException;
 import com.zz.lib.common.exception.DataSizeException;
 import com.zz.lib.common.exception.DataTypeException;
+import com.zz.lib.common.util.CheckUtil;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

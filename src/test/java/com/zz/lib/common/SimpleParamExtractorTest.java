@@ -1,8 +1,7 @@
 package com.zz.lib.common;
 
-import org.junit.After;
+import com.zz.lib.common.tool.SimpleParamExtractor;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SimpleParamExtractorTest {

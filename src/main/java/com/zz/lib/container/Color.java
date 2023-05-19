@@ -1,6 +1,6 @@
 package com.zz.lib.container;
 
-import com.zz.lib.common.CheckUtil;
+import com.zz.lib.common.util.CheckUtil;
 
 public class Color {
     int red,green,blue;

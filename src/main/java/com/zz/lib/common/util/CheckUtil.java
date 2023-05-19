@@ -1,4 +1,4 @@
-package com.zz.lib.common;
+package com.zz.lib.common.util;
 
 import com.zz.lib.common.exception.DataCheckException;
 import com.zz.lib.common.exception.DataContentException;

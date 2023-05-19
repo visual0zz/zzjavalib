@@ -1,4 +1,6 @@
-package com.zz.lib.common;
+package com.zz.lib.common.util;
+
+import com.zz.lib.common.tags.Incomplete;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -8,6 +10,7 @@ import java.util.*;
 /**
  * 处理数值对象的常用功能
  */
+@Incomplete
 public class DataObjectUtil {
     static public boolean deepEquals(Object o1,Object o2){
         return false;

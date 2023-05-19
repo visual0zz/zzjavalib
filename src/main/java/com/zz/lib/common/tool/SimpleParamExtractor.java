@@ -1,4 +1,6 @@
-package com.zz.lib.common;
+package com.zz.lib.common.tool;
+import com.zz.lib.common.util.StringUtil;
+
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +38,7 @@ public class SimpleParamExtractor {
                     result.put(mainPart,true);
                 }else if((parser=parsers.get(paramName))==null && !ignoreRedundantOptionalParam){
                     //找不到参数的解析器且配置不忽略多余参数，则报错
-                    throw new IllegalArgumentException("unknown param :"+StringUtil.escapeString(paramName));
+                    throw new IllegalArgumentException("unknown param :"+ StringUtil.escapeString(paramName));
                 }else{
                     //根据token中是否包含等号来判断参数值是在等号后面还是下一个token
                     String paramValue=mainPart.contains("=")

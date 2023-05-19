@@ -1,4 +1,4 @@
-package com.zz.lib.common;
+package com.zz.lib.common.util;
 
 import java.util.Arrays;
 
