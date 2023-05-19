@@ -100,16 +100,27 @@ public class SimpleParamExtractor {
                 format.setMinimumIntegerDigits(REQUIRED_PARAMS_ORDER_FORMAT);
                 result.put(REQUIRED_PARAM_PREFIX+ format.format(requiredParamIndex++),token);
             }
-            if(requiredParamIndex<requiredParamMin){
-                throw new IllegalArgumentException("not enough param");
-            }
+        }
+        if(requiredParamIndex<requiredParamMin){
+            throw new IllegalArgumentException("not enough param");
         }
         return new ParamInfo(result);
     }
     public static RequireParamNotSet builder(){
         return new Builder();
     }
-    public static class Builder implements RequireParamNotSet,RequireParamSet{
+
+    @Override
+    public String toString() {
+        return "SimpleParamExtractor{" +
+                "requiredParamMin=" + requiredParamMin +
+                ", requiredParamMax=" + requiredParamMax +
+                ", parsers=" + parsers.keySet() +
+                ", ignoreRedundantOptionalParam=" + ignoreRedundantOptionalParam +
+                '}';
+    }
+
+    private static class Builder implements RequireParamNotSet,RequireParamSet{
         int requiredParamMin=0;
         int requiredParamMax=Integer.MAX_VALUE;
         ConcurrentHashMap<String,ParamParser> parsers=new ConcurrentHashMap<>();
@@ -205,7 +216,7 @@ public class SimpleParamExtractor {
          * @param ignore true-忽略 false-不忽略
          * @return this
          */
-        public Builder ignoreRedundantOptionalParam(boolean ignore){
+        public Builder allowExtraOptionalParam(boolean ignore){
             ignoreRedundantOptionalParam=ignore;
             return this;
         }
@@ -213,8 +224,8 @@ public class SimpleParamExtractor {
          * 忽略多余的可选参数
          * @return this
          */
-        public Builder ignoreRedundantOptionalParam(){
-            return ignoreRedundantOptionalParam(true);
+        public Builder allowExtraOptionalParam(){
+            return allowExtraOptionalParam(true);
         }
     }
     public interface RequireParamSet{
@@ -222,8 +233,8 @@ public class SimpleParamExtractor {
         RequireParamSet optionalString(String paramName);
         <T extends Enum<T>>RequireParamSet optionalEnum(String paramName,Class<T> type, boolean ignoreCase);
         RequireParamSet optionalParam(String paramName,ParamParser parser);
-        RequireParamSet ignoreRedundantOptionalParam(boolean ignore);
-        RequireParamSet ignoreRedundantOptionalParam();
+        RequireParamSet allowExtraOptionalParam(boolean ignore);
+        RequireParamSet allowExtraOptionalParam();
         SimpleParamExtractor build();
     }
     public interface RequireParamNotSet{
@@ -233,8 +244,8 @@ public class SimpleParamExtractor {
         RequireParamNotSet optionalString(String paramName);
         <T extends Enum<T>>RequireParamNotSet optionalEnum(String paramName, Class<T> type, boolean ignoreCase);
         RequireParamNotSet optionalParam(String paramName,ParamParser parser);
-        RequireParamNotSet ignoreRedundantOptionalParam(boolean ignore);
-        RequireParamNotSet ignoreRedundantOptionalParam();
+        RequireParamNotSet allowExtraOptionalParam(boolean ignore);
+        RequireParamNotSet allowExtraOptionalParam();
     }
     public interface ParamParser{
         Object parse(String paramName,String paramValue);
@@ -270,6 +281,14 @@ public class SimpleParamExtractor {
         }
         List<String> getReqs(){
             return required;
+        }
+
+        @Override
+        public String toString() {
+            return "ParamInfo{" +
+                    "optional=" + optional +
+                    ", required=" + required +
+                    '}';
         }
     }
 }
