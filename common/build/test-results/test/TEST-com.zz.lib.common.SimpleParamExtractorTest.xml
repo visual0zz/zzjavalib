@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.zz.lib.common.SimpleParamExtractorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-05-19T09:11:44" hostname="zhaozhi-mac.local" time="0.009">
+  <properties/>
+  <testcase name="ignoreRedundant" classname="com.zz.lib.common.SimpleParamExtractorTest" time="0.008"/>
+  <testcase name="notIgnore" classname="com.zz.lib.common.SimpleParamExtractorTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
