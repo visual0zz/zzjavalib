@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.zz.lib.common.ArrayUtilTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-05-22T09:40:19" hostname="zhaozhi-mac.local" time="0.001">
+  <properties/>
+  <testcase name="testContainsNull" classname="com.zz.lib.common.ArrayUtilTest" time="0.001"/>
+  <testcase name="testIsAllNull" classname="com.zz.lib.common.ArrayUtilTest" time="0.0"/>
+  <testcase name="testContainsNull2" classname="com.zz.lib.common.ArrayUtilTest" time="0.0"/>
+  <testcase name="testIsAllNull2" classname="com.zz.lib.common.ArrayUtilTest" time="0.0"/>
+  <testcase name="testConcat" classname="com.zz.lib.common.ArrayUtilTest" time="0.0"/>
+  <testcase name="testIsEmpty" classname="com.zz.lib.common.ArrayUtilTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

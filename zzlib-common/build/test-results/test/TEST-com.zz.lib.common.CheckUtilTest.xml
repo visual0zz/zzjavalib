@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.zz.lib.common.CheckUtilTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2023-05-22T09:40:19" hostname="zhaozhi-mac.local" time="0.007">
+  <properties/>
+  <testcase name="assertRegex1" classname="com.zz.lib.common.CheckUtilTest" time="0.001"/>
+  <testcase name="assertRegex2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertRegex3" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertRegex4" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertMethodParamTypes1" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertMethodParamTypes2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertSize1" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertSize2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertSize3" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertTrue1" classname="com.zz.lib.common.CheckUtilTest" time="0.001"/>
+  <testcase name="assertTrue2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertEquals1" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertEquals2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertEquals3" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertNotNull1" classname="com.zz.lib.common.CheckUtilTest" time="0.001"/>
+  <testcase name="assertNotNull2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertIsA1" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <testcase name="assertIsA2" classname="com.zz.lib.common.CheckUtilTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

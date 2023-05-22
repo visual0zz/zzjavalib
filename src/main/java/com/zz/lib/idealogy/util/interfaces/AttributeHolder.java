@@ -1,6 +1,6 @@
 package com.zz.lib.idealogy.util.interfaces;
 import com.zz.lib.idealogy.core.world.Attribute;
-import com.zz.lib.reflection.ReflectUtil;
+import com.zz.lib.common.util.ReflectUtil;
 
 import java.lang.reflect.Field;
 
