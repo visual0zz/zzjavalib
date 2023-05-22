@@ -1,4 +1,3 @@
-rootProject.name = 'zzjavalib'
-include 'common'
-include 'container'
-
+rootProject.name = 'zzjavalib-all'
+include 'zzlib-common'
+include 'zzlib-container'
