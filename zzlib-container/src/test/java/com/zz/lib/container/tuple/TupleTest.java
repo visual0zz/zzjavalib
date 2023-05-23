@@ -1,7 +1,5 @@
-package com.zz.lib.common.container.tuple;
+package com.zz.lib.container.tuple;
 
-import com.zz.lib.container.tuple.Tuple;
-import com.zz.lib.container.tuple.Tuple5;
 import org.junit.Assert;
 import org.junit.Test;
 

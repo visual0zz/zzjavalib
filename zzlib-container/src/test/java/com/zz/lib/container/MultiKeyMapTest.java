@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MultikeyMapTest {
+public class MultiKeyMapTest {
 
     @Test
     public void get() {
