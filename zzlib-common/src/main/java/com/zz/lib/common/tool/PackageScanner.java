@@ -31,7 +31,7 @@ public class PackageScanner
 
     public PackageScanner addPackage(String packageName)
     {
-        if (packageName == null || !packageName.matches("^[\\w]+(\\.[\\w]+)*$"))
+        if (packageName == null || !packageName.matches("^([\\w]+(\\.[\\w]+)*)?$"))
         {
             throw new IllegalArgumentException("非法包名.");
         }
@@ -40,10 +40,13 @@ public class PackageScanner
     }
 
 
-    public void scan() throws Exception {
-        for (String packageName : packageNames)
-        {
-            ScanAPackage(packageName);
+    public void scan(){
+        try {
+            for (String packageName : packageNames) {
+                    ScanAPackage(packageName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
