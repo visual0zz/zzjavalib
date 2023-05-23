@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * @param <V>value 的数据类型
  */
-public class MultikeyMap<V> {
+public class MultiKeyMap<V> {
     private HashMap<Tuple,V> data=new HashMap<>();
     public V get(Object ... keys){
         return data.get(new Tuple(keys));

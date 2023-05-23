@@ -1,4 +1,4 @@
-package com.zz.lib.math;
+package com.zz.lib.common.constant;
 
 public interface PrimeTable {
 

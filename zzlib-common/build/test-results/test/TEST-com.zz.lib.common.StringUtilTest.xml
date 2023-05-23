@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.zz.lib.common.StringUtilTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-05-22T09:40:19" hostname="zhaozhi-mac.local" time="0.001">
+<testsuite name="com.zz.lib.common.StringUtilTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-05-22T10:09:35" hostname="zhaozhi-mac.local" time="0.004">
   <properties/>
   <testcase name="isBlankStr" classname="com.zz.lib.common.StringUtilTest" time="0.0"/>
   <testcase name="format" classname="com.zz.lib.common.StringUtilTest" time="0.0"/>
   <testcase name="testToString" classname="com.zz.lib.common.StringUtilTest" time="0.0"/>
-  <testcase name="caseSwitch" classname="com.zz.lib.common.StringUtilTest" time="0.001"/>
+  <testcase name="caseSwitch" classname="com.zz.lib.common.StringUtilTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -1,4 +1,4 @@
-package com.zz.lib.os.constant;
+package com.zz.lib.common.constant;
 
 /**
  * linux系统

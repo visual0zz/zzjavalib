@@ -1,3 +1,5 @@
 rootProject.name = 'zzlib-all'
 include 'zzlib-common'
 include 'zzlib-container'
+include 'zzlib-idealogy'
+

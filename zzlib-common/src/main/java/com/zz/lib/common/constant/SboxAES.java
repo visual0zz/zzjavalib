@@ -1,4 +1,4 @@
-package com.zz.lib.crypto.constant;
+package com.zz.lib.common.constant;
 
 /**
  * AES算法的加密盒子

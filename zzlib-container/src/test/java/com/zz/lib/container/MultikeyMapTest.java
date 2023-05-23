@@ -9,7 +9,7 @@ public class MultikeyMapTest {
 
     @Test
     public void get() {
-        MultikeyMap<String> multikeyMap=new MultikeyMap<>();
+        MultiKeyMap<String> multikeyMap=new MultiKeyMap<>();
         multikeyMap.put("123","1");
         Assert.assertEquals("123",multikeyMap.get("1"));
         assertNull(multikeyMap.get("2"));
@@ -21,7 +21,7 @@ public class MultikeyMapTest {
 
     @Test
     public void put() {
-        MultikeyMap<String> multikeyMap=new MultikeyMap<>();
+        MultiKeyMap<String> multikeyMap=new MultiKeyMap<>();
         multikeyMap.put("123","123",0L,1,"1");
         Assert.assertEquals("123",multikeyMap.get("123",0L,1,"1"));
         assertNull(multikeyMap.get("2"));
