@@ -1,6 +1,6 @@
 /.idea
 /.gradle
 *.iml
-/build
 /test/*
-/test/repo/*
+/test/*/*
+build/
