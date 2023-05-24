@@ -1,4 +1,4 @@
-rootProject.name = 'zzlib-all'
+rootProject.name = 'zzjavalib'
 include 'zzlib-common'
 include 'zzlib-container'
 include 'zzlib-idealogy'
